@@ -23,7 +23,7 @@ const Register = () => {
     } else {
       setError(true);
     }
-    setTimeout(() => setMostrar(false), 800);
+    // setTimeout(() => setMostrar(false), 800);
   };
 
   const notify = () =>

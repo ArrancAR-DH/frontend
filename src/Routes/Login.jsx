@@ -1,26 +1,32 @@
 import React, { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { registerAPICall } from "../services/AuthService";
- 
+import { ToastContainer, toast } from "react-toastify";
+import { loginAPICall } from "../services/AuthService";
+
 
 
 const Login = () => {
-  const [user, setUser] = useState({correo: "", password: ""});
+  const [user, setUser] = useState({email: "", password: ""});
   const [error, setError] = useState(false);
-  const{correo, password} = user; 
+  const{email, password} = user; 
   
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validateEmail(correo) && password.length >=6) {
+    if (validateEmail(email) && password.length >=6) {
          setError(false);
-         setUser({correo: "", password: ""}); 
-         notify(); 
-         
+         setUser({email: "", password: ""}); 
+         await loginAPICall(user).then((res)=>{
+          console.log(res.data)
+          const token = 'Basic ' + window.btoa(email + ":" + password);
+            storeToken(token);
+            saveLoggedInUser(email);
+         })
+         notify();    
       } else {
       setError(true);
     }
-    setTimeout(() => setMostrar(false), 800)};
+    // setTimeout(() => setMostrar(false), 800)
+  };
   
   const notify = () =>
     toast.success("Login exitoso!!!", {
@@ -33,9 +39,9 @@ const Login = () => {
       progress: undefined
     });
 
-  const validateEmail = (correo) => {
+  const validateEmail = (email) => {
     const emailRegex =  /^[^\s@]+@[^\s@]+.[^\s@]+.com$/;
-    return emailRegex.test(correo);
+    return emailRegex.test(email);
   };
 
    return (
@@ -44,8 +50,8 @@ const Login = () => {
            <div className="card ">         
             <p className="title-form">Iniciar sesión</p>
           <div className="inputContainer">
-          <input value={correo} placeholder="Ingrese su email" name="correo" type="text"
-            onChange={(e) => setUser({ ...user, correo: e.target.value })}/>
+          <input value={email} placeholder="Ingrese su email" name="email" type="text"
+            onChange={(e) => setUser({ ...user, email: e.target.value })}/>
         </div>
         <div className="inputContainer">
           <input value={password} placeholder="Ingrese su contraseña" name="password" type="password"
