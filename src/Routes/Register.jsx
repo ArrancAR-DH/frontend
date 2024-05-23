@@ -1,17 +1,24 @@
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { registerAPICall } from "../services/AuthService";
+
 
 const Register = () => {
-  const [user, setUser] = useState({ correo: "", name: "", password: "" });
+  const [user, setUser] = useState({ name: "", username: "", email: "", password: "", lastName: ""});
   const [error, setError] = useState(false);
-  const { correo, name, password } = user;
+  const { name, username, email, password, lastName} = user;
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (validateEmail(correo) && password.length >= 6 && name.length > 3) {
+    if (validateEmail(email) && password.length >= 6 && name.length > 3) {
       setError(false);
-      setUser({ correo: "", password: "", name: "" });
+      setUser({ email: "", password: "", name: "", lastName: "", username: "" });
+      registerAPICall(user).then((res)=>{
+        console.log(res.data);
+      }).catch(err =>{
+        console.log(err);
+      })
       notify();
     } else {
       setError(true);
@@ -30,9 +37,9 @@ const Register = () => {
       progress: undefined,
     });
 
-  const validateEmail = (correo) => {
+  const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+.[^\s@]+.com$/;
-    return emailRegex.test(correo);
+    return emailRegex.test(email);
   };
 
   return (
@@ -41,17 +48,28 @@ const Register = () => {
         <div className="card ">
           <p className="title-form">Crear Cuenta</p>
           <div className="inputContainer">
-            <input value={correo} placeholder="Ingrese su email" name="correo" type="text"
-              onChange={(e) => setUser({ ...user, correo: e.target.value })}/>
+            <input value={email} placeholder="Ingrese su email" name="email" type="text"
+              onChange={(e) => setUser({ ...user, email: e.target.value })}/>
           </div>
           <div className="inputContainer">
             <input value={name} placeholder="Ingrese su nombre" name="name" type="text"
               onChange={(e) => setUser({ ...user, name: e.target.value })}/>
           </div>
           <div className="inputContainer">
+            <input value={username} placeholder="Ingrese su nombre de usuario" name="username" type="text"
+              onChange={(e) => setUser({ ...user, username: e.target.value })}/>
+          </div>
+          <div className="inputContainer">
+            <input value={lastName} placeholder="Ingrese su apellido" name="lastName" type="text"
+              onChange={(e) => setUser({ ...user, lastName: e.target.value })}/>
+          </div>
+          <div className="inputContainer">
             <input value={password} placeholder="Ingrese su contraseña" name="password" type="password"
               onChange={(e) => setUser({ ...user, password: e.target.value })}/>
           </div>
+
+
+
           <div className="inputContainer terminos__condiciones">
             <label htmlFor="aceptar">
               Acepto los terminos y condiciones de ArrancAR

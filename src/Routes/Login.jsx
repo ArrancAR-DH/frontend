@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { registerAPICall } from "../services/AuthService";
  
+
+
 const Login = () => {
   const [user, setUser] = useState({correo: "", password: ""});
   const [error, setError] = useState(false);
@@ -13,6 +16,7 @@ const Login = () => {
          setError(false);
          setUser({correo: "", password: ""}); 
          notify(); 
+         
       } else {
       setError(true);
     }
