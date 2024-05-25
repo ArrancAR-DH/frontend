@@ -40,10 +40,10 @@ const ListaVehiculos = () => {
         <h3>Tipo</h3>
         <h3>Acción</h3>
       </div>
-      {cars.map((car) => {
+      {cars.map((car, key) => {
         return (
           <div className="vehiculo__container">
-            <img className="img-history" src={car.imgUrls?.[0]?.url} alt="" />
+            <img className="img-history" src={car.imgUrls?.[0]?.url} alt="" key={key}/>
             <h4>{car.idVehicle}</h4>
             <h4>{car.brand.name}</h4>
             <p>{car.model.name}</p>

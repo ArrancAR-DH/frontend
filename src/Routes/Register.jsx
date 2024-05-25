@@ -15,16 +15,16 @@ const Register = () => {
       setError(false);
       setUser({ email: "", password: "", name: "", lastName: "", username: "" });
       registerAPICall(user).then((res)=>{
-        console.log(res.data);
+        console.log(res);
       }).catch(err =>{
         console.log(err);
       })
       notify();
     } else {
-      setError(true);
+      notify2();
+      // setError(true);
     }
-    // setTimeout(() => setMostrar(false), 800);
-  };
+   };
 
   const notify = () =>
     toast.success("Registro exitoso!!!", {
@@ -36,6 +36,20 @@ const Register = () => {
       draggable: true,
       progress: undefined,
     });
+
+
+    const notify2 = () =>
+      toast.error("Verifique los datos!", {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+
+
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+.[^\s@]+.com$/;
@@ -76,7 +90,7 @@ const Register = () => {
             </label>
             <input className="checkbox" id="checkbox" value={false} name="aceptar" type="checkbox"/>
           </div>
-          <button className="btn-login" onClick={handleSubmit}>
+          <button className="btn-login">
             Enviar Datos
           </button>
           <ToastContainer />
