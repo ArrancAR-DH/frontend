@@ -44,4 +44,14 @@ nav {
       }
     }
   }
+
+  .container__user{
+    display: flex;
+    text-align: center;
+    align-items: center;
+    vertical-align: middle;
+    justify-content: space-evenly;
+    flex-direction: column;
+    height: 70px;
+  }
 }

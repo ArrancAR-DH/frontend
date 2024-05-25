@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { registerAPICall } from "../services/AuthService";
+import { useStorage } from "../Context/StorageContext";
 
 
 const Register = () => {
+  const { registerAPICall } = useStorage();
   const [user, setUser] = useState({ name: "", username: "", email: "", password: "", lastName: ""});
   const [error, setError] = useState(false);
   const { name, username, email, password, lastName} = user;
@@ -22,7 +23,6 @@ const Register = () => {
       notify();
     } else {
       notify2();
-      // setError(true);
     }
    };
 
@@ -48,8 +48,6 @@ const Register = () => {
         draggable: true,
         progress: undefined,
       });
-
-
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+.[^\s@]+.com$/;
@@ -81,8 +79,6 @@ const Register = () => {
             <input value={password} placeholder="Ingrese su contraseña" name="password" type="password"
               onChange={(e) => setUser({ ...user, password: e.target.value })}/>
           </div>
-
-
 
           <div className="inputContainer terminos__condiciones">
             <label htmlFor="aceptar">

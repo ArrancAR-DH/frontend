@@ -1,33 +1,44 @@
 import React, { useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
-import { loginAPICall, storeToken, saveLoggedInUser} from "../services/AuthService";
+import { useStorage } from "../Context/StorageContext";
+import { useNavigate } from "react-router-dom";
+
 
 const Login = () => {
   const [user, setUser] = useState({ usernameOrEmail: "", password: "" });
-  const [error, setError] = useState(false); // PENDING (Validations)
   const { usernameOrEmail, password } = user;
+  const [error, setError] = useState(false); // PENDING (Validations)
+  const {loginAPICall,storeToken, saveLoggedInUser, getLoggedInUser} = useStorage(); 
+  const navigator = useNavigate();
+
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = window.btoa(usernameOrEmail + ":" + password, "utf8").toString("base64");
-    const config = { headers: {
+     const config = { headers: {
         Authorization: "Basic " + token,
       },
     };
     try {
-      const res = await loginAPICall(user, config);
+       await loginAPICall(user, config);
         storeToken(token);
         saveLoggedInUser(usernameOrEmail);
         setUser({ usernameOrEmail: "", password: "" });
-        notify();
+        succesMessage();
+        setTimeout(() => {
+          navigator("/");
+          window.location.reload(); 
+        }, 2499);
       } catch (error) {
         console.error("Error:", error);
-        notify2();
+        errorMessage();
       }
   };
 
-  const notify = () =>
+
+  const succesMessage = () =>
     toast.success("Login exitoso!!!", {
       position: "top-center",
       autoClose: 2500,
@@ -38,7 +49,7 @@ const Login = () => {
       progress: undefined,
     });
 
-  const notify2 = () =>
+  const errorMessage = () =>
     toast.error("Verifique los campos!", {
       position: "top-right",
       autoClose: 2500,
@@ -66,10 +77,7 @@ const Login = () => {
               placeholder="Ingrese su email"
               name="usernameOrEmail"
               type="text"
-              onChange={(e) =>
-                setUser({ ...user, usernameOrEmail: e.target.value })
-              }
-            />
+              onChange={(e) => setUser({ ...user, usernameOrEmail: e.target.value })}/>
           </div>
           <div className="inputContainer">
             <input
@@ -77,8 +85,7 @@ const Login = () => {
               placeholder="Ingrese su contraseña"
               name="password"
               type="password"
-              onChange={(e) => setUser({ ...user, password: e.target.value })}
-            />
+              onChange={(e) => setUser({ ...user, password: e.target.value })}/>
           </div>
           <div className="inputContainer recordar__usuario">
             <label htmlFor="recordar">Recordarme</label>

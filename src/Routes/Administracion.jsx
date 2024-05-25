@@ -3,13 +3,21 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
+import { useStorage } from "../Context/StorageContext";
+
+
 const Administracion = () => {
+  const {getToken} = useStorage(); 
+  const token = getToken(); 
+
   function postVehiculo(postJson) {
     axios
       .post("http://localhost:8080/vehicle", postJson, {
         headers: {
           "Content-Type": "application/json",
+          "Authorization": "Basic " + token,
         },
+
       })
       .then((response) => {
         console.log(response);
@@ -70,13 +78,10 @@ const Administracion = () => {
     const price = e.target[4].value;
     const patente = e.target[5].value.toUpperCase();
     const descripcion = e.target[6].value;
-    // const imagenes = [e.target[7].value, e.target[8].value, e.target[9].value, e.target[10].value, e.target[11].value]
-    // console.log(patente, descripcion, modelo, tipo, marca, imagenes)
     if (!patente || !descripcion || !modelo || !tipo || !marca || !price || !year) {
       errorHandling("Por favor, complete todos los campos.");
       return;
     }
-    // check if price is double and year is number
     if (isNaN(parseFloat(price)) || isNaN(parseInt(year))) {
       errorHandling("Por favor, ingrese un precio y un año válidos.");
       return;
@@ -99,7 +104,6 @@ const Administracion = () => {
       },
       imgUrls: [],
     };
-    // imagenes.forEach(
     images.forEach((imagen) => {
       postJson.imgUrls.push(imagen);
     });

@@ -1,16 +1,48 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import logoConTitulo from '../../assets/ArrancAR logo con titulo sin fondo.png'
+import React from "react";
+import logoConTitulo from "../../assets/ArrancAR logo con titulo sin fondo.png";
+import { useNavigate, NavLink, Link } from "react-router-dom";
+import { useStorage } from "../../Context/StorageContext";
 
 const Header = () => {
-    return (
-        <nav>
-            <Link to='/'><img src={logoConTitulo} /></Link>
-            <div className='navbar__buttons'>
-                <Link to='/register'><button>Crear Cuenta</button></Link>
-                <Link to='/login'><button>Iniciar Sesión</button></Link>
+  const { getLoggedInUser, logout } = useStorage();
+  const isAuth = getLoggedInUser();
+  const navigator = useNavigate();
+
+  function handleLogout() {
+    logout();
+    navigator("/login");
+    window.location.reload(); 
+  }
+
+  return (
+    <nav>
+      <Link to="/">
+        <img src={logoConTitulo} />
+      </Link>
+      <div className="navbar__buttons">
+        {!isAuth && (
+          <>
+            <Link to="/register">
+              <button>Crear Cuenta</button>
+            </Link>
+            <Link to="/login">
+              <button>Iniciar Sesión</button>
+            </Link>
+          </>
+        )}
+
+        {isAuth && (
+            <div className="container__user">
+                <h3>
+            {isAuth}
+                </h3>
+             <NavLink to="/" onClick={handleLogout}>
+              logout
+            </NavLink>
             </div>
-        </nav>
-    )
-}
-export default Header   
+         )}
+      </div>
+    </nav>
+  );
+};
+export default Header;
