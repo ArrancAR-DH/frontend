@@ -2,19 +2,15 @@ import React from 'react'
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import axios from 'axios'
-
 const ImageLibrary = () => {
     const { id } = useParams()
-
     const [car, setCar] = useState({});
-    console.log(car);
 
     useEffect(() => {
         axios.get(`http://localhost:8080/vehicle/${id}`).then((res) => {
             setCar(res.data);
         });
     }, []);
-
     return (
         <div className="image__library__container">
             <Link to={`/cars/${car.idVehicle}`}><h3>Volver</h3></Link>
@@ -38,8 +34,6 @@ const ImageLibrary = () => {
         </div>
     )
 }
-
-
 export default ImageLibrary;
 
 

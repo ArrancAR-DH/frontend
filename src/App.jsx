@@ -11,11 +11,15 @@ import ListaVehiculos from "./Routes/ListaVehiculos"
 import Login from "./Routes/Login";
 import Register from "./Routes/Register";
 import './styles/styles.scss'
- 
+import Context from "./Context/StorageContext";
+
+
+
 function App() {
   return (
     <div>
-      <BrowserRouter>
+       <BrowserRouter>
+       <Context>
         <Routes>
           <Route element={<Layout />}>
             <Route path="/" element={<Home />} />
@@ -30,8 +34,9 @@ function App() {
             <Route path="/register" element={<Register/>}/>
           </Route>
         </Routes>
+       </Context>
       </BrowserRouter>
-    </div>
+     </div>
   )
 }
 export default App
