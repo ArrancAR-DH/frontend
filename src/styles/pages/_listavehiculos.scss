@@ -2,6 +2,19 @@
     display: flex;
     flex-direction: column;
 
+    button {
+        font-size: 16px;
+        background-color: $darkmode-primary-color;
+        border: none;
+        border-radius: 15px;
+        cursor: pointer;
+        transition: background-color 100ms ease-in-out;
+
+        &:hover {
+            background-color: $darkmode-accent-color;
+        }
+    }
+
     .title__admin {
         width: fit-content;
         margin: 0 auto;
@@ -77,10 +90,11 @@
 
     .editing__vehicle__overlay {
         position: absolute;
+        overflow: scroll;
         z-index: 1;
         padding: 20px;
         border-radius: 20px;
-        height: 400px;
+        max-height: 80vh;
         width: 700px;
 
         // center overlay;
@@ -91,8 +105,21 @@
         background-color: rgba(0, 0, 0, 0.7);
         backdrop-filter: blur(5px);
 
+        .edicion__vehiculo__error {
+            margin: 10px auto;
+            width: fit-content;
+            color: red;
+        }
+
+        .edicion__vehiculo__success {
+            margin: 10px auto;
+            width: fit-content;
+            color: green;
+        }
+
         .overlay__buttons {
             display: flex;
+            margin-top: 20px;
             justify-content: space-evenly;
 
             button {
@@ -102,6 +129,60 @@
                 width: 100px;
                 height: 40px;
                 cursor: pointer;
+            }
+        }
+
+        form {
+            div {
+                display: flex;
+                align-items: center;
+
+                p {
+                    width: 20%;
+                }
+
+                input {
+                    width: 80%;
+                    font-size: 16px;
+                    padding: 5px;
+                    margin: 10px;
+                    border: none;
+                    border-radius: 5px;
+                    background-color: $darkmode-background-color-lighter;
+                    color: $darkmode-text-color;
+                }
+            }
+
+            .imagenes__subidas {
+                display: flex;
+                flex-direction: column;
+
+                div {
+                    display: flex;
+                    width: 100%;
+                    align-items: center;
+                    justify-content: space-between;
+
+                    a {
+                        width: 40%;
+                        height: 120px;
+                        margin: 5px;
+
+                        img {
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover;
+                            border-radius: 5px;
+                        }
+                    }
+
+                    button {
+                        width: fit-content;
+                        height: fit-content;
+                        padding: 15px 30px;
+                        margin-right: 25px;
+                    }
+                }
             }
         }
     }

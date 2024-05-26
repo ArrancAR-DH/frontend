@@ -20,11 +20,16 @@ const ListaVehiculos = () => {
             });
     }
 
-    const [vehicleBeingEdited, setVehicleBeingEdited] = useState({});
+    const [vehicleBeingEdited, setVehicleBeingEdited] = useState(false);
+    function editVehicle(car) {
+        if (vehicleBeingEdited)
+            return
+
+        setVehicleBeingEdited(car);
+    }
 
     const [cars, setCars] = useState([]);
     console.log(cars);
-    const { imgUrls } = cars;
     useEffect(() => {
         axios.get("http://localhost:8080/vehicle/all").then((res) => {
             setCars(res.data);
@@ -58,7 +63,7 @@ const ListaVehiculos = () => {
                             <button onClick={() => deleteVehiculo(car.idVehicle)}>
                                 <img src={trashCan} />
                             </button>
-                            <button onClick={() => setVehicleBeingEdited(car)}>
+                            <button onClick={() => editVehicle(car)}>
                                 <img src={pencil} />
                             </button>
                         </div>

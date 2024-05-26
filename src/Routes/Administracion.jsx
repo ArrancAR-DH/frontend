@@ -42,7 +42,6 @@ const Administracion = () => {
     setImages([...images, response.data.secure_url]);
   };
 
-
   function errorHandling(string) {
     if (!string) {
       setError("");
