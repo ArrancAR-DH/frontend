@@ -101,7 +101,7 @@ const Administracion = () => {
     };
     // imagenes.forEach(
     images.forEach((imagen) => {
-      postJson.imgUrls.push(imagen);
+      postJson.imgUrls.push({ url: imagen });
     });
     postVehiculo(postJson);
     setSuccess(true);
