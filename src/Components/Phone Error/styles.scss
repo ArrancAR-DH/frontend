@@ -1,0 +1,22 @@
+.phone__error {
+    display: none;
+    margin: 50px auto;
+    padding: 0 50px;
+    width: fit-content;
+    color: red;
+    background-color: rgb(54, 54, 54);
+
+    * {
+        padding: 10px 0px;
+    }
+}
+
+@media (max-width: 768px) {
+    .administracion__funciones {
+        display: none;
+    }
+
+    .phone__error {
+        display: block;
+    }
+}

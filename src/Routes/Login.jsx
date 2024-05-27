@@ -9,7 +9,7 @@ const Login = () => {
   const [user, setUser] = useState({ usernameOrEmail: "", password: "" });
   const { usernameOrEmail, password } = user;
   const [error, setError] = useState(false); // PENDING (Validations)
-  const {loginAPICall,storeToken, saveLoggedInUser, getLoggedInUser} = useStorage(); 
+  const { loginAPICall, storeToken, saveLoggedInUser, getLoggedInUser } = useStorage();
   const navigator = useNavigate();
 
 
@@ -17,24 +17,25 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = window.btoa(usernameOrEmail + ":" + password, "utf8").toString("base64");
-     const config = { headers: {
+    const config = {
+      headers: {
         Authorization: "Basic " + token,
       },
     };
     try {
-       await loginAPICall(user, config);
-        storeToken(token);
-        saveLoggedInUser(usernameOrEmail);
-        setUser({ usernameOrEmail: "", password: "" });
-        succesMessage();
-        setTimeout(() => {
-          navigator("/");
-          window.location.reload(); 
-        }, 2499);
-      } catch (error) {
-        console.error("Error:", error);
-        errorMessage();
-      }
+      await loginAPICall(user, config);
+      storeToken(token);
+      saveLoggedInUser(usernameOrEmail);
+      setUser({ usernameOrEmail: "", password: "" });
+      succesMessage();
+      setTimeout(() => {
+        navigator("/");
+        window.location.reload();
+      }, 2499);
+    } catch (error) {
+      console.error("Error:", error);
+      errorMessage();
+    }
   };
 
 
@@ -77,7 +78,7 @@ const Login = () => {
               placeholder="Ingrese su email"
               name="usernameOrEmail"
               type="text"
-              onChange={(e) => setUser({ ...user, usernameOrEmail: e.target.value })}/>
+              onChange={(e) => setUser({ ...user, usernameOrEmail: e.target.value })} />
           </div>
           <div className="inputContainer">
             <input
@@ -85,7 +86,7 @@ const Login = () => {
               placeholder="Ingrese su contraseña"
               name="password"
               type="password"
-              onChange={(e) => setUser({ ...user, password: e.target.value })}/>
+              onChange={(e) => setUser({ ...user, password: e.target.value })} />
           </div>
           <div className="inputContainer recordar__usuario">
             <label htmlFor="recordar">Recordarme</label>

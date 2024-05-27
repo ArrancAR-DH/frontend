@@ -33,8 +33,10 @@ footer {
 
   .footer__socials {
     display: flex;
+    align-items: center;
 
     img {
+      margin: 0 2px;
       max-width: 40px;
       width: 5vw;
     }

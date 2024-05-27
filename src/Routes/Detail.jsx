@@ -10,6 +10,7 @@ const Detail = () => {
     const [car, setCar] = useState({});
     useEffect(() => {
         axios.get(`http://localhost:8080/vehicle/${id}`).then((res) => {
+            console.log(JSON.stringify(res.data))
             setCar(res.data);
         });
     }, []);
