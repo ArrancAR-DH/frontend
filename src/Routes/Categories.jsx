@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import axios from 'axios'
 import AdministracionPhoneError from '../Components/Phone Error/AdministracionPhoneError'
 import { useStorage } from '../Context/StorageContext'
@@ -24,6 +24,20 @@ const CreateCategories = () => {
     }, [])
 
     function createCategory(category, value) {
+        if (value === '') return;
+        let exists;
+        switch (category) {
+            case 'brand':
+                exists = brands.filter(brand => brand.name === value);
+                if (exists.length > 0) return alert('Ya existe esa categoría');
+                break;
+            case 'type':
+                exists = types.filter(type => type.name === value);
+                if (exists.length > 0) return alert('Ya existe esa categoría');
+                break;
+            default:
+                break;
+        }
         axios.post(`http://localhost:8080/${category}`, { name: value }, {
             headers: {
                 'Content-Type': 'application/json',
@@ -31,6 +45,16 @@ const CreateCategories = () => {
             },
         }).then(res => {
             console.log(res)
+            switch (category) {
+                case 'brand':
+                    setBrands([...brands, res.data])
+                    break;
+                case 'type':
+                    setTypes([...types, res.data])
+                    break;
+                default:
+                    break;
+            }
         }).catch(err => {
             console.log(err)
         })
@@ -42,6 +66,17 @@ const CreateCategories = () => {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic ' + token
+            }
+        }).then(() => {
+            switch (category) {
+                case 'brand':
+                    setBrands(brands.filter(brand => brand.id !== id))
+                    break;
+                case 'type':
+                    setTypes(types.filter(type => type.id !== id))
+                    break;
+                default:
+                    break;
             }
         })
     }
@@ -87,7 +122,11 @@ const CreateCategories = () => {
                                     )
                                 })}
                             </select>
-                            <button>Borrar</button>
+                            <button onClick={() => {
+                                const brandLabel = document.getElementById('delete-brand-select').value.toLowercase().strip();
+                                const brandObj = brands.find(brand => brand.name.toLowerCase().strip() === brandLabel);
+                                deleteCategory('brand', brandObj.id);
+                            }}>Borrar</button>
                         </div>
                         <div>
                             <h4>Modelo: </h4>
@@ -110,8 +149,9 @@ const CreateCategories = () => {
                                 })}
                             </select>
                             <button onClick={() => {
-                                const type = document.getElementById('delete-type-select').value
-
+                                const typeLabel = document.getElementById('delete-type-select').value.toLowercase().strip()
+                                const typeObj = types.find(type => type.name.toLowerCase() === typeLabel)
+                                deleteCategory('type', typeObj.id)
                             }}>Borrar</button>
                         </div>
                     </div>
