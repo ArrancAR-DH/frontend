@@ -8,11 +8,7 @@ const Header = () => {
   const isAuth = getLoggedInUser();
   const navigator = useNavigate();
 
-  const avatar = isAuth == null? "": isAuth[0].toUpperCase(); 
-
-
-  
-  
+  const avatar = isAuth == null ? "" : isAuth[0].toUpperCase();
 
   function handleLogout() {
     logout();
@@ -36,7 +32,6 @@ const Header = () => {
             </Link>
           </>
         )}
-
         {isAuth && (
           <div className="container__user">
             <h3 className="avatar">{avatar}</h3>
@@ -49,4 +44,5 @@ const Header = () => {
     </nav>
   );
 };
+
 export default Header;

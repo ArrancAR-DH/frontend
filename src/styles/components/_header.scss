@@ -50,7 +50,7 @@ nav {
     }
   }
 
-  .container__user{
+  .container__user {
     display: flex;
     text-align: center;
     align-items: center;
@@ -60,7 +60,7 @@ nav {
     height: 70px;
   }
 
-  .avatar{
+  .avatar {
     width: 40px;
     height: 40px;
     border: 1px solid rgb(204, 198, 198);
@@ -71,10 +71,10 @@ nav {
     align-items: center;
     background: whitesmoke;
     color: $lightmode-primary-color;
- 
+
   }
 
-  .logout{
+  .logout {
     color: $lightmode-primary-color;
     height: 100%;
 
