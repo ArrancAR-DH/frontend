@@ -26,6 +26,11 @@ nav {
   .navbar__buttons {
     display: flex;
     height: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-content: space-between;
+    flex-direction: column;
 
     button {
       transition: background-color 100ms ease-in-out;
@@ -53,5 +58,25 @@ nav {
     justify-content: space-evenly;
     flex-direction: column;
     height: 70px;
+  }
+
+  .avatar{
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgb(204, 198, 198);
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    background: whitesmoke;
+    color: $lightmode-primary-color;
+ 
+  }
+
+  .logout{
+    color: $lightmode-primary-color;
+    height: 100%;
+
   }
 }
