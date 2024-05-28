@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useStorage } from '../Context/StorageContext'
 
-const EditVehicleOverlay = ({ vehicle, setVehicleBeingEdited }) => {
+const EditVehicleOverlay = ({ vehicle, setVehicleBeingEdited, setCars }) => {
     const { getToken } = useStorage();
     const token = getToken();
 
@@ -51,9 +51,9 @@ const EditVehicleOverlay = ({ vehicle, setVehicleBeingEdited }) => {
             price: price,
             imgUrls: images.map((url) => { return { url: url } }),
             bookings: vehicle.bookings,
-            brand: { idBrand: brandId, },
-            model: { idModel: modelId, },
-            type: { idType: typeId, },
+            brand: { idBrand: brandId, name: brandLabel },
+            model: { idModel: modelId, name: modelLabel },
+            type: { idType: typeId, name: typeLabel },
             features: vehicle.features,
             // year: year
         }
@@ -65,6 +65,12 @@ const EditVehicleOverlay = ({ vehicle, setVehicleBeingEdited }) => {
             }
         })
         setSuccess("Vehículo editado con éxito.");
+        setCars(prev => {
+            const newCars = [...prev];
+            const index = newCars.findIndex(car => car.idVehicle === vehicle.idVehicle);
+            newCars[index] = payload;
+            return newCars;
+        })
     }
 
     const [images, setImages] = useState([]);
@@ -123,6 +129,8 @@ const EditVehicleOverlay = ({ vehicle, setVehicleBeingEdited }) => {
                     <p>Marca:</p>
                     <select defaultValue={vehicle.brand.name}>
                         {brands?.map((brand, index) => {
+                            if (brand.name === vehicle.brand.name)
+                                return <option key={index} value={brand.name} selected>{brand.name}</option>
                             return <option key={index} value={brand.name}>{brand.name}</option>
                         })}
                     </select>
@@ -131,6 +139,8 @@ const EditVehicleOverlay = ({ vehicle, setVehicleBeingEdited }) => {
                     <p>Modelo:</p>
                     <select defaultValue={vehicle.model.name}>
                         {models?.map((model, index) => {
+                            if (model.name === vehicle.model.name)
+                                return <option key={index} value={model.name} selected>{model.name}</option>
                             return <option key={index} value={model.name}>{model.name}</option>
                         })}
                     </select>
@@ -139,6 +149,8 @@ const EditVehicleOverlay = ({ vehicle, setVehicleBeingEdited }) => {
                     <p>Tipo:</p>
                     <select defaultValue={vehicle.type.name}>
                         {types?.map((type, index) => {
+                            if (type.name === vehicle.type.name)
+                                return <option key={index} value={type.name} selected>{type.name}</option>
                             return <option key={index} value={type.name}>{type.name}</option>
                         })}
                     </select>

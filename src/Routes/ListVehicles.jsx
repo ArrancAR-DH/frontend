@@ -69,7 +69,7 @@ const ListVehicles = () => {
                     );
                 })}
             </div>
-            {vehicleBeingEdited && <EditVehicleOverlay vehicle={vehicleBeingEdited} setVehicleBeingEdited={setVehicleBeingEdited} />}
+            {vehicleBeingEdited && <EditVehicleOverlay vehicle={vehicleBeingEdited} setVehicleBeingEdited={setVehicleBeingEdited} setCars={setCars} />}
             <AdministracionPhoneError />
         </div>
     );

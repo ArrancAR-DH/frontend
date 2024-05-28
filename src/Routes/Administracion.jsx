@@ -42,28 +42,24 @@ const Administracion = () => {
     }, [])
 
     function postVehiculo(postJson) {
-        axios
-            .post("http://localhost:8080/vehicle", postJson, {
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": "Basic " + token,
-                },
-            })
-            .then((response) => {
-                console.log(response);
-                setError("");
-            })
-            .catch((error) => {
-                console.log(error);
-                setError("Hubo un error al guardar el vehículo.");
-                setSuccess(false);
-            });
+        axios.post("http://localhost:8080/vehicle", postJson, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Basic " + token,
+            },
+        }).then((response) => {
+            console.log(response);
+            setError("");
+        }).catch((error) => {
+            console.log(error);
+            setError("Hubo un error al guardar el vehículo.");
+            setSuccess(false);
+        });
     }
 
     const [error, setError] = useState("");
     const [success, setSuccess] = useState(false);
     const [images, setImages] = useState([]);
-    console.log(images);
 
     const changeUploadImage = async (e) => {
         const file = e.target.files[0];
@@ -121,20 +117,16 @@ const Administracion = () => {
         const postJson = {
             plate: patente,
             description: descripcion,
-            reserved: false,
+            price: parseFloat(price),
             model: {
-                name: modeloLabel,
-                modelId: modeloId,
+                idModel: modeloId,
             },
             type: {
-                name: tipoLabel,
-                typeId: tipoId,
+                idType: tipoId,
             },
-            price: parseFloat(price),
             // "year": year, //! sera definido mas adelante
             brand: {
-                name: marcaLabel,
-                brandId: marcaId,
+                idBrand: marcaId,
             },
             imgUrls: [],
         };
