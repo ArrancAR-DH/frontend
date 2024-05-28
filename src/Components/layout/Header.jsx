@@ -7,7 +7,12 @@ const Header = () => {
   const { getLoggedInUser, logout } = useStorage();
   const isAuth = getLoggedInUser();
   const navigator = useNavigate();
-  const avatar = isAuth[0].toUpperCase();
+
+  const avatar = isAuth == null? "": isAuth[0].toUpperCase(); 
+
+
+  
+  
 
   function handleLogout() {
     logout();
