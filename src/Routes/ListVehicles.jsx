@@ -1,5 +1,10 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect} from "react";
+import { Link } from "react-router-dom";
+
+
+
+
 import axios from "axios";
 import trashCan from "../assets/trash-solid.svg"
 import pencil from "../assets/pencil-solid.svg"
@@ -38,7 +43,9 @@ const ListVehicles = () => {
     }, []);
 
     return (
+        
         <div className="lista__vehiculos__container">
+            <Link to={`/administracion`}><h3>Volver</h3></Link>
             <h2 className="title__admin">Administración</h2>
             <div className="administracion__funciones">
                 <div className="titulos__categorias">

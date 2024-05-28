@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import AdministracionPhoneError from '../Components/Phone Error/AdministracionPhoneError'
 import { useStorage } from '../Context/StorageContext'
+import { Link } from 'react-router-dom'
 
 const CreateCategories = () => {
     const { getToken } = useStorage();
@@ -124,6 +125,7 @@ const CreateCategories = () => {
 
     return (
         <div className='create__categories__container'>
+            <Link to={`/administracion`}><h3>Volver</h3></Link>
             <h2 className='title__admin'>Administración</h2>
             <div className="administracion__funciones">
                 <div className="administracion__categories">
