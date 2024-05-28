@@ -8,10 +8,12 @@ const Header = () => {
   const isAuth = getLoggedInUser();
   const navigator = useNavigate();
 
+  const avatar = isAuth == null ? "" : isAuth[0].toUpperCase();
+
   function handleLogout() {
     logout();
     navigator("/login");
-    window.location.reload(); 
+    window.location.reload();
   }
 
   return (
@@ -30,19 +32,17 @@ const Header = () => {
             </Link>
           </>
         )}
-
         {isAuth && (
-            <div className="container__user">
-                <h3>
-            {isAuth}
-                </h3>
-             <NavLink to="/" onClick={handleLogout}>
-              logout
+          <div className="container__user">
+            <h3 className="avatar">{avatar}</h3>
+            <NavLink to="/" onClick={handleLogout}>
+              <h6 className="logout">Cerrar sesión</h6>
             </NavLink>
-            </div>
-         )}
+          </div>
+        )}
       </div>
     </nav>
   );
 };
+
 export default Header;

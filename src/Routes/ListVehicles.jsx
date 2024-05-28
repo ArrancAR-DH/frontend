@@ -1,5 +1,6 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+
 import axios from "axios";
 import trashCan from "../assets/trash-solid.svg"
 import pencil from "../assets/pencil-solid.svg"
@@ -10,12 +11,11 @@ const ListVehicles = () => {
     function deleteVehiculo(id) {
         if (vehicleBeingEdited)
             return
-
         if (confirm("¿Estás seguro que deseas eliminar este vehículo?") === false)
             return;
+
         setCars(cars.filter((car) => car.idVehicle !== id));
-        axios
-            .delete("http://localhost:8080/vehicle/delete/" + id)
+        axios.delete("http://localhost:8080/vehicle/delete/" + id)
             .then((response) => {
                 console.log(response);
             });
@@ -39,6 +39,7 @@ const ListVehicles = () => {
 
     return (
         <div className="lista__vehiculos__container">
+            <Link to={`/administracion`}><h3>Volver</h3></Link>
             <h2 className="title__admin">Administración</h2>
             <div className="administracion__funciones">
                 <div className="titulos__categorias">
