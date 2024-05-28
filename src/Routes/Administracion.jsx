@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
@@ -10,6 +10,36 @@ import AdministracionPhoneError from "../Components/Phone Error/AdministracionPh
 const Administracion = () => {
     const { getToken } = useStorage();
     const token = getToken();
+
+    const [brands, setBrands] = useState([]);
+    const [models, setModels] = useState([]);
+    const [types, setTypes] = useState([]);
+    useEffect(() => {
+        axios.get("http://localhost:8080/brand/all", {
+            headers: {
+                "Content-Type": "application/json",
+                'Authorization': 'Basic ' + token,
+            }
+        }).then(res => {
+            setBrands(res.data);
+        })
+        axios.get("http://localhost:8080/model/all", {
+            headers: {
+                "Content-Type": "application/json",
+                'Authorization': 'Basic ' + token,
+            }
+        }).then(res => {
+            setModels(res.data);
+        })
+        axios.get("http://localhost:8080/type/all", {
+            headers: {
+                "Content-Type": "application/json",
+                'Authorization': 'Basic ' + token,
+            }
+        }).then(res => {
+            setTypes(res.data);
+        })
+    }, [])
 
     function postVehiculo(postJson) {
         axios
@@ -25,7 +55,7 @@ const Administracion = () => {
             })
             .catch((error) => {
                 console.log(error);
-                setError("Esta patente ya está registrada en el sistema.");
+                setError("Hubo un error al guardar el vehículo.");
                 setSuccess(false);
             });
     }
@@ -69,14 +99,14 @@ const Administracion = () => {
 
     function submitForm(e) {
         e.preventDefault();
-        const marca = e.target[0].value;
-        const modelo = e.target[1].value;
-        const tipo = e.target[2].value;
+        const marcaLabel = e.target[0].value;
+        const modeloLabel = e.target[1].value;
+        const tipoLabel = e.target[2].value;
         const year = e.target[3].value;
         const price = e.target[4].value;
         const patente = e.target[5].value.toUpperCase();
         const descripcion = e.target[6].value;
-        if (!patente || !descripcion || !modelo || !tipo || !marca || !price || !year) {
+        if (!patente || !descripcion || !modeloLabel || !tipoLabel || !marcaLabel || !price || !year) {
             errorHandling("Por favor, complete todos los campos.");
             return;
         }
@@ -85,29 +115,37 @@ const Administracion = () => {
             return;
         }
         errorHandling(false);
+        const marcaId = brands.find((brand) => brand.name === marcaLabel).idBrand;
+        const modeloId = models.find((model) => model.name === modeloLabel).idModel;
+        const tipoId = types.find((type) => type.name === tipoLabel).idType;
         const postJson = {
             plate: patente,
             description: descripcion,
             reserved: false,
             model: {
-                name: modelo,
+                name: modeloLabel,
+                modelId: modeloId,
             },
             type: {
-                name: tipo,
+                name: tipoLabel,
+                typeId: tipoId,
             },
             price: parseFloat(price),
             // "year": year, //! sera definido mas adelante
             brand: {
-                name: marca,
+                name: marcaLabel,
+                brandId: marcaId,
             },
             imgUrls: [],
         };
         images.forEach((imagen) => {
             postJson.imgUrls.push({ url: imagen });
         });
+        console.log(postJson)
         postVehiculo(postJson);
         setSuccess(true);
     }
+
     return (
         <div className="administracion__container">
             <h2 className="title__admin">Administración</h2>
@@ -130,15 +168,30 @@ const Administracion = () => {
                     <form onSubmit={submitForm} className="administracion__form__agregar__veh">
                         <div>
                             <p>Marca:</p>
-                            <input type="text" placeholder="BMW" />
+                            <select>
+                                <option selected disabled hidden>Elegí la marca acá</option>
+                                {brands.map((brand, index) => (
+                                    <option key={index}>{brand.name}</option>
+                                ))}
+                            </select>
                         </div>
                         <div>
                             <p>Modelo:</p>
-                            <input type="text" placeholder="328i" />
+                            <select>
+                                <option selected disabled hidden>Elegí el modelo acá</option>
+                                {models.map((model, index) => (
+                                    <option key={index}>{model.name}</option>
+                                ))}
+                            </select>
                         </div>
                         <div>
                             <p>Tipo:</p>
-                            <input type="text" placeholder="Coupé" />
+                            <select>
+                                <option selected disabled hidden>Elegí el tipo acá</option>
+                                {types.map((type, index) => (
+                                    <option key={index}>{type.name}</option>
+                                ))}
+                            </select>
                         </div>
                         <div>
                             <p>Año:</p>

@@ -1,8 +1,12 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import { useStorage } from '../Context/StorageContext'
 
 const EditVehicleOverlay = ({ vehicle, setVehicleBeingEdited }) => {
+    const { getToken } = useStorage();
+    const token = getToken();
+
     const [error, setError] = useState("");
     function errorHandling(string) {
         if (!string) {
@@ -19,15 +23,15 @@ const EditVehicleOverlay = ({ vehicle, setVehicleBeingEdited }) => {
     function submitForm(e) {
         e.preventDefault();
 
-        const brand = e.target[0].value;
-        const model = e.target[1].value;
-        const type = e.target[2].value;
+        const brandLabel = e.target[0].value;
+        const modelLabel = e.target[1].value;
+        const typeLabel = e.target[2].value;
         const year = e.target[3].value;
         const price = e.target[4].value;
         const plate = e.target[5].value.toUpperCase();
         const description = e.target[6].value;
 
-        if (!plate || !description || !model || !type || !brand || !price || !year) {
+        if (!plate || !description || !modelLabel || !typeLabel || !brandLabel || !price || !year) {
             return errorHandling("Por favor, complete todos los campos.");
         }
         // check if price is double and year is number
@@ -35,13 +39,63 @@ const EditVehicleOverlay = ({ vehicle, setVehicleBeingEdited }) => {
             return errorHandling("Por favor, ingrese un precio y un año válidos.");
         }
         errorHandling(false);
-        // todo: enviar postJson a API
-        // todo: axios.post()
+        const brandId = brands.find(brand => brand.name === brandLabel).idBrand;
+        const modelId = models.find(model => model.name === modelLabel).idModel;
+        const typeId = types.find(type => type.name === typeLabel).idType;
+
+        const payload = {
+            idVehicle: vehicle.idVehicle,
+            plate: plate,
+            description: description,
+            reserved: vehicle.reserved,
+            price: price,
+            imgUrls: images.map((url) => { return { url: url } }),
+            bookings: vehicle.bookings,
+            brand: { idBrand: brandId, },
+            model: { idModel: modelId, },
+            type: { idType: typeId, },
+            features: vehicle.features,
+            // year: year
+        }
+        console.log(payload)
+        axios.put(`http://localhost:8080/vehicle/${vehicle.idVehicle}`, payload, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic ' + token,
+            }
+        })
         setSuccess("Vehículo editado con éxito.");
     }
 
     const [images, setImages] = useState([]);
+    const [brands, setBrands] = useState([]);
+    const [models, setModels] = useState([]);
+    const [types, setTypes] = useState([]);
     useEffect(() => {
+        axios.get("http://localhost:8080/brand/all", {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic ' + token,
+            }
+        }).then((res) => {
+            setBrands(res.data);
+        });
+        axios.get("http://localhost:8080/model/all", {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic ' + token,
+            }
+        }).then((res) => {
+            setModels(res.data);
+        });
+        axios.get('http://localhost:8080/type/all', {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic ' + token,
+            }
+        }).then(res => {
+            setTypes(res.data)
+        })
         const images = vehicle.imgUrls.map((img) => img.url);
         setImages(images);
     }, [])
@@ -67,15 +121,27 @@ const EditVehicleOverlay = ({ vehicle, setVehicleBeingEdited }) => {
             <form onSubmit={submitForm}>
                 <div>
                     <p>Marca:</p>
-                    <input type="text" placeholder="BMW" defaultValue={vehicle.brand?.name} />
+                    <select defaultValue={vehicle.brand.name}>
+                        {brands?.map((brand, index) => {
+                            return <option key={index} value={brand.name}>{brand.name}</option>
+                        })}
+                    </select>
                 </div>
                 <div>
                     <p>Modelo:</p>
-                    <input type="text" placeholder="328i" defaultValue={vehicle.model?.name} />
+                    <select defaultValue={vehicle.model.name}>
+                        {models?.map((model, index) => {
+                            return <option key={index} value={model.name}>{model.name}</option>
+                        })}
+                    </select>
                 </div>
                 <div>
                     <p>Tipo:</p>
-                    <input type="text" placeholder="Coupé" defaultValue={vehicle.type?.name} />
+                    <select defaultValue={vehicle.type.name}>
+                        {types?.map((type, index) => {
+                            return <option key={index} value={type.name}>{type.name}</option>
+                        })}
+                    </select>
                 </div>
                 <div>
                     <p>Año:</p>
