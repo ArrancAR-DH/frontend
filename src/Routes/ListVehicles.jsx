@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useStorage } from "../Context/StorageContext";
 
 import axios from "axios";
 import trashCan from "../assets/trash-solid.svg"
@@ -8,17 +9,26 @@ import EditVehicleOverlay from "../Components/EditVehicleOverlay";
 import AdministracionPhoneError from "../Components/Phone Error/AdministracionPhoneError";
 
 const ListVehicles = () => {
+    const { getToken } = useStorage();
+    const token = getToken();
+
     function deleteVehiculo(id) {
         if (vehicleBeingEdited)
             return
         if (confirm("¿Estás seguro que deseas eliminar este vehículo?") === false)
             return;
 
-        setCars(cars.filter((car) => car.idVehicle !== id));
-        axios.delete("http://localhost:8080/vehicle/delete/" + id)
+        axios.delete("http://localhost:8080/vehicle/delete/" + id, {
+            headers: {
+                "Content-Type": "application/json",
+                'Authorization': 'Basic ' + token,
+            }
+        })
             .then((response) => {
+                setCars(cars.filter((car) => car.idVehicle !== id));
                 console.log(response);
-            });
+            })
+            .catch((error) => console.log(error));
     }
 
     const [vehicleBeingEdited, setVehicleBeingEdited] = useState(false);
