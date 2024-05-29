@@ -90,23 +90,28 @@ const ListUsers = () => {
           <h3>Nombre</h3>
           <h3>Apellido</h3>
           <h3>Administrador</h3>
+          <h3>Acciones</h3>
         </div>
         {users.map((user, index) => (
           <div className="vehiculo__container" key={user.idUser}>
             <h4>{user.idUser}</h4>
-            <p>{user.firstName}</p>
+            <h4>{user.firstName}</h4>
             <h4>{user.lastName}</h4>
-            <div className="container__buttons">
+            {/* <h4></h4> */}
+            <div>
               {rol && (
                 <input
+                  className="check"
                   type="checkbox"
                   checked={checkedState[index]}
                   onChange={() => handleCheckboxChange(index)}
                 />
               )}
+            </div>
 
+            <div className="container__buttons">
               <button onClick={() => handleApply(user, index)}>
-                <h5>CHANGE</h5>
+                <h4>EDITAR</h4>
               </button>
               <button>
                 <img src={trashCan} alt="Delete" />
