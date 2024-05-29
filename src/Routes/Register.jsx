@@ -1,8 +1,8 @@
 import React, { useState, useRef } from "react";
-import emailjs from "@emailjs/browser";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useStorage } from "../Context/StorageContext";
+import { useNavigate } from "react-router-dom";
 
 
 const Register = () => {
@@ -10,50 +10,71 @@ const Register = () => {
   const [user, setUser] = useState({ name: "", username: "", email: "", password: "", lastName: "" });
   const [error, setError] = useState(false);
   const { name, username, email, password, lastName } = user;
-  const form = useRef();
+  const navigator = useNavigate();
 
+  const succesMessage = () =>
+    toast.success("Registro exitoso!!!", {
+      position: "top-center",
+      autoClose: 2500,
+      hideProgressBar: true,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
 
-  const serviceId = "service_wzr8k9h";
-  const templateId = "template_haskq0u";
-  const publicKey = "lPLNdbhC65C6_Mzvx";
-
-  const sendEmail = (e) => {
+    const errorMessage = () =>
+      toast.error("Verifique los campos!", {
+        position: "top-right",
+        autoClose: 2500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    emailjs
-      .sendForm(serviceId, templateId, form.current, {
-        publicKey: publicKey,
-      })
-      .then(
-        () => {
-          console.log('SUCCESS!');
-        },
-        (error) => {
-          console.log('FAILED...', error.text);
-        },
-      );
-  };
-
- 
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
     if (validateEmail(email) && password.length >= 6 && name.length > 3) {
-      setError(false);
-      setUser({ email: "", password: "", name: "", lastName: "", username: "" });
-      registerAPICall(user).then(async (res) => {
-        console.log(res);
-        sendEmail(e); 
-      }).catch(err => {
-        console.log(err);
-      })
-      notify();
-      
-    } else {
-      notify2();
+
+      try {
+        setError(false);
+        setUser({ email: "", password: "", name: "", lastName: "", username: "" });
+        registerAPICall(user).then(async (res) => {
+          console.log(res);
+        })
+        .catch(err => {
+          console.log(err);
+        })
+        succesMessage();
+        setTimeout(() => {
+          navigator("/login");
+          window.location.reload();
+          }, 2499);
+      } catch (error) {
+       console.log(error);;
+      }
+    }
+    else{
+        errorMessage();
     }
   };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   const notify = () =>
     toast.success("Registro exitoso!!!", {
@@ -85,7 +106,7 @@ const Register = () => {
 
   return (
     <div className="flex-container centered">
-      <form onSubmit={handleSubmit} id="form" ref={form}>
+      <form onSubmit={handleSubmit} id="form">
         <div className="card ">
           <p className="title-form">Crear Cuenta</p>
           <div className="inputContainer">

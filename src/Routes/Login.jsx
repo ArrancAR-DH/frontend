@@ -8,7 +8,7 @@ const Login = () => {
   const [user, setUser] = useState({ usernameOrEmail: "", password: "" });
   const { usernameOrEmail, password } = user;
   const [error, setError] = useState(false); // PENDING (Validations)
-  const { loginAPICall, storeToken, saveLoggedInUser, storeRol, getRol } = useStorage();
+  const { loginAPICall, storeToken, saveLoggedInUser, storeRol } = useStorage();
   const navigator = useNavigate();
 
 

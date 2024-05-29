@@ -11,8 +11,7 @@ const ListUsers = () => {
   const [users, setUsers] = useState([]);
   const [rol, setRol] = useState(false);
   const [checkedState, setCheckedState] = useState([]);
-  const [change, setChange] = useState({});
-
+ 
   console.log(rol);
 
   useEffect(() => {
@@ -93,12 +92,11 @@ const ListUsers = () => {
           <h3>Acciones</h3>
         </div>
         {users.map((user, index) => (
-          <div className="vehiculo__container" key={user.idUser}>
+          <div className="user__container" key={user.idUser}>
             <h4>{user.idUser}</h4>
             <h4>{user.firstName}</h4>
             <h4>{user.lastName}</h4>
-            {/* <h4></h4> */}
-            <div>
+             <div>
               {rol && (
                 <input
                   className="check"
