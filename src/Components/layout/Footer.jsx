@@ -11,8 +11,9 @@ const Footer = () => {
     e.preventDefault();
   };  
   
-  const { isUserLoggedIn } = useStorage();
+  const { isUserLoggedIn, isAdmin } = useStorage();
   const isAuth = isUserLoggedIn();
+  const rol = isAdmin(); 
 
   return (
     <footer>
@@ -23,7 +24,7 @@ const Footer = () => {
       <div className="footer__links__div">
         <Link to="/about">Sobre nosotros</Link>
         <Link to="/legal">Legal</Link>
-        {isAuth && <Link to="/administracion">Administración</Link>}
+        {rol && <Link to="/administracion">Administración</Link>}
       </div>
       <div className="footer__socials">
         <a href="" onClick={showIcons}>

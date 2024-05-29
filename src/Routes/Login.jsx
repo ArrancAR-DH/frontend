@@ -4,14 +4,12 @@ import { ToastContainer, toast } from "react-toastify";
 import { useStorage } from "../Context/StorageContext";
 import { useNavigate } from "react-router-dom";
 
-
 const Login = () => {
   const [user, setUser] = useState({ usernameOrEmail: "", password: "" });
   const { usernameOrEmail, password } = user;
   const [error, setError] = useState(false); // PENDING (Validations)
-  const { loginAPICall, storeToken, saveLoggedInUser, getLoggedInUser } = useStorage();
+  const { loginAPICall, storeToken, saveLoggedInUser, storeRol, getRol } = useStorage();
   const navigator = useNavigate();
-
 
 
   const handleSubmit = async (e) => {
@@ -22,18 +20,19 @@ const Login = () => {
         Authorization: "Basic " + token,
       },
     };
+
     try {
-      await loginAPICall(user, config);
+      const result = await loginAPICall(user,config); 
+      storeRol(result.role.name);
       storeToken(token);
       saveLoggedInUser(usernameOrEmail);
       setUser({ usernameOrEmail: "", password: "" });
       succesMessage();
       setTimeout(() => {
-        navigator("/");
-        window.location.reload();
+      navigator("/");
+      window.location.reload();
       }, 2499);
     } catch (error) {
-      console.error("Error:", error);
       errorMessage();
     }
   };

@@ -40,7 +40,6 @@ const ListVehicles = () => {
     }
 
     const [cars, setCars] = useState([]);
-    console.log(cars);
     useEffect(() => {
         axios.get("http://localhost:8080/vehicle/all").then((res) => {
             setCars(res.data);

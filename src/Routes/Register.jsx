@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import emailjs from "@emailjs/browser";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useStorage } from "../Context/StorageContext";
@@ -9,18 +10,46 @@ const Register = () => {
   const [user, setUser] = useState({ name: "", username: "", email: "", password: "", lastName: "" });
   const [error, setError] = useState(false);
   const { name, username, email, password, lastName } = user;
+  const form = useRef();
+
+
+  const serviceId = "service_wzr8k9h";
+  const templateId = "template_haskq0u";
+  const publicKey = "lPLNdbhC65C6_Mzvx";
+
+  const sendEmail = (e) => {
+    e.preventDefault();
+
+    emailjs
+      .sendForm(serviceId, templateId, form.current, {
+        publicKey: publicKey,
+      })
+      .then(
+        () => {
+          console.log('SUCCESS!');
+        },
+        (error) => {
+          console.log('FAILED...', error.text);
+        },
+      );
+  };
+
+ 
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     if (validateEmail(email) && password.length >= 6 && name.length > 3) {
       setError(false);
       setUser({ email: "", password: "", name: "", lastName: "", username: "" });
-      registerAPICall(user).then((res) => {
+      registerAPICall(user).then(async (res) => {
         console.log(res);
+        sendEmail(e); 
       }).catch(err => {
         console.log(err);
       })
       notify();
+      
     } else {
       notify2();
     }
@@ -56,7 +85,7 @@ const Register = () => {
 
   return (
     <div className="flex-container centered">
-      <form onSubmit={handleSubmit} id="form">
+      <form onSubmit={handleSubmit} id="form" ref={form}>
         <div className="card ">
           <p className="title-form">Crear Cuenta</p>
           <div className="inputContainer">
