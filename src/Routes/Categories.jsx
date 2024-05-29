@@ -105,6 +105,14 @@ const CreateCategories = () => {
         })
     }
 
+    document.addEventListener('DOMContentLoaded', function(){
+        let formulario = document.getElementById('formu');
+        formulario.addEventListener('submit', function() {
+          formulario.reset();
+        });
+      });
+
+
     function submitDeleteForm(e) {
         e.preventDefault()
 
@@ -132,7 +140,8 @@ const CreateCategories = () => {
             <div className="administracion__funciones">
                 <div className="administracion__categories">
                     <div className="create__categories">
-                        <h3>Crear categorías</h3>
+                    <form action="" id='formu'>
+                        <h3 id='create'>Crear categorías</h3>
                         <div>
                             <h4>Marca: </h4>
                             <input type="text" id='brand-input' />
@@ -160,6 +169,7 @@ const CreateCategories = () => {
                             }}>Crear</button>
 
                         </div>
+                        </form>
                     </div>
                     <div className="delete__categories">
                         <h3>Eliminar categorías</h3>
