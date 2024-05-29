@@ -61,44 +61,6 @@ const Register = () => {
   };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  const notify = () =>
-    toast.success("Registro exitoso!!!", {
-      position: "top-center",
-      autoClose: 3000,
-      hideProgressBar: true,
-      closeOnClick: false,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-
-
-  const notify2 = () =>
-    toast.error("Verifique los datos!", {
-      position: "top-center",
-      autoClose: 2000,
-      hideProgressBar: true,
-      closeOnClick: false,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+.[^\s@]+.com$/;
     return emailRegex.test(email);

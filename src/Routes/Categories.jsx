@@ -38,6 +38,8 @@ const CreateCategories = () => {
         })
     }, [])
 
+ 
+
     function createCategory(category, value) {
         if (value === '') return;
         let exists;
@@ -77,7 +79,7 @@ const CreateCategories = () => {
                 default:
                     break;
             }
-        }).catch(err => {
+         }).catch(err => {
             console.log(err)
         })
     }
@@ -146,6 +148,7 @@ const CreateCategories = () => {
                                 const model = document.getElementById('model-input').value
                                 createCategory('model', model)
                             }}>Crear</button>
+
                         </div>
                         <div>
                             <h4>Tipo: </h4>
@@ -155,6 +158,7 @@ const CreateCategories = () => {
                                 if (types.includes(type)) return alert('Ya existe esa categoría')
                                 createCategory('type', type)
                             }}>Crear</button>
+
                         </div>
                     </div>
                     <div className="delete__categories">
