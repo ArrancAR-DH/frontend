@@ -63,6 +63,7 @@ const CreateCategories = () => {
                 'Authorization': "Basic " + token,
             },
         }).then(res => {
+            alert("Categoría creada con éxito")
             console.log(res)
             switch (category) {
                 case 'brand':
