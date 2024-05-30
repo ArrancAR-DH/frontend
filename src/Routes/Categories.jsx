@@ -121,6 +121,7 @@ const CreateCategories = () => {
             const typeObj = types.find(type => type.name.toLowerCase() === catLabel)
             deleteCategory('type', typeObj.id)
         }
+        e.target[0].value = ""
     }
 
     return (
@@ -136,7 +137,9 @@ const CreateCategories = () => {
                             <input type="text" id='brand-input' />
                             <button onClick={() => {
                                 const brand = document.getElementById('brand-input').value
+                                if (brands.includes(brand)) return alert("Ya existe esa categoría")
                                 createCategory('brand', brand)
+                                    .then(brand.value = "")
                             }}>Crear</button>
                         </div>
                         <div>
@@ -144,7 +147,9 @@ const CreateCategories = () => {
                             <input type="text" id='model-input' />
                             <button onClick={() => {
                                 const model = document.getElementById('model-input').value
+                                if (models.includes(model)) return alert("Ya existe esa categoría")
                                 createCategory('model', model)
+                                    .then(model.value = "")
                             }}>Crear</button>
                         </div>
                         <div>
@@ -154,6 +159,7 @@ const CreateCategories = () => {
                                 const type = document.getElementById('type-input').value
                                 if (types.includes(type)) return alert('Ya existe esa categoría')
                                 createCategory('type', type)
+                                    .then(type.value = "")
                             }}>Crear</button>
                         </div>
                     </div>
