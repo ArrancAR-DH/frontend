@@ -8,12 +8,13 @@ const Register = () => {
   const { registerAPICall } = useStorage();
   const [user, setUser] = useState({
     name: "",
-    usernameOrEmail: "",
+    username: "",
     email: "",
     password: "",
     lastName: "",
   });
-  const { name, usernameOrEmail, email, password, lastName } = user;
+  const { name, username, email, password, lastName } = user;
+
   const navigator = useNavigate();
 
   const [validateUserEmail, setValidateUserEmail] = useState(false);
@@ -27,21 +28,16 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-      try {
         registerAPICall(user)
           .then(async (res) => {
-            console.log(res)
             succesMessage();
             setTimeout(() => {
               navigator("/login");
-             }, 2499);
+            }, 2400);
           })
           .catch((err) => {
             errorMessage(err.response.data.message);
           });
-      } catch (error) {
-        console.log(error);
-      }
   };
 
   const succesMessage = () =>
@@ -67,10 +63,10 @@ const Register = () => {
     });
 
   useEffect(() => {
-    if (usernameOrEmail.length !== 0) {
-      setValidateUsername(usernameOrEmail.length > 3);
+    if (username.length !== 0) {
+      setValidateUsername(username.length > 3);
     }
-  }, [usernameOrEmail]);
+  }, [username]);
 
   useEffect(() => {
     if (password.length !== 0) {
@@ -97,12 +93,12 @@ const Register = () => {
   }, [name]);
 
   useEffect(() => {
-    if (!!validatePassword && !!validateUsername && !!validateUserEmail) {
+    if (!!validatePassword && !!validateUsername && !!validateUserEmail && !!validateName && !!validateUserLastName ) {
       habilitarBoton(false);
     } else {
       habilitarBoton(true);
     }
-  }, [validatePassword, validateUsername, validateUserEmail]);
+  }, [validatePassword, validateUsername, validateUserEmail, validateUserLastName, validateName]);
 
   return (
     <div className="flex-container centered">
@@ -138,12 +134,12 @@ const Register = () => {
           </div>
           <div className="inputContainer">
             <input
-              value={usernameOrEmail}
+              value={username}
               placeholder="Ingrese su nombre de usuario"
-              name="usernameOrEmail"
+              name="username"
               type="text"
               onChange={(e) =>
-                setUser({ ...user, usernameOrEmail: e.target.value })}/>   
+                setUser({ ...user, username: e.target.value })}/>   
                 <span id="comment-register"
                      className={validateUsername ? " error" : " visible error"}>
                      Este campo debe contener mas de 3 caracteres

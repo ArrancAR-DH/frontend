@@ -19,7 +19,6 @@ const Login = () => {
       setValidateUsername(usernameOrEmail.length > 3);
     }
   }, [usernameOrEmail]);
-
   useEffect(() => {
     if (password.length !== 0) {
       setValidatePassword(password.length > 4);
@@ -52,10 +51,10 @@ const Login = () => {
       saveLoggedInUser(usernameOrEmail);
       setUser({ usernameOrEmail: "", password: "" });
       succesMessage();
-      setTimeout(() => {
-        navigator("/");
-        window.location.reload();
-      }, 2499);
+      // setTimeout(() => {
+      //   navigator("/");
+      //   window.location.reload();
+      // }, 2499);
     } catch (error) {
       errorMessage();
     }
@@ -109,7 +108,6 @@ const Login = () => {
               name="password"
               type="password"
               onChange={(e) => setUser({ ...user, password: e.target.value })}/>
-
             <span
               id="comment-register"
               className={validatePassword ? " error" : " visible error"}>
