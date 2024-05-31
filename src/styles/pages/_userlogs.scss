@@ -28,6 +28,7 @@
 
 .inputContainer {
   height: 45px;
+  margin-top: 13px;
 }
 
 .inputContainer input {
@@ -42,7 +43,7 @@
   width: 22px;
   margin-left: 10px;
 }
-.btn-login {
+.btn {
   width: 100%;
   height: 45px;
   text-transform: uppercase;
@@ -52,6 +53,8 @@
 
   &:disabled {
     background-color: $darkmode-secondary-color;
+    background-color: $lightmode-accent-color;
+
   }
 }
 
@@ -61,7 +64,7 @@
   color: #ce8c8cd4;
   font-family: $font-family;
   display: flex;
-  justify-content: center;
+  // justify-content: center;
 }
 
 .visible {
@@ -121,4 +124,52 @@
 
 .terminos__condiciones {
   width: 80%;
+}
+
+span, .error-message {
+  color: green;
+}
+.has-error {
+  border: 1px solid green;
+}
+.validate {
+background-color: rgb(147, 173, 134);
+color: rgb(5, 5, 5);
+} 
+.error {
+  font-size: 11px;
+  opacity: 0;
+}
+.visible {
+  opacity: 1;
+}
+.inputError-login {
+  background-color: #ffe2a8;
+  color: black;
+}
+.regla {
+  margin-bottom: 15px;
+ }
+.regla,
+.title,
+#comment-login {
+  color: white;
+}
+
+.visible {
+  opacity: 1;
+}
+.register-link {
+  font-size: 15px;
+  color: white;
+  padding-top: 10px;
+}
+.style-em {
+  color: #89f745;
+  text-decoration: none;
+  font-size: 15px;
+  &:hover{
+    color: black;
+    font-weight: bolder;
+  }
 }

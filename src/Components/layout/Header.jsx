@@ -4,11 +4,11 @@ import { useNavigate, NavLink, Link } from "react-router-dom";
 import { useStorage } from "../../Context/StorageContext";
 
 const Header = () => {
-  const { getLoggedInUser, logout } = useStorage();
+  const { getLoggedInUser, logout,  } = useStorage();
   const isAuth = getLoggedInUser();
   const navigator = useNavigate();
-
   const avatar = isAuth == null ? "" : isAuth[0].toUpperCase();
+
 
   function handleLogout() {
     logout();

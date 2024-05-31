@@ -7,13 +7,13 @@ import trashCan from "../assets/trash-solid.svg";
 import pencil from "../assets/pencil-solid.svg"
 
 const ListUsers = () => {
-  const { getToken, getRol } = useStorage();
+  const { getToken, getRol, getLoggedInUser } = useStorage();
   const token = getToken();
   const [users, setUsers] = useState([]);
   const [rol, setRol] = useState(false);
   const [checkedState, setCheckedState] = useState([]);
  
-  console.log(rol);
+  console.log(getLoggedInUser());
 
   useEffect(() => {
     getRol() === "ROLE_SUPER_ADMIN" ? setRol(true) : setRol(false);

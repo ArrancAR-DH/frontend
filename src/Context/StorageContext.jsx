@@ -18,17 +18,11 @@ const Context = ({ children }) => {
           throw error; // Puedes lanzar el error para que sea manejado por el código que llame a esta función
         }
       };
-
-   
    
     const storeToken = (token) => localStorage.setItem("token", token);
-
-    const storeRol = (rol) => localStorage.setItem("rol", rol);
-   
+    const storeRol = (rol) => localStorage.setItem("rol", rol);  
     const getToken = () => localStorage.getItem("token");
-
     const getRol = () => localStorage.getItem("rol");
-   
     const isAdmin = () =>{
         const admin = getRol(); 
         if(admin === "ROLE_ADMIN" || admin === "ROLE_SUPER_ADMIN"){
@@ -41,7 +35,7 @@ const Context = ({ children }) => {
 
 
     const saveLoggedInUser = (username) => sessionStorage.setItem("authenticatedUser", username);
-   
+
     const isUserLoggedIn = () => {
         const username = sessionStorage.getItem("authenticatedUser");
         return username != null;
