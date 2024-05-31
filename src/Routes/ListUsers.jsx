@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useStorage } from "../Context/StorageContext";
 import axios from "axios";
 import trashCan from "../assets/trash-solid.svg";
+import pencil from "../assets/pencil-solid.svg"
 
 const ListUsers = () => {
   const { getToken, getRol } = useStorage();
@@ -109,7 +110,7 @@ const ListUsers = () => {
 
             <div className="container__buttons">
               <button onClick={() => handleApply(user, index)}>
-                <h4>EDITAR</h4>
+              <img src={pencil} />
               </button>
               <button>
                 <img src={trashCan} alt="Delete" />
