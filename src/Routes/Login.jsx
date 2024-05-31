@@ -51,9 +51,9 @@ const Login = () => {
       saveLoggedInUser(usernameOrEmail);
       setUser({ usernameOrEmail: "", password: "" });
       succesMessage();
+      navigator("/");
       // setTimeout(() => {
-      //   navigator("/");
-      //   window.location.reload();
+        window.location.reload();
       // }, 2499);
     } catch (error) {
       errorMessage();

@@ -14,15 +14,12 @@ const Register = () => {
     lastName: "",
   });
   const { name, username, email, password, lastName } = user;
-
   const navigator = useNavigate();
 
   const [validateUserEmail, setValidateUserEmail] = useState(false);
   const [validateName, setValidateName] = useState(false);
-
   const [validateUsername, setValidateUsername] = useState(false);
   const [validateUserLastName, setValidateUserLastName] = useState(false);
-
   const [validatePassword, setValidatePassword] = useState(false);
   const [boton, habilitarBoton] = useState(true);
 
@@ -112,7 +109,6 @@ const Register = () => {
               name="name"
               type="text"
               onChange={(e) => setUser({ ...user, name: e.target.value })}/>
-          
           <span
             id="comment-register"
             className={validateName ? " error" : " visible error"}>
