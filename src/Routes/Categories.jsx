@@ -8,9 +8,10 @@ const CreateCategories = () => {
     const { getToken } = useStorage();
     const token = getToken();
 
-    const [brands, setBrands] = useState([])
-    const [models, setModels] = useState([])
-    const [types, setTypes] = useState([])
+    const [brands, setBrands] = useState([]);
+    const [models, setModels] = useState([]);
+    const [types, setTypes] = useState([]);
+    const [render, setRender] = useState(true);
     useEffect(() => {
         axios.get("http://localhost:8080/brand/all", {
             headers: {
@@ -38,7 +39,6 @@ const CreateCategories = () => {
         })
     }, [])
 
- 
 
     function createCategory(category, value) {
         if (value === '') return;
@@ -133,7 +133,14 @@ const CreateCategories = () => {
         }
     }
 
+    setTimeout(() => {
+        setRender(false)  
+    }, 780);
+
     return (
+        <>
+           {render ?  <p className="loader">Loading....</p> :  
+
         <div className='create__categories__container'>
             <Link to={`/administracion`}><h3>Volver</h3></Link>
             <h2 className='title__admin'>Administración</h2>
@@ -214,7 +221,8 @@ const CreateCategories = () => {
                 </div>
             </div>
             <AdministracionPhoneError />
-        </div>
+        </div>}
+        </>
     )
 }
 

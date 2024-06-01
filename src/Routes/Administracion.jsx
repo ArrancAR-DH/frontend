@@ -14,6 +14,9 @@ const Administracion = () => {
     const [brands, setBrands] = useState([]);
     const [models, setModels] = useState([]);
     const [types, setTypes] = useState([]);
+    const [render, setRender] = useState(true);
+
+
     useEffect(() => {
         axios.get("http://localhost:8080/brand/all", {
             headers: {
@@ -138,7 +141,15 @@ const Administracion = () => {
         setSuccess(true);
     }
 
+    setTimeout(() => {
+        setRender(false)  
+        }, 780);
+        
+
     return (
+        <>
+      
+        {render ?  <p className="loader">Loading....</p> : 
         <div className="administracion__container">
             <h2 className="title__admin">Administración</h2>
             <div className="administracion__funciones">
@@ -221,7 +232,8 @@ const Administracion = () => {
                 )}
             </div>
             <AdministracionPhoneError />
-        </div>
+        </div>}
+        </>
     );
 };
 

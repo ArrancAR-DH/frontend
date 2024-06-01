@@ -51,11 +51,11 @@ const Login = () => {
       saveLoggedInUser(usernameOrEmail);
       setUser({ usernameOrEmail: "", password: "" });
       succesMessage();
-      navigator("/");
-      // setTimeout(() => {
+      setTimeout(() => {
+        navigator("/");
         window.location.reload();
-      // }, 2499);
-    } catch (error) {
+      }, 1800);
+     } catch (error) {
       errorMessage();
     }
   };
@@ -69,6 +69,7 @@ const Login = () => {
       pauseOnHover: true,
       draggable: true,
       progress: undefined,
+      
     });
 
   const errorMessage = () =>

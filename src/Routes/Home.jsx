@@ -5,13 +5,15 @@ import ArrancARLogo from "../assets/logo-light-transparente.png";
 import { Link } from "react-router-dom";
 import Pagination from "../Components/Pagination";
 import backgroundImage from "../assets/rental-cars-image.png"
-
+ 
+ 
 const Home = () => {
   const [cars, setCars] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [recordsPerPage] = useState(6);
+  const [loader, setLoader] = useState(true);
 
-  useEffect(() => {
+   useEffect(() => {
     axios.get("http://localhost:8080/vehicle/all").then((res) => {
       setCars(res.data);
     });
@@ -27,10 +29,17 @@ const Home = () => {
     const text = e.target[0].value;
     window.location.href = `/search/${text}`;
   };
+  
+  useEffect(() => {
+    setTimeout(() => {
+      setLoader(false);
+    }, 780);
+  }, []);
 
   return (
     <>
-      <div className="container__home">
+       {loader ? <p className="loader">Loading....</p> 
+ :  <div className="container__home">
         <div className="left__column">
           <img src={backgroundImage} alt="" className="background__image" />
           <div className="info">
@@ -61,7 +70,9 @@ const Home = () => {
           <Pagination nPages={nPages} currentPage={currentPage} setCurrentPage={setCurrentPage}
           />
         </div>
-      </div>
+      </div>}
+     
+       
     </>
   );
 };

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useStorage } from "../Context/StorageContext";
-import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const { registerAPICall } = useStorage();
@@ -13,6 +13,7 @@ const Register = () => {
     password: "",
     lastName: "",
   });
+
   const { name, username, email, password, lastName } = user;
   const navigator = useNavigate();
 
@@ -46,7 +47,7 @@ const Register = () => {
       pauseOnHover: true,
       draggable: true,
       progress: undefined,
-    });
+  });
 
   const errorMessage = (message) =>
     toast.error(message, {
@@ -57,7 +58,7 @@ const Register = () => {
       pauseOnHover: true,
       draggable: true,
       progress: undefined,
-    });
+  });
 
   useEffect(() => {
     if (username.length !== 0) {

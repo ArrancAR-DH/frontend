@@ -12,7 +12,7 @@ const Header = () => {
 
   function handleLogout() {
     logout();
-    navigator("/");
+    navigator("/login");
     window.location.reload();
   }
 

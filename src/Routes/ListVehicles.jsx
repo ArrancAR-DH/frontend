@@ -11,6 +11,7 @@ import AdministracionPhoneError from "../Components/Phone Error/AdministracionPh
 const ListVehicles = () => {
     const { getToken } = useStorage();
     const token = getToken();
+    const [loader, setLoader] = useState(true);
 
     function deleteVehiculo(id) {
         if (vehicleBeingEdited)
@@ -46,7 +47,14 @@ const ListVehicles = () => {
         });
     }, []);
 
+    useEffect(() => {
+        setTimeout(() => {
+          setLoader(false);
+        }, 780);
+      }, []);
     return (
+        <>
+       {loader ?  <p className="loader">Loading....</p> :
         <div className="lista__vehiculos__container">
             <Link to={`/administracion`}><h3>Volver</h3></Link>
             <h2 className="title__admin">Administración</h2>
@@ -82,6 +90,8 @@ const ListVehicles = () => {
             {vehicleBeingEdited && <EditVehicleOverlay vehicle={vehicleBeingEdited} setVehicleBeingEdited={setVehicleBeingEdited} setCars={setCars} />}
             <AdministracionPhoneError />
         </div>
+        }
+        </>
     );
 };
 

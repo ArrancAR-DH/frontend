@@ -1,12 +1,11 @@
-import React, { createContext, useContext } from "react";
+import React, { createContext, useContext, useState } from "react";
 import axios from "axios";
 
 const DataUser = createContext();
 const Context = ({ children }) => {
     const AUTH_REST_API_BASE_URL = "http://localhost:8080/auth";
     const registerAPICall = (registerObj) => axios.post(AUTH_REST_API_BASE_URL + '/register', registerObj);
-   
-   
+    
     const loginAPICall = async (data, token) => {
         try {
           const response = await axios.post(AUTH_REST_API_BASE_URL + '/login', data, {
@@ -51,8 +50,12 @@ const Context = ({ children }) => {
         sessionStorage.clear();
     }
 
+ 
+
+
+
     return (
-        <DataUser.Provider value={{ isAdmin, storeRol, getRol, registerAPICall, loginAPICall, storeToken, getToken, saveLoggedInUser, isUserLoggedIn, getLoggedInUser, logout }}>
+        <DataUser.Provider value={{  isAdmin, storeRol, getRol, registerAPICall, loginAPICall, storeToken, getToken, saveLoggedInUser, isUserLoggedIn, getLoggedInUser, logout }}>
             {children}
         </DataUser.Provider>
     )
