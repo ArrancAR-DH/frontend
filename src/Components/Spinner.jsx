@@ -1,21 +1,17 @@
 import React from "react";
+import aguja from "../assets/arrancar-aguja.png";
+import velocimetro from "../assets/arrancar-velocimetro.png";
 const Spinner = () => {
   return (
     <>
-    <body>
-        
       <div class="block">
-        <div className="img-agu">
-         </div>
-        <div className="img-vel">
- 
-        </div>
+        <img class="img-agu" src={aguja} />
+        <img class="img-vel" src={velocimetro} />
       </div>
-      <div className="block-fantasy">
-        <div className="img-fantasy"></div>
-        <div className="mensaje">Loading...</div>
+      <div class="block-fantasy">
+        <div class="img-fantasy"></div>
+        <div class="mensaje">Loading...</div>
       </div>
-    </body>
     </>
   );
 };

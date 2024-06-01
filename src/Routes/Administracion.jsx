@@ -2,9 +2,8 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-
+import Spinner from "../Components/Spinner";
 import { useStorage } from "../Context/StorageContext";
-
 import AdministracionPhoneError from "../Components/Phone Error/AdministracionPhoneError";
 
 const Administracion = () => {

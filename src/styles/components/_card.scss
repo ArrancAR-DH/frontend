@@ -32,6 +32,8 @@
         text-align: right;
         align-items: end;
         width: 40%;
+        color: white;
+
     }
 
     img {
@@ -48,6 +50,28 @@
         --c1: #1d1d1d;
         --c2: #6e7072;
         --c3: #302f2f;
+    }
+    .favs{
+        width: 40px;
+        height: 40px;
+    }
+
+    .container__heart{
+        background-color: #26282a00;
+    border: none;
+    width: 45px;
+    height: 45px;
+    transform: translate(-80px, 180px);
+    }
+    .heart{
+        color: whitesmoke;
+        color: $lightmode-primary-color;
+         width: 30px;
+        height: 25px;
+        // transform: translate(-25px, 20px);
+        &:hover{
+            cursor: pointer;
+        }
     }
 }
 

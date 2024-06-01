@@ -5,7 +5,7 @@ import ArrancARLogo from "../assets/logo-light-transparente.png";
 import { Link } from "react-router-dom";
 import Pagination from "../Components/Pagination";
 import backgroundImage from "../assets/rental-cars-image.png"
- 
+import Spinner from "../Components/Spinner";
  
 const Home = () => {
   const [cars, setCars] = useState([]);
@@ -38,8 +38,7 @@ const Home = () => {
 
   return (
     <>
-       {loader ? <p className="loader">Loading....</p> 
- :  <div className="container__home">
+       {loader ? <Spinner/> :  <div className="container__home">
         <div className="left__column">
           <img src={backgroundImage} alt="" className="background__image" />
           <div className="info">
