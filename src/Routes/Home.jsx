@@ -7,15 +7,20 @@ import Pagination from "../Components/Pagination";
 import backgroundImage from "../assets/rental-cars-image.png"
 import Spinner from "../Components/Spinner";
  
+
+const URL = import.meta.env.VITE_BACKEND_URL;
+
+
 const Home = () => {
   const [cars, setCars] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [recordsPerPage] = useState(6);
   const [loader, setLoader] = useState(true);
-
+  
+console.log(URL);
    useEffect(() => {
-    axios.get("http://localhost:8080/vehicle/all").then((res) => {
-      setCars(res.data);
+    axios.get(`${URL}/vehicle/all`).then((res) => {
+    setCars(res.data);
     });
   }, []);
 
