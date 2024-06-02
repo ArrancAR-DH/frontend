@@ -5,10 +5,13 @@ import axios from "axios";
 import Spinner from "../Components/Spinner";
 import { useStorage } from "../Context/StorageContext";
 import AdministracionPhoneError from "../Components/Phone Error/AdministracionPhoneError";
+import { useContextGlobal } from "../Components/utils/global.context";
 
 const Administracion = () => {
     const { getToken } = useStorage();
+    const { state } = useContextGlobal();
     const token = getToken();
+
 
     const [brands, setBrands] = useState([]);
     const [models, setModels] = useState([]);
@@ -16,32 +19,13 @@ const Administracion = () => {
     const [render, setRender] = useState(true);
 
 
+
     useEffect(() => {
-        axios.get("http://localhost:8080/brand/all", {
-            headers: {
-                "Content-Type": "application/json",
-                'Authorization': 'Basic ' + token,
-            }
-        }).then(res => {
-            setBrands(res.data);
-        })
-        axios.get("http://localhost:8080/model/all", {
-            headers: {
-                "Content-Type": "application/json",
-                'Authorization': 'Basic ' + token,
-            }
-        }).then(res => {
-            setModels(res.data);
-        })
-        axios.get("http://localhost:8080/type/all", {
-            headers: {
-                "Content-Type": "application/json",
-                'Authorization': 'Basic ' + token,
-            }
-        }).then(res => {
-            setTypes(res.data);
-        })
+        setBrands(state.brand);
+        setModels(state.model);
+        setTypes(state.type)
     }, [])
+    
 
     function postVehiculo(postJson) {
         axios.post("http://localhost:8080/vehicle", postJson, {
@@ -73,20 +57,19 @@ const Administracion = () => {
             "http://api.cloudinary.com/v1_1/dyypwqwgo/image/upload",
             data
         );
-        console.log(response.data);
 
         setImages([...images, response.data.secure_url]);
     };
 
-    function errorHandling(string) {
-        if (!string) {
-            setError("");
-            return;
-        }
-        let result = "Error al enviar al formulario: " + string;
-        setError(result);
-        setSuccess(false);
-    }
+    // function errorHandling(string) {
+    //     if (!string) {
+    //         setError("");
+    //         return;
+    //     }
+    //     let result = "Error al enviar al formulario: " + string;
+    //     setError(result);
+    //     setSuccess(false);
+    // }
 
     const [pressedButton, setPressedButton] = useState(false);
     function pressButton() { //? reiniciar todos los campos al presionar "cancelar"/"agregar vehiculo"
@@ -104,15 +87,15 @@ const Administracion = () => {
         const price = e.target[4].value;
         const patente = e.target[5].value.toUpperCase();
         const descripcion = e.target[6].value;
-        if (!patente || !descripcion || !modeloLabel || !tipoLabel || !marcaLabel || !price || !year) {
-            errorHandling("Por favor, complete todos los campos.");
-            return;
-        }
-        if (isNaN(parseFloat(price)) || isNaN(parseInt(year))) {
-            errorHandling("Por favor, ingrese un precio y un año válidos.");
-            return;
-        }
-        errorHandling(false);
+        // if (!patente || !descripcion || !modeloLabel || !tipoLabel || !marcaLabel || !price || !year) {
+        //     errorHandling("Por favor, complete todos los campos.");
+        //     return;
+        // }
+        // if (isNaN(parseFloat(price)) || isNaN(parseInt(year))) {
+        //     errorHandling("Por favor, ingrese un precio y un año válidos.");
+        //     return;
+        // }
+        // errorHandling(false);
         const marcaId = brands.find((brand) => brand.name === marcaLabel).idBrand;
         const modeloId = models.find((model) => model.name === modeloLabel).idModel;
         const tipoId = types.find((type) => type.name === tipoLabel).idType;
@@ -172,7 +155,7 @@ const Administracion = () => {
                             <p>Marca:</p>
                             <select>
                                 <option selected disabled hidden>Elegí la marca acá</option>
-                                {brands.map((brand, index) => (
+                                {state.brand.map((brand, index) => (
                                     <option key={index}>{brand.name}</option>
                                 ))}
                             </select>
@@ -181,7 +164,7 @@ const Administracion = () => {
                             <p>Modelo:</p>
                             <select>
                                 <option selected disabled hidden>Elegí el modelo acá</option>
-                                {models.map((model, index) => (
+                                {state.model.map((model, index) => (
                                     <option key={index}>{model.name}</option>
                                 ))}
                             </select>
@@ -190,7 +173,7 @@ const Administracion = () => {
                             <p>Tipo:</p>
                             <select>
                                 <option selected disabled hidden>Elegí el tipo acá</option>
-                                {types.map((type, index) => (
+                                {state.type.map((type, index) => (
                                     <option key={index}>{type.name}</option>
                                 ))}
                             </select>

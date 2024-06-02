@@ -3,41 +3,26 @@ import axios from 'axios'
 import AdministracionPhoneError from '../Components/Phone Error/AdministracionPhoneError'
 import { useStorage } from '../Context/StorageContext'
 import { Link } from 'react-router-dom'
+import { useContextGlobal } from "../Components/utils/global.context";
 
 const CreateCategories = () => {
     const { getToken } = useStorage();
     const token = getToken();
 
+
+    const { state } = useContextGlobal();
+
     const [brands, setBrands] = useState([]);
     const [models, setModels] = useState([]);
     const [types, setTypes] = useState([]);
     const [render, setRender] = useState(true);
+
     useEffect(() => {
-        axios.get("http://localhost:8080/brand/all", {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Basic ' + token,
-            }
-        }).then((res) => {
-            setBrands(res.data);
-        });
-        axios.get("http://localhost:8080/model/all", {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Basic ' + token,
-            }
-        }).then((res) => {
-            setModels(res.data);
-        });
-        axios.get('http://localhost:8080/type/all', {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Basic ' + token,
-            }
-        }).then(res => {
-            setTypes(res.data)
-        })
+        setBrands(state.brand);
+        setModels(state.model);
+        setTypes(state.type)
     }, [])
+
 
 
     function createCategory(category, value) {

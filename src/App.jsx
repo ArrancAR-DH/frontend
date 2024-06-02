@@ -12,13 +12,16 @@ import Categories from "./Routes/Categories";
 import ListUsers from "./Routes/ListUsers";
 import Login from "./Routes/Login";
 import Register from "./Routes/Register";
-import './styles/styles.scss'
+import Favs from "./Routes/Favs";
 import Context from "./Context/StorageContext";
+import ContextProvider from "./Components/utils/global.context";
+import './styles/styles.scss'
 
 function App() {
   return (
     <div>
       <BrowserRouter>
+      <ContextProvider>
         <Context>
           <Routes>
             <Route element={<Layout />}>
@@ -34,9 +37,11 @@ function App() {
               <Route path="/administracion/listusers" element={<ListUsers />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/favs" element={<Favs />} />
             </Route>
           </Routes>
         </Context>
+        </ContextProvider>
       </BrowserRouter>
     </div>
   )

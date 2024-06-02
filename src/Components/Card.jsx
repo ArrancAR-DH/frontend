@@ -1,28 +1,25 @@
 import { Link } from "react-router-dom";
 import utils from "../functions/utils.js";
 import { FaHeart } from "react-icons/fa";
-const Card = ({ car }) => {
-  const handleChange = () => {
-    console.log("Desde heart");
-  };
+import { useContextGlobal } from "../Components/utils/global.context.jsx";
+
+const Card = ( {car} ) => {
+  const { state } = useContextGlobal();
   return (
     <>
-      <Link to={`/cars/${car.idVehicle}`}>
-    <div className="car__card" id={car.id}>
-      <img src={car.imgUrls?.[0]?.url} alt={"main-image"} />
+      <div className="car__card" id={car.idVehicle}>
+        <img src={car.imgUrls?.[0]?.url} alt={"main-image"} />
+        <button className="container__heart">
+          <FaHeart className="heart" />
+        </button>
         <div className="card__car__information ">
-          <h4>{car.brand.name}</h4>
-          <p>{car.model.name}</p>
-          <p>${utils.convertirPrecioIntAPesosStr(car.price)} ARS</p>
-         
+            <h4>{car.brand.name}</h4>
+          <Link to={`/cars/${car.idVehicle}`}>
+            <p>{car.model.name}</p>
+            <p>${utils.convertirPrecioIntAPesosStr(car.price)} ARS</p>
+          </Link>
         </div>
-    </div>
-      </Link>
-      {/* <div>
-            <button className="container__heart" onClick={handleChange}>
-              <FaHeart className="heart" />
-            </button>
-          </div> */}
+      </div>
     </>
   );
 };

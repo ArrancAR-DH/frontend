@@ -4,13 +4,13 @@ import velocimetro from "../assets/arrancar-velocimetro.png";
 const Spinner = () => {
   return (
     <>
-      <div class="block">
-        <img class="img-agu" src={aguja} />
-        <img class="img-vel" src={velocimetro} />
+      <div className="block">
+        <img className="img-agu" src={aguja} />
+        <img className="img-vel" src={velocimetro} />
       </div>
-      <div class="block-fantasy">
-        <div class="img-fantasy"></div>
-        <div class="mensaje">Loading...</div>
+      <div className="block-fantasy">
+        <div className="img-fantasy"></div>
+        <div className="mensaje">Loading...</div>
       </div>
     </>
   );
