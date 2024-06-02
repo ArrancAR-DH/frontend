@@ -8,21 +8,18 @@ import { useContextGlobal } from "../Components/utils/global.context";
 const CreateCategories = () => {
     const { getToken } = useStorage();
     const token = getToken();
-
-
     const { state } = useContextGlobal();
-
     const [brands, setBrands] = useState([]);
     const [models, setModels] = useState([]);
     const [types, setTypes] = useState([]);
     const [render, setRender] = useState(true);
-
+    
     useEffect(() => {
         setBrands(state.brand);
         setModels(state.model);
         setTypes(state.type)
-    }, [])
-
+    }, [state])
+ 
 
 
     function createCategory(category, value) {
@@ -89,15 +86,12 @@ const CreateCategories = () => {
             }
         })
     }
-
     document.addEventListener('DOMContentLoaded', function(){
         let formulario = document.getElementById('formu');
         formulario.addEventListener('submit', function() {
           formulario.reset();
         });
       });
-
-
     function submitDeleteForm(e) {
         e.preventDefault()
 
@@ -117,10 +111,9 @@ const CreateCategories = () => {
             deleteCategory('type', typeObj.id)
         }
     }
-
     setTimeout(() => {
         setRender(false)  
-    }, 780);
+    }, 180);
 
     return (
         <>

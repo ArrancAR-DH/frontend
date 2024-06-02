@@ -8,6 +8,8 @@ export const reducer = (state, action) => {
             return {...state, type: action.payload}
         case 'GET_LIST_MODEL':
             return {...state, model: action.payload}
+        case 'ADD_CAR':
+            return {...state, data: [...state.data, action.payload]}
         case 'ADD_FAV':
             return {...state, favs: [...state.favs, action.payload]}
         case 'REMOVE_ALL_FAVS':

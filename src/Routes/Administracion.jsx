@@ -99,6 +99,7 @@ const Administracion = () => {
         const marcaId = brands.find((brand) => brand.name === marcaLabel).idBrand;
         const modeloId = models.find((model) => model.name === modeloLabel).idModel;
         const tipoId = types.find((type) => type.name === tipoLabel).idType;
+       
         const postJson = {
             plate: patente,
             description: descripcion,

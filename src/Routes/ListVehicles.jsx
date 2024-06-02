@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useStorage } from "../Context/StorageContext";
-
 import axios from "axios";
 import trashCan from "../assets/trash-solid.svg"
 import pencil from "../assets/pencil-solid.svg"
 import EditVehicleOverlay from "../Components/EditVehicleOverlay";
 import AdministracionPhoneError from "../Components/Phone Error/AdministracionPhoneError";
+import { useContextGlobal } from "../Components/utils/global.context";
 
 const ListVehicles = () => {
-    const { getToken } = useStorage();
-    const token = getToken();
-    const [loader, setLoader] = useState(true);
+    const { state, token } = useContextGlobal();
+     const [loader, setLoader] = useState(true);
 
-    function deleteVehiculo(id) {
+     function deleteVehiculo(id) {
         if (vehicleBeingEdited)
             return
         if (confirm("¿Estás seguro que deseas eliminar este vehículo?") === false)
@@ -36,22 +34,15 @@ const ListVehicles = () => {
     function editVehicle(car) {
         if (vehicleBeingEdited)
             return
-
         setVehicleBeingEdited(car);
     }
-
-    const [cars, setCars] = useState([]);
-    useEffect(() => {
-        axios.get("http://localhost:8080/vehicle/all").then((res) => {
-            setCars(res.data);
-        });
-    }, []);
 
     useEffect(() => {
         setTimeout(() => {
           setLoader(false);
         }, 780);
       }, []);
+      
     return (
         <>
        {loader ?  <p className="loader">Loading....</p> :
@@ -67,7 +58,7 @@ const ListVehicles = () => {
                     <h3>Tipo</h3>
                     <h3>Acción</h3>
                 </div>
-                {cars.map((car, index) => {
+                {state.data.map((car, index) => {
                     return (
                         <div className="vehiculo__container" key={index}>
                             <img className="img-history" src={car.imgUrls?.[0]?.url} alt="" />
