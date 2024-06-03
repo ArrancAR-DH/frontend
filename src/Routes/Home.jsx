@@ -5,6 +5,8 @@ import ArrancARLogo from "../assets/logo-light-transparente.png";
 import { Link } from "react-router-dom";
 import Pagination from "../Components/Pagination";
 import backgroundImage from "../assets/rental-cars-image.png"
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const Home = () => {
   const [cars, setCars] = useState([]);
@@ -28,6 +30,16 @@ const Home = () => {
     window.location.href = `/search/${text}`;
   };
 
+  //? datepicker
+  const [date, setDate] = useState(new Date());
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
+  const handleDateChange = (dates) => {
+    const [start, end] = dates;
+    setStartDate(start);
+    setEndDate(end);
+  }
+
   return (
     <>
       <div className="container__home">
@@ -47,6 +59,7 @@ const Home = () => {
         <div className="right__column">
           <form className="search" onSubmit={onFormSubmit}>
             <input placeholder="Buscar autos..." type="text" />
+            <DatePicker className='datepicker' selected={startDate} onChange={handleDateChange} startDate={startDate} endDate={endDate} selectsRange />
             <button type="submit">
               Buscar 🔎
             </button>
