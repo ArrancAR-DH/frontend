@@ -59,7 +59,10 @@ const Home = () => {
         <div className="right__column">
           <form className="search" onSubmit={onFormSubmit}>
             <input placeholder="Buscar autos..." type="text" />
-            <DatePicker className='datepicker' selected={startDate} onChange={handleDateChange} startDate={startDate} endDate={endDate} selectsRange />
+            <DatePicker className='datepicker' selected={startDate} onChange={handleDateChange} startDate={startDate} endDate={endDate} dateFormat={
+              'dd/MM/yyyy'
+            
+            } selectsRange />
             <button type="submit">
               Buscar 🔎
             </button>
