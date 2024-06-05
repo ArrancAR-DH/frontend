@@ -1,18 +1,17 @@
-import React, {useEffect} from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import ArrancArLogo from "../../assets/logo-dark-transparente.png";
 import xLogo from "../../assets/x.png";
 import instagramLogo from "../../assets/instagram.png";
-import { useStorage } from "../../Context/StorageContext";
+import { useContextGlobal } from "../../Context/GlobalContext";
+
 
 const Footer = () => {
   const showIcons = (e) => {
     alert("SITIO EN DESARROLLO");
     e.preventDefault();
   };  
-  
-  const { isUserLoggedIn, isAdmin } = useStorage();
-  const isAuth = isUserLoggedIn();
+  const { isAdmin } = useContextGlobal();
   const rol = isAdmin(); 
 
   return (

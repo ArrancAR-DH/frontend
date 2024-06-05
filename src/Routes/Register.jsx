@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useStorage } from "../Context/StorageContext";
+import {registerMessage, errorMessageRegister} from "../utils/modals"
+import { useContextGlobal } from "../Context/GlobalContext";
 
 const Register = () => {
-  const { registerAPICall } = useStorage();
+  const { registerAPICall } = useContextGlobal();
   const [user, setUser] = useState({
     name: "",
     username: "",
@@ -28,37 +29,16 @@ const Register = () => {
     e.preventDefault();
         registerAPICall(user)
           .then(async (res) => {
-            succesMessage();
+            registerMessage();
             setTimeout(() => {
               navigator("/login");
             }, 2400);
           })
           .catch((err) => {
-            errorMessage(err.response.data.message);
+            errorMessageRegister(err.response.data.message);
           });
   };
 
-  const succesMessage = () =>
-    toast.success("Registro exitoso!!!", {
-      position: "top-center",
-      autoClose: 2500,
-      hideProgressBar: true,
-      closeOnClick: false,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-  });
-
-  const errorMessage = (message) =>
-    toast.error(message, {
-      position: "top-right",
-      autoClose: 2500,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-  });
 
   useEffect(() => {
     if (username.length !== 0) {

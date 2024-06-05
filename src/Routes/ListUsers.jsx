@@ -2,44 +2,32 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import AdministracionPhoneError from "../Components/Phone Error/AdministracionPhoneError";
-import { useStorage } from "../Context/StorageContext";
 import trashCan from "../assets/trash-solid.svg";
 import pencil from "../assets/pencil-solid.svg";
 import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
+import { userMessage } from "../utils/modals";
+import { useContextGlobal } from "../Context/GlobalContext";
+ 
 
 const ListUsers = () => {
-  const { getToken, getRol, getLoggedInUser } = useStorage();
+  const {state, getRol, getToken} = useContextGlobal(); 
   const token = getToken();
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState(state.user);
   const [rol, setRol] = useState(false);
   const [checkedState, setCheckedState] = useState([]);
   const [loader, setLoader] = useState(true);
-
+  
   useEffect(() => {
     getRol() === "ROLE_SUPER_ADMIN" ? setRol(true) : setRol(false);
   }, [getRol]);
 
- 
-
-  useEffect(() => {
-    axios
-      .get("http://localhost:8080/user/all", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Basic " + token,
-        },
-      })
-      .then((response) => {
-        setUsers(response.data);
-        const initialCheckedState = response.data.map(
-          (user) => user.role.idRole === 2
-        );
-        setCheckedState(initialCheckedState);
-      })
-      .catch((error) => console.log(error));
-  }, [token]);
-
+   useEffect(() => {
+     const initialCheckedState = state.user.map((user) => user.role.idRole === 2);
+    setUsers(state.user);
+    setCheckedState(initialCheckedState);
+  }, [state, token])
+  
   const handleCheckboxChange = (index) => {
     setCheckedState((prevState) => {
       const newState = [...prevState];
@@ -47,17 +35,6 @@ const ListUsers = () => {
       return newState;
     });
   };
-
-  const succesMessage = () =>
-    toast.success("Perfil editado exitosamente", {
-      position: "top-center",
-      autoClose: 5500,
-      hideProgressBar: true,
-      closeOnClick: false,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
 
   const handleApply = async (user, index) => {
     if (checkedState[index] === true) {
@@ -85,7 +62,7 @@ const ListUsers = () => {
           },
         }
       );
-      succesMessage();
+      userMessage();
       setTimeout(() => {
         window.location.reload();
       }, 1780);
@@ -93,11 +70,14 @@ const ListUsers = () => {
       console.error("Error en la actualización del usuario:", error);
     }
   };
-  useEffect(() => {
+
+useEffect(() => {
     setTimeout(() => {
       setLoader(false);
     }, 780);
   }, []);
+
+
   return (
     <>
       {loader ? (<p className="loader">Loading....</p>

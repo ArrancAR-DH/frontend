@@ -1,14 +1,12 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import AdministracionPhoneError from '../Components/Phone Error/AdministracionPhoneError'
-import { useStorage } from '../Context/StorageContext'
-import { Link } from 'react-router-dom'
-import { useContextGlobal } from "../Components/utils/global.context";
+ import { Link } from 'react-router-dom'
+import { useContextGlobal } from "../Context/GlobalContext";
 
 const CreateCategories = () => {
-    const { getToken } = useStorage();
+     const { state, getToken } = useContextGlobal();
     const token = getToken();
-    const { state } = useContextGlobal();
     const [brands, setBrands] = useState([]);
     const [models, setModels] = useState([]);
     const [types, setTypes] = useState([]);

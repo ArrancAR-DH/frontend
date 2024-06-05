@@ -1,6 +1,9 @@
 import {createContext,useContext,useEffect,useReducer,useState} from "react";
-import { reducer } from "../../Reducers/reducer";
+import { reducer } from "../Reducers/reducer";
 import axios from "axios";
+import { routes } from "../utils/routes";
+
+
 
 export const initialState = {
   check: {
@@ -10,6 +13,7 @@ export const initialState = {
    brand: [],
    type: [],
    model:[],
+   user:[],
   favs: JSON.parse(localStorage.getItem("favs")) || [],
   carSelected: {},
 };
@@ -21,25 +25,19 @@ const ContextProvider = ({ children }) => {
   const { check } = state;
   const [checked, setChecked] = useState(check.checked);
 
-  const url_allVehicles = `http://localhost:8080/vehicle/all`;
-  const url_allBrands = `http://localhost:8080/brand/all`;
-  const url_allModels = `http://localhost:8080/model/all`;
-  const url_allTypes = `http://localhost:8080/type/all`;
-  const url_rest_api = `http://localhost:8080/auth`;
-  const url_postCar =  `http://localhost:8080/vehicle`;
-
+  
   const registerAPICall = (registerObj) =>
-    axios.post(url_rest_api + "/register", registerObj);
+    axios.post(routes.url_rest_api + "/register", registerObj);
   const loginAPICall = async (data, token) => {
     try {
       const response = await axios.post(
-        url_rest_api + "/login",
+        routes.url_rest_api + "/login",
         data,{token}
       );
-      return response.data; // Puedes devolver la respuesta si lo deseas
+      return response.data; 
     } catch (error) {
       console.error("Error:", error);
-      throw error; // Puedes lanzar el error para que sea manejado por el código que llame a esta función
+      throw error; 
     }
   };
   const storeToken = (token) => localStorage.setItem("token", token);
@@ -79,25 +77,25 @@ const ContextProvider = ({ children }) => {
   }, [state.favs]);
 
   useEffect(() => {
-    axios(url_allVehicles).then((res) =>
+    axios(routes.url_allVehicles).then((res) =>
       dispatch({ type: "GET_LIST_VEHICLE", payload: res.data })
     );
   }, []);
 
   useEffect(() => {
-    axios(url_allBrands, {
+    axios(routes.url_allBrands, {
       headers: {
         "Content-Type": "application/json",
         Authorization: "Basic " + token,
       },
     }).then((res) => dispatch({ type: "GET_LIST_BRAND", payload: res.data }));
-    axios(url_allModels, {
+    axios(routes.url_allModels, {
       headers: {
         "Content-Type": "application/json",
         Authorization: "Basic " + token,
       },
     }).then((res) => dispatch({ type: "GET_LIST_MODEL", payload: res.data }));
-    axios(url_allTypes, {
+    axios(routes.url_allTypes, {
       headers: {
         "Content-Type": "application/json",
         Authorization: "Basic " + token,
@@ -106,31 +104,20 @@ const ContextProvider = ({ children }) => {
 
   }, []);
 
-
-  
+  useEffect(() => {
+    axios(routes.url_AllUsers, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Basic " + token,
+      },
+    }).then((res) => dispatch({ type: "GET_LIST_USER", payload: res.data }));
+  }, []);
 
 
   return (
     <ContextGlobal.Provider
-      value={{
-        isAdmin,
-        storeRol,
-        getRol,
-        registerAPICall,
-        loginAPICall,
-        storeToken,
-        getToken,
-        saveLoggedInUser,
-        isUserLoggedIn,
-        getLoggedInUser,
-        logout,
-        state,
-        checked,
-        setChecked,
-        dispatch,
-      }}
-    >
-      {children}
+      value={{ isAdmin, storeRol, getRol, registerAPICall, loginAPICall, storeToken, getToken, saveLoggedInUser, isUserLoggedIn, getLoggedInUser, logout, state, checked, setChecked, dispatch}}>
+        {children}
     </ContextGlobal.Provider>
   );
 };

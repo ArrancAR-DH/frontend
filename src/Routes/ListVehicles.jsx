@@ -5,13 +5,20 @@ import trashCan from "../assets/trash-solid.svg"
 import pencil from "../assets/pencil-solid.svg"
 import EditVehicleOverlay from "../Components/EditVehicleOverlay";
 import AdministracionPhoneError from "../Components/Phone Error/AdministracionPhoneError";
-import { useContextGlobal } from "../Components/utils/global.context";
+import { useContextGlobal } from "../Context/GlobalContext";
+
+
 
 const ListVehicles = () => {
-    const { state, token } = useContextGlobal();
-     const [loader, setLoader] = useState(true);
+    const{state, getToken} = useContextGlobal(); 
+    const token = getToken();
+    const [loader, setLoader] = useState(true);
+    const [cars, setCars] = useState([state.data]);
 
-     function deleteVehiculo(id) {
+
+
+    // TODO
+    function deleteVehiculo(id) {
         if (vehicleBeingEdited)
             return
         if (confirm("¿Estás seguro que deseas eliminar este vehículo?") === false)
@@ -34,15 +41,23 @@ const ListVehicles = () => {
     function editVehicle(car) {
         if (vehicleBeingEdited)
             return
+
         setVehicleBeingEdited(car);
     }
+
+    useEffect(() => {
+         setCars(state.data);
+      }, [])
+     
 
     useEffect(() => {
         setTimeout(() => {
           setLoader(false);
         }, 780);
       }, []);
-      
+
+
+
     return (
         <>
        {loader ?  <p className="loader">Loading....</p> :
@@ -58,7 +73,8 @@ const ListVehicles = () => {
                     <h3>Tipo</h3>
                     <h3>Acción</h3>
                 </div>
-                {state.data.map((car, index) => {
+                {cars.map((car, index) => {
+                console.log(cars);
                     return (
                         <div className="vehiculo__container" key={index}>
                             <img className="img-history" src={car.imgUrls?.[0]?.url} alt="" />

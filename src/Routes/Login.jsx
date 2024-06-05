@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer, toast } from "react-toastify";
-import { useStorage } from "../Context/StorageContext";
+import { ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { loginMessage, errorMessage } from "../utils/modals";
+import { useContextGlobal } from "../Context/GlobalContext";
+
 
 const Login = () => {
   const [user, setUser] = useState({ usernameOrEmail: "", password: "" });
   const { usernameOrEmail, password } = user;
-  const { loginAPICall, storeToken, saveLoggedInUser, storeRol } = useStorage();
+  const { loginAPICall, storeToken, saveLoggedInUser, storeRol } = useContextGlobal();
   const navigator = useNavigate();
 
   const [validateUsername, setValidateUsername] = useState(false);
@@ -50,7 +52,7 @@ const Login = () => {
       storeToken(token);
       saveLoggedInUser(usernameOrEmail);
       setUser({ usernameOrEmail: "", password: "" });
-      succesMessage();
+      loginMessage();
       setTimeout(() => {
         navigator("/");
         window.location.reload();
@@ -59,29 +61,6 @@ const Login = () => {
       errorMessage();
     }
   };
-
-  const succesMessage = () =>
-    toast.success("Login exitoso!!!", {
-      position: "top-center",
-      autoClose: 2500,
-      hideProgressBar: true,
-      closeOnClick: false,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      
-    });
-
-  const errorMessage = () =>
-    toast.error("Usuario no registrado", {
-      position: "top-right",
-      autoClose: 2500,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
 
   return (
     <div className="flex-container centered">

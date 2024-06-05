@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { useNavigate, useParams } from 'react-router-dom'
 import axios from "axios";
 import utils from "../functions/utils.js";
-import { useContextGlobal } from '../Components/utils/global.context'
+import { useContextGlobal } from '../Context/GlobalContext.jsx'
 
 
 
@@ -15,7 +15,7 @@ const Detail = () => {
 
     useEffect(() => {
         axios.get(`http://localhost:8080/vehicle/${id}`).then((res) => {
-            console.log(JSON.stringify(res.data))
+            // console.log(JSON.stringify(res.data))
             setCar(res.data);
         });
     }, []);

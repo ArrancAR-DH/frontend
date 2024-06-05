@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import Pagination from "../Components/Pagination";
 import backgroundImage from "../assets/rental-cars-image.png"
 import Spinner from "../Components/Spinner";
-import { useContextGlobal } from "../Components/utils/global.context";
+import { useContextGlobal } from "../Context/GlobalContext";
 
 
 const URL = import.meta.env.VITE_BACKEND_URL;
@@ -20,7 +20,6 @@ const Home = () => {
   const currentRecords = state.data.slice(indexOfFirstRecord, indexOfLastRecord);
   const nPages = Math.ceil(state.data.length / recordsPerPage);
 
-  console.log(state);
   const onFormSubmit = (e) => {
     e.preventDefault();
     const text = e.target[0].value;
@@ -60,7 +59,6 @@ const Home = () => {
             {currentRecords.map((car, key) => {
               return (
                 <Card car={car} key={car.idVehicle} className="car__card" />
-                // <Card car={car} key={key} className="car__card" />
               );
             })}
           </div>

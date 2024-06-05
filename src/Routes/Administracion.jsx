@@ -3,13 +3,11 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Spinner from "../Components/Spinner";
-import { useStorage } from "../Context/StorageContext";
-import AdministracionPhoneError from "../Components/Phone Error/AdministracionPhoneError";
-import { useContextGlobal } from "../Components/utils/global.context";
+ import AdministracionPhoneError from "../Components/Phone Error/AdministracionPhoneError";
+import { useContextGlobal } from "../Context/GlobalContext";
 
 const Administracion = () => {
-    const { getToken } = useStorage();
-    const { state } = useContextGlobal();
+     const { state, getToken } = useContextGlobal();
     const token = getToken();
 
 
@@ -110,7 +108,7 @@ const Administracion = () => {
             type: {
                 idType: tipoId,
             },
-            // "year": year, //! sera definido mas adelante
+            year: year,
             brand: {
                 idBrand: marcaId,
             },
@@ -119,7 +117,6 @@ const Administracion = () => {
         images.forEach((imagen) => {
             postJson.imgUrls.push({ url: imagen });
         });
-        console.log(postJson)
         postVehiculo(postJson);
         setSuccess(true);
     }
