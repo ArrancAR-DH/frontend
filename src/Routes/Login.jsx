@@ -53,6 +53,7 @@ const Login = () => {
       saveLoggedInUser(usernameOrEmail);
       setUser({ usernameOrEmail: "", password: "" });
       loginMessage();
+      
       setTimeout(() => {
         navigator("/");
         window.location.reload();

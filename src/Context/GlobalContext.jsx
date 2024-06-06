@@ -16,6 +16,7 @@ export const initialState = {
    user:[],
   favs: JSON.parse(localStorage.getItem("favs")) || [],
   carSelected: {},
+  likes: []
 };
 
 export const ContextGlobal = createContext();

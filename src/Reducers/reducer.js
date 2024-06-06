@@ -18,6 +18,10 @@ export const reducer = (state, action) => {
             return {...state, favs: []}
         case 'REMOVE_SINGLE_FAV':
             return {...state, favs: state.favs.filter(car => car.idVehicle !== action.payload)}
+        case 'ADD_LIKE': 
+            return {...state, likes:[...state.likes, action.payload]}
+        case 'REMOVE_LIKE':
+            return {...state, likes: state.likes.filter(car => car.idVehicle !== action.payload)}
         default:
             return state;
     }

@@ -7,8 +7,7 @@ import Card from '../Components/Card'
 
 const Search = () => {
     const { search } = useParams();
-    //? if search is empty, it will be undefined
-
+ 
     const [cars, setCars] = useState([]);
     useEffect(() => {
         axios.get("http://localhost:8080/vehicle/all").then((res) => {
@@ -37,9 +36,9 @@ const Search = () => {
             <h2>Resultados de la búsqueda:</h2>
             <div className="search__results">
                 {
-                    searchCars().map(car => {
+                    searchCars().map((car, key)=>{
                         return (
-                            <Card car={car} />
+                            <Card car={car} key={key}/>
                         )
                     })
                 }
