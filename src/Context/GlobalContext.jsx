@@ -1,22 +1,20 @@
-import {createContext,useContext,useEffect,useReducer,useState} from "react";
+import { createContext, useContext, useEffect, useReducer, useState } from "react";
 import { reducer } from "../Reducers/reducer";
 import axios from "axios";
 import { routes } from "../utils/routes";
-
-
 
 export const initialState = {
   check: {
     checked: "true" || "false",
   },
-   data: [],
-   brand: [],
-   type: [],
-   model:[],
-   user:[],
+  data: [],
+  brand: [],
+  type: [],
+  model: [],
+  user: [],
   favs: JSON.parse(localStorage.getItem("favs")) || [],
   carSelected: {},
-  likes: []
+  likes: JSON.parse(localStorage.getItem("likes")) || []
 };
 
 export const ContextGlobal = createContext();
@@ -26,19 +24,20 @@ const ContextProvider = ({ children }) => {
   const { check } = state;
   const [checked, setChecked] = useState(check.checked);
 
-  
   const registerAPICall = (registerObj) =>
     axios.post(routes.url_rest_api + "/register", registerObj);
   const loginAPICall = async (data, token) => {
     try {
       const response = await axios.post(
         routes.url_rest_api + "/login",
-        data,{token}
+        data, { token }
       );
-      return response.data; 
+      const { likedVehicleIds } = response.data;
+      dispatch({ type: 'SET_LIKES', payload: likedVehicleIds });
+      return response.data;
     } catch (error) {
       console.error("Error:", error);
-      throw error; 
+      throw error;
     }
   };
   const storeToken = (token) => localStorage.setItem("token", token);
@@ -47,13 +46,13 @@ const ContextProvider = ({ children }) => {
   const token = getToken();
   const getRol = () => localStorage.getItem("rol");
   const isAdmin = () => {
-  const admin = getRol();
+    const admin = getRol();
     if (admin === "ROLE_ADMIN" || admin === "ROLE_SUPER_ADMIN") {
       return true;
     } else {
       return false;
     }
-};
+  };
 
   const saveLoggedInUser = (username) =>
     sessionStorage.setItem("authenticatedUser", username);
@@ -73,6 +72,43 @@ const ContextProvider = ({ children }) => {
     sessionStorage.clear();
   };
 
+  const likeVehicle = async (idVehicle) => {
+    try {
+      const response = await axios.post("http://localhost:8080/user/like", {
+        idUser: 2,
+        idVehicle
+      }, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Basic " + token,
+        }
+      });
+      dispatch({ type: 'SET_LIKES', payload: response.data });
+    } catch (error) {
+      console.error("Error liking vehicle:", error);
+    }
+  };
+  
+  const dislikeVehicle = async (idVehicle) => {
+    try {
+      const response = await axios.delete("http://localhost:8080/user/dislike", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Basic " + token,
+        },
+        data: {
+          idUser: 2,
+          idVehicle
+        }
+      });
+      dispatch({ type: 'SET_LIKES', payload: response.data });
+    } catch (error) {
+      console.error("Error disliking vehicle:", error);
+    }
+  };
+  useEffect(() => {
+    localStorage.setItem("likes", JSON.stringify(state.likes));
+  }, [state.likes]);
   useEffect(() => {
     localStorage.setItem("favs", JSON.stringify(state.favs));
   }, [state.favs]);
@@ -102,7 +138,6 @@ const ContextProvider = ({ children }) => {
         Authorization: "Basic " + token,
       },
     }).then((res) => dispatch({ type: "GET_LIST_TYPE", payload: res.data }));
-
   }, []);
 
   useEffect(() => {
@@ -114,13 +149,31 @@ const ContextProvider = ({ children }) => {
     }).then((res) => dispatch({ type: "GET_LIST_USER", payload: res.data }));
   }, []);
 
-
   return (
     <ContextGlobal.Provider
-      value={{ isAdmin, storeRol, getRol, registerAPICall, loginAPICall, storeToken, getToken, saveLoggedInUser, isUserLoggedIn, getLoggedInUser, logout, state, checked, setChecked, dispatch}}>
-        {children}
+      value={{
+        isAdmin,
+        storeRol,
+        getRol,
+        registerAPICall,
+        loginAPICall,
+        storeToken,
+        getToken,
+        saveLoggedInUser,
+        isUserLoggedIn,
+        getLoggedInUser,
+        logout,
+        state,
+        checked,
+        setChecked,
+        dispatch,
+        likeVehicle,
+        dislikeVehicle
+      }}>
+      {children}
     </ContextGlobal.Provider>
   );
 };
+
 export default ContextProvider;
 export const useContextGlobal = () => useContext(ContextGlobal);
