@@ -4,6 +4,8 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {registerMessage, errorMessageRegister} from "../utils/modals"
 import { useContextGlobal } from "../Context/GlobalContext";
+import {routes} from "../utils/routes";
+import axios from "axios";
 
 const Register = () => {
   const { registerAPICall } = useContextGlobal();
@@ -25,19 +27,38 @@ const Register = () => {
   const [validatePassword, setValidatePassword] = useState(false);
   const [boton, habilitarBoton] = useState(true);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-        registerAPICall(user)
-          .then(async (res) => {
-            registerMessage();
-            setTimeout(() => {
-              navigator("/login");
-            }, 2400);
-          })
-          .catch((err) => {
-            errorMessageRegister(err.response.data.message);
-          });
-  };
+  const fullName = name +" " +lastName;
+
+  const postEmail = (fullName, email) => {
+    axios.post(routes.url_notificate, {
+        toUser : email,
+        fullName : fullName},
+    {
+      headers:{
+          headers: { 'Content-Type': 'application/json' }
+        }
+    }).then((response) => {
+        console.log(response);
+    }).catch((error) => {
+        console.log(error);
+        setError("Hubo un error al enviar el email.");
+    });
+}
+
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    postEmail(fullName, email);
+    await registerAPICall(user)
+    registerMessage();
+    setTimeout(() => {
+      navigator("/login");
+    }, 1800);
+  } catch (error) {
+    errorMessageRegister(error.response.data.message);
+  }
+};
 
 
   useEffect(() => {

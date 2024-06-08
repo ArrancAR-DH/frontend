@@ -57,6 +57,17 @@ const ContextProvider = ({ children }) => {
     }
   };
 
+  const giveLike = () =>{
+    const admin = getRol(); 
+    if (admin === "ROLE_ADMIN" || admin === "ROLE_SUPER_ADMIN" || admin === "ROLE_USER") {
+      return true;
+    } else {
+      return false;
+    }
+
+  }
+
+
   const saveLoggedInUser = (username) =>
     sessionStorage.setItem("authenticatedUser", username);
 
@@ -173,7 +184,8 @@ const ContextProvider = ({ children }) => {
         setChecked,
         dispatch,
         likeVehicle,
-        dislikeVehicle
+        dislikeVehicle,
+        giveLike
       }}>
       {children}
     </ContextGlobal.Provider>

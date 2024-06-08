@@ -19,5 +19,6 @@ export const routes = {
     url_rest_api: `http://localhost:8080/auth`,
     url_AllUsers: `http://localhost:8080/user/all`,
     url_postCar:  `http://localhost:8080/vehicle`,
+    url_notificate: `http://localhost:8080/notification/send`
 
 } 

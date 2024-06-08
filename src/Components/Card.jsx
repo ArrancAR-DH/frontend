@@ -4,8 +4,10 @@ import { FaHeart } from "react-icons/fa";
 import { useContextGlobal } from "../Context/GlobalContext.jsx";
 
 const Card = ({ car, isFav, handleRemoveSingle, key }) => {
-  const { state, dispatch, likeVehicle, dislikeVehicle } = useContextGlobal();
+  const { state, dispatch, likeVehicle, dislikeVehicle, giveLike } = useContextGlobal();
 
+
+  const userLike = giveLike(); 
   console.log(key);
 
   const handleLike = async () => {
@@ -35,7 +37,8 @@ const Card = ({ car, isFav, handleRemoveSingle, key }) => {
             <p>{car.model.name}</p>
             <p>${utils.convertirPrecioIntAPesosStr(car.price)} ARS</p>
           </Link>
-          {isFav ? (
+          {/* ------VER CON TOMI-------------- */}
+          {/* {isFav ? (
             <button className="button" onClick={() => handleRemoveSingle(car.idVehicle)}>
               Eliminar favorito ❌
             </button>
@@ -46,7 +49,13 @@ const Card = ({ car, isFav, handleRemoveSingle, key }) => {
             >
               <FaHeart className="heart" />
             </button>
-          )}
+          )} */}
+          {/* ------VER CON TOMI-------------- */}
+          {userLike? (
+              <button className={`container__heart ${isLiked ? "liked" : ""}`} onClick={handleLike}>
+                  <FaHeart className="heart" />
+              </button>
+                ): ("")}
         </div>
       </div>
     </>
