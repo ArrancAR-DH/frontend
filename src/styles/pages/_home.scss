@@ -81,18 +81,19 @@
         }
 
         .search {
+            display: flex;
             margin: 30px auto 0 auto;
             max-width: 501px;
-            // width: 100%;
+            width: 90%;
             position: relative;
 
             input[type="text"] {
-                max-width: 500px;
-                width: 30vw;
+                border-top-left-radius: 20px;
+                border-bottom-left-radius: 20px;
+                width: 45%;
                 height: 50px;
                 padding: 10px;
                 border: none;
-                border-radius: 20px;
                 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 
                 &:focus {
@@ -100,7 +101,25 @@
                 }
             }
 
+            .react-datepicker-wrapper {
+                width: 55%;
+
+                .react-datepicker__input-container {
+                    width: 100%;
+
+                    .datepicker {
+                        width: 100%;
+                        border-top-left-radius: 0px;
+                        border-bottom-left-radius: 0px;
+                        border-top-right-radius: 20px;
+                        border-bottom-right-radius: 20px;
+                        padding-right: 20px;
+                    }
+                }
+            }
+
             button[type="submit"] {
+                width: 21%;
                 background-color: $darkmode-secondary-color;
                 height: 50px;
                 border: none;
@@ -168,7 +187,24 @@
 
             .search {
                 input[type="text"] {
-                    width: 80vw;
+                    width: 45%;
+                }
+
+                .react-datepicker-wrapper {
+                    width: 55%;
+
+                    .react-datepicker__input-container {
+                        .datepicker {
+                            border-top-left-radius: 0px;
+                            border-bottom-left-radius: 0px;
+                            padding-right: 20px;
+                        }
+                    }
+                }
+
+                button[type="submit"] {
+                    width: 21%;
+                    right: 0;
                 }
             }
 

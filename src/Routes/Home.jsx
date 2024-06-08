@@ -4,8 +4,11 @@ import ArrancARLogo from "../assets/logo-light-transparente.png";
 import { Link } from "react-router-dom";
 import Pagination from "../Components/Pagination";
 import backgroundImage from "../assets/rental-cars-image.png"
+
 import Spinner from "../Components/Spinner";
 import { useContextGlobal } from "../Context/GlobalContext";
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 
 const URL = import.meta.env.VITE_BACKEND_URL;
@@ -32,6 +35,16 @@ const Home = () => {
     }, 780);
   }, []);
 
+  //? datepicker
+  const [date, setDate] = useState(new Date());
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
+  const handleDateChange = (dates) => {
+    const [start, end] = dates;
+    setStartDate(start);
+    setEndDate(end);
+  }
+
   return (
     <>
        {loader ? <Spinner/> :  <div className="container__home">
@@ -51,6 +64,10 @@ const Home = () => {
         <div className="right__column">
           <form className="search" onSubmit={onFormSubmit}>
             <input placeholder="Buscar autos..." type="text" />
+            <DatePicker className='datepicker' selected={startDate} onChange={handleDateChange} startDate={startDate} endDate={endDate} dateFormat={
+              'dd/MM/yyyy'
+            
+            } selectsRange />
             <button type="submit">
               Buscar 🔎
             </button>
