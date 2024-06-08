@@ -1,17 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useStorage } from "../Context/StorageContext";
-
 import axios from "axios";
 import trashCan from "../assets/trash-solid.svg"
 import pencil from "../assets/pencil-solid.svg"
 import EditVehicleOverlay from "../Components/EditVehicleOverlay";
 import AdministracionPhoneError from "../Components/Phone Error/AdministracionPhoneError";
+import { useContextGlobal } from "../Context/GlobalContext";
+
+
 
 const ListVehicles = () => {
-    const { getToken } = useStorage();
+    const{state, getToken} = useContextGlobal(); 
     const token = getToken();
+    const [loader, setLoader] = useState(true);
+    const [cars, setCars] = useState([state.data]);
 
+
+
+    // TODO
     function deleteVehiculo(id) {
         if (vehicleBeingEdited)
             return
@@ -39,15 +45,22 @@ const ListVehicles = () => {
         setVehicleBeingEdited(car);
     }
 
-    const [cars, setCars] = useState([]);
-    console.log(cars);
     useEffect(() => {
-        axios.get("http://localhost:8080/vehicle/all").then((res) => {
-            setCars(res.data);
-        });
-    }, []);
+         setCars(state.data);
+      }, [])
+     
+
+    useEffect(() => {
+        setTimeout(() => {
+          setLoader(false);
+        }, 780);
+      }, []);
+
+
 
     return (
+        <>
+       {loader ?  <p className="loader">Loading....</p> :
         <div className="lista__vehiculos__container">
             <Link to={`/administracion`}><h3>Volver</h3></Link>
             <h2 className="title__admin">Administración</h2>
@@ -61,6 +74,7 @@ const ListVehicles = () => {
                     <h3>Acción</h3>
                 </div>
                 {cars.map((car, index) => {
+                console.log(cars);
                     return (
                         <div className="vehiculo__container" key={index}>
                             <img className="img-history" src={car.imgUrls?.[0]?.url} alt="" />
@@ -83,6 +97,8 @@ const ListVehicles = () => {
             {vehicleBeingEdited && <EditVehicleOverlay vehicle={vehicleBeingEdited} setVehicleBeingEdited={setVehicleBeingEdited} setCars={setCars} />}
             <AdministracionPhoneError />
         </div>
+        }
+        </>
     );
 };
 

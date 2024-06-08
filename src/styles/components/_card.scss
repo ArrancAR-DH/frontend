@@ -1,69 +1,132 @@
 .car__card {
-    /* control the size */
-    --s: 50px;
+  /* control the size */
+  --s: 50px;
+
+  --c1: #1d1d1d;
+  --c2: #3d3e3f;
+  --c3: #302f2f;
+
+  background: repeating-conic-gradient(
+        from 30deg,
+        #0000 0 120deg,
+        var(--c3) 0 180deg
+      )
+      calc(0.5 * var(--s)) calc(0.5 * var(--s) * 0.577),
+    repeating-conic-gradient(
+      from 30deg,
+      var(--c1) 0 60deg,
+      var(--c2) 0 120deg,
+      var(--c3) 0 180deg
+    );
+  background-size: var(--s) calc(var(--s) * 0.577);
+
+  display: flex;
+  color: white;
+  margin: 2.5vh 1vw;
+  padding: 7px;
+  border-radius: 17px;
+  max-height: 265px;
+  transition: transform 100ms ease-in-out;
+  box-shadow: 0 0 30px 0 $darkmode-primary-color;
+
+  .card__car__information {
+    display: flex;
+    font-size: larger;
+    flex-direction: column;
+    justify-content: center;
+    // text-align: right;
+    align-items: end;
+    width: 40%;
+    color: white;
+  }
+
+  img {
+    border-radius: 10px;
+    width: 60%;
+    box-shadow: 0 0 30px 0 black;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  &:hover {
+    transform: scale(1.03);
 
     --c1: #1d1d1d;
-    --c2: #3d3e3f;
+    --c2: #6e7072;
     --c3: #302f2f;
+  }
+  .favs {
+    width: 40px;
+    height: 40px;
+  }
 
-    background: repeating-conic-gradient(from 30deg,
-            #0000 0 120deg,
-            var(--c3) 0 180deg) calc(0.5 * var(--s)) calc(0.5 * var(--s) * 0.577),
-        repeating-conic-gradient(from 30deg,
-            var(--c1) 0 60deg,
-            var(--c2) 0 120deg,
-            var(--c3) 0 180deg);
-    background-size: var(--s) calc(var(--s) * 0.577);
-
-    display: flex;
-    color: white;
-    margin: 2.5vh 1vw;
-    padding: 7px;
-    border-radius: 17px;
-    max-height: 265px;
-    transition: transform 100ms ease-in-out;
-    box-shadow: 0 0 30px 0 $darkmode-primary-color;
-
-    .card__car__information {
-        display: flex;
-        font-size: larger;
-        flex-direction: column;
-        justify-content: center;
-        text-align: right;
-        align-items: end;
-        width: 40%;
-    }
-
-    img {
-        border-radius: 10px;
-        width: 60%;
-        box-shadow: 0 0 30px 0 black;
-        height: 200px;
-        object-fit: cover;
-    }
-
+  .container__heart {
+    background-color: #26282a00;
+    border: none;
+    width: 45px;
+    height: 45px;
+    transform: translate(0px, -120px);
+  }
+  .heart {
+    color: whitesmoke;
+    color: $lightmode-primary-color;
+    width: 30px;
+    height: 25px;
+    // transform: translate(-25px, 20px);
     &:hover {
-        transform: scale(1.03);
-
-        --c1: #1d1d1d;
-        --c2: #6e7072;
-        --c3: #302f2f;
+      cursor: pointer;
     }
+  }
+
+/** DARK-LIGHT MODE **/
+.checked{
+    background-color: #12121296;
+    color: white;
+  }
+  .checked > h3 {
+    color: white;
+  }
+  .checked .card {
+    background-color: #333;
+    color: #fff;
+  }
+  .checked a{
+    color: #fff;
+  }
+  .light{
+    background-color: #ffffff;
+    color: rgb(9, 9, 9);
+  }
+  .light a {
+    color: rgb(7, 7, 7)
+  };
+  
+
 }
 
+
+
+
+
+
+
+
+
+
+
 @media (max-width: 750px) {
-    .car__card {
-        flex-direction: column;
-        max-height: 350px;
-        height: 400px;
+  .car__card {
+    flex-direction: column;
+    max-height: 350px;
+    height: 400px;
 
-        img {
-            width: 100%;
-            margin-bottom: 20px;
-        }
-
-        .card__car__information {
-            width: 100%;
-        }
+    img {
+      width: 100%;
+      margin-bottom: 20px;
     }
+
+    .card__car__information {
+      width: 100%;
+    }
+  }
 }

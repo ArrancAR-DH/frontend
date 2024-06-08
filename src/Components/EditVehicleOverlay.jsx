@@ -1,10 +1,13 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-import { useStorage } from '../Context/StorageContext'
+import { useContextGlobal } from "../Context/GlobalContext";
+
+
+const URL = import.meta.env.VITE_BACKEND_URL;
 
 const EditVehicleOverlay = ({ vehicle, setVehicleBeingEdited, setCars }) => {
-    const { getToken } = useStorage();
+    const { getToken } = useContextGlobal();
     const token = getToken();
 
     const [error, setError] = useState("");
@@ -22,7 +25,6 @@ const EditVehicleOverlay = ({ vehicle, setVehicleBeingEdited, setCars }) => {
 
     function submitForm(e) {
         e.preventDefault();
-
         const brandLabel = e.target[0].value;
         const modelLabel = e.target[1].value;
         const typeLabel = e.target[2].value;
@@ -55,7 +57,7 @@ const EditVehicleOverlay = ({ vehicle, setVehicleBeingEdited, setCars }) => {
             model: { idModel: modelId, name: modelLabel },
             type: { idType: typeId, name: typeLabel },
             features: vehicle.features,
-            // year: year
+            year: year
         }
         console.log(payload)
         axios.put(`http://localhost:8080/vehicle/${vehicle.idVehicle}`, payload, {
@@ -78,7 +80,7 @@ const EditVehicleOverlay = ({ vehicle, setVehicleBeingEdited, setCars }) => {
     const [models, setModels] = useState([]);
     const [types, setTypes] = useState([]);
     useEffect(() => {
-        axios.get("http://localhost:8080/brand/all", {
+            axios.get(`${URL}/brand/all`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic ' + token,
@@ -120,7 +122,7 @@ const EditVehicleOverlay = ({ vehicle, setVehicleBeingEdited, setCars }) => {
 
         setImages([...images, response.data.secure_url]);
     };
-
+    console.log(vehicle)
     return (
         <div className="editing__vehicle__overlay">
             <h2>Edicion de vehículo</h2>

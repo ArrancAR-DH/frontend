@@ -5,6 +5,7 @@
   font-family: $font-family;
 }
 
+
 .title__admin {
   width: fit-content;
   margin: 20px auto;
@@ -45,3 +46,14 @@ a {
   text-decoration: none;
   color: $lightmode-accent-color;
 }
+
+.loader{
+  height: 80vh;
+width: 480px;
+margin: 0 auto;
+ text-align: center;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+

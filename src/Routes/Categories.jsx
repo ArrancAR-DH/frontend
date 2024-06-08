@@ -1,42 +1,24 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import AdministracionPhoneError from '../Components/Phone Error/AdministracionPhoneError'
-import { useStorage } from '../Context/StorageContext'
-import { Link } from 'react-router-dom'
+ import { Link } from 'react-router-dom'
+import { useContextGlobal } from "../Context/GlobalContext";
 
 const CreateCategories = () => {
-    const { getToken } = useStorage();
+     const { state, getToken } = useContextGlobal();
     const token = getToken();
-
-    const [brands, setBrands] = useState([])
-    const [models, setModels] = useState([])
-    const [types, setTypes] = useState([])
+    const [brands, setBrands] = useState([]);
+    const [models, setModels] = useState([]);
+    const [types, setTypes] = useState([]);
+    const [render, setRender] = useState(true);
+    
     useEffect(() => {
-        axios.get("http://localhost:8080/brand/all", {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Basic ' + token,
-            }
-        }).then((res) => {
-            setBrands(res.data);
-        });
-        axios.get("http://localhost:8080/model/all", {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Basic ' + token,
-            }
-        }).then((res) => {
-            setModels(res.data);
-        });
-        axios.get('http://localhost:8080/type/all', {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Basic ' + token,
-            }
-        }).then(res => {
-            setTypes(res.data)
-        })
-    }, [])
+        setBrands(state.brand);
+        setModels(state.model);
+        setTypes(state.type)
+    }, [state])
+ 
+
 
     function createCategory(category, value) {
         if (value === '') return;
@@ -78,7 +60,7 @@ const CreateCategories = () => {
                 default:
                     break;
             }
-        }).catch(err => {
+         }).catch(err => {
             console.log(err)
         })
     }
@@ -103,7 +85,12 @@ const CreateCategories = () => {
             }
         })
     }
-
+    document.addEventListener('DOMContentLoaded', function(){
+        let formulario = document.getElementById('formu');
+        formulario.addEventListener('submit', function() {
+          formulario.reset();
+        });
+      });
     function submitDeleteForm(e) {
         e.preventDefault()
 
@@ -124,15 +111,22 @@ const CreateCategories = () => {
         }
         e.target[0].value = ""
     }
+    setTimeout(() => {
+        setRender(false)  
+    }, 180);
 
     return (
+        <>
+           {render ?  <p className="loader">Loading....</p> :  
+
         <div className='create__categories__container'>
             <Link to={`/administracion`}><h3>Volver</h3></Link>
             <h2 className='title__admin'>Administración</h2>
             <div className="administracion__funciones">
                 <div className="administracion__categories">
                     <div className="create__categories">
-                        <h3>Crear categorías</h3>
+                    <form action="" id='formu'>
+                        <h3 id='create'>Crear categorías</h3>
                         <div>
                             <h4>Marca: </h4>
                             <input type="text" id='brand-input' />
@@ -152,6 +146,7 @@ const CreateCategories = () => {
                                 createCategory('model', model)
                                     .then(model.value = "")
                             }}>Crear</button>
+
                         </div>
                         <div>
                             <h4>Tipo: </h4>
@@ -162,7 +157,9 @@ const CreateCategories = () => {
                                 createCategory('type', type)
                                     .then(type.value = "")
                             }}>Crear</button>
+
                         </div>
+                        </form>
                     </div>
                     <div className="delete__categories">
                         <h3>Eliminar categorías</h3>
@@ -207,7 +204,8 @@ const CreateCategories = () => {
                 </div>
             </div>
             <AdministracionPhoneError />
-        </div>
+        </div>}
+        </>
     )
 }
 

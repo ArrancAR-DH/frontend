@@ -1,13 +1,12 @@
 import React from "react";
 import logoConTitulo from "../../assets/ArrancAR logo con titulo sin fondo.png";
 import { useNavigate, NavLink, Link } from "react-router-dom";
-import { useStorage } from "../../Context/StorageContext";
+import { useContextGlobal } from "../../Context/GlobalContext";
 
 const Header = () => {
-  const { getLoggedInUser, logout } = useStorage();
+  const { getLoggedInUser, logout,  } = useContextGlobal();
   const isAuth = getLoggedInUser();
   const navigator = useNavigate();
-
   const avatar = isAuth == null ? "" : isAuth[0].toUpperCase();
 
   function handleLogout() {

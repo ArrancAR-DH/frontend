@@ -1,5 +1,69 @@
 .list__users__container {
+    display: flex;
+    flex-direction: column;
+    .titulos__categorias {
+        display: flex;
+        width: 39%;
+        margin: 0 auto;
+        padding: 10px;
+        * {
+            width: calc(940px/5);
+            text-align: center;
+        }
+    }
     h3{
-        padding-top: 15px;
+        padding-top: 40px;
     }
 }
+
+    .user__container {
+        display: flex;
+        flex-direction: row;
+        width: 40%;
+        margin: 10px auto;
+        text-align: center;
+        align-items: center;
+        padding: 10px;
+        background-color: #252525;
+        border-radius: 5px;
+        overflow: hidden;
+
+
+        img {
+            border-radius: 5px;
+            height: 80px;
+            object-fit: cover;
+        }
+
+        * {
+            width: calc(81%/4);
+            text-align: center;
+        }
+        .check{
+            width: 35px;
+            height: 35px;
+        
+        }
+
+        .container__buttons {
+            display: flex;
+            justify-content: space-evenly;
+
+            button {
+                background: $darkmode-secondary-color;
+                border: none;
+                border-radius: 5px;
+                width: 55px;
+                height: 50px;
+                cursor: pointer;
+                padding: 3px;
+
+                img {
+                    height: 40%;
+                    width: 40%;
+                }
+            }
+        }
+    }
+
+ 

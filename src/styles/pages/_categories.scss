@@ -1,4 +1,11 @@
 .create__categories__container {
+    h3{
+        padding-top: 40px;
+    }
+    #create{
+        display: flex;
+        justify-content: center;
+    }
     .administracion__categories {
         display: flex;
         justify-content: space-around;
