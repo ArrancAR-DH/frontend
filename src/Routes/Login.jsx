@@ -23,7 +23,7 @@ const Login = () => {
   }, [usernameOrEmail]);
   useEffect(() => {
     if (password.length !== 0) {
-      setValidatePassword(password.length > 4);
+      setValidatePassword(password.length > 3);
     }
   }, [password]);
   useEffect(() => {

@@ -24,6 +24,8 @@ export const reducer = (state, action) => {
         return { ...state, likes: state.likes.filter(idVehicle => idVehicle !== action.payload) };
       case 'SET_LIKES':
         return { ...state, likes: action.payload };
+      case 'SET_USER_ID':
+        return { ...state, idUser: action.payload };  
       default:
         return state;
     }

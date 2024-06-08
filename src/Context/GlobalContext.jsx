@@ -14,7 +14,8 @@ export const initialState = {
   user: [],
   favs: JSON.parse(localStorage.getItem("favs")) || [],
   carSelected: {},
-  likes: JSON.parse(localStorage.getItem("likes")) || []
+  likes: JSON.parse(localStorage.getItem("likes")) || [],
+  idUser: JSON.parse(localStorage.getItem("idUser")) || null
 };
 
 export const ContextGlobal = createContext();
@@ -32,8 +33,10 @@ const ContextProvider = ({ children }) => {
         routes.url_rest_api + "/login",
         data, { token }
       );
-      const { likedVehicleIds } = response.data;
+      const { likedVehicleIds, idUser } = response.data;
       dispatch({ type: 'SET_LIKES', payload: likedVehicleIds });
+      dispatch({ type: 'SET_USER_ID', payload: idUser });
+      localStorage.setItem("idUser", JSON.stringify(idUser));
       return response.data;
     } catch (error) {
       console.error("Error:", error);
@@ -74,8 +77,9 @@ const ContextProvider = ({ children }) => {
 
   const likeVehicle = async (idVehicle) => {
     try {
+      const idUser = state.idUser || JSON.parse(localStorage.getItem("idUser"));
       const response = await axios.post("http://localhost:8080/user/like", {
-        idUser: 2,
+        idUser,
         idVehicle
       }, {
         headers: {
@@ -91,13 +95,14 @@ const ContextProvider = ({ children }) => {
   
   const dislikeVehicle = async (idVehicle) => {
     try {
+      const idUser = state.idUser || JSON.parse(localStorage.getItem("idUser"));
       const response = await axios.delete("http://localhost:8080/user/dislike", {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Basic " + token,
         },
         data: {
-          idUser: 2,
+          idUser,
           idVehicle
         }
       });
