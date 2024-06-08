@@ -4,12 +4,11 @@ import { FaHeart } from "react-icons/fa";
 import { useContextGlobal } from "../Context/GlobalContext.jsx";
 
 const Card = ({ car, isFav, handleRemoveSingle, key }) => {
-  const { state, dispatch, likeVehicle, dislikeVehicle, giveLike } = useContextGlobal();
+  const { state, likeVehicle, dislikeVehicle, giveLike } = useContextGlobal();
 
 
   const userLike = giveLike(); 
-  console.log(key);
-
+ 
   const handleLike = async () => {
     const isAlreadyLiked = state.likes.includes(car.idVehicle);
 
@@ -21,8 +20,7 @@ const Card = ({ car, isFav, handleRemoveSingle, key }) => {
       alert("El vehículo se agregó satisfactoriamente a tu lista de favoritos.");
     }
 
-    console.log(state.likes);
-    console.log("car.idVehicle: " + car.idVehicle);
+     console.log("car.idVehicle: " + car.idVehicle);
   };
 
   const isLiked = state.likes.includes(car.idVehicle);
