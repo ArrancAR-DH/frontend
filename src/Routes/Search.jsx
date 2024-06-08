@@ -8,14 +8,16 @@ import { useContextGlobal } from '../Context/GlobalContext'
 
 const Search = () => {
     const { search } = useParams();
-    const { getLoggedInUser, state, giveLike  } = useContextGlobal();
+    const { state } = useContextGlobal();
     const {data} = state;
 
     const [cars, setCars] = useState([]);
     console.log(state);
     console.log(cars);
+
+    
     useEffect(() => {
-        setCars(data)
+        setCars(state.data)
     }, [data])
     
 

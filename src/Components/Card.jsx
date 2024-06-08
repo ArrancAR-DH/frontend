@@ -3,15 +3,13 @@ import utils from "../functions/utils.js";
 import { FaHeart } from "react-icons/fa";
 import { useContextGlobal } from "../Context/GlobalContext.jsx";
 
-const Card = ({ car, isFav, handleRemoveSingle, key }) => {
+const Card = ({car}) => {
   const { state, likeVehicle, dislikeVehicle, giveLike } = useContextGlobal();
+  const userLike = giveLike();  
+  const isLiked = state.likes.includes(car.idVehicle);
 
-
-  const userLike = giveLike(); 
- 
   const handleLike = async () => {
     const isAlreadyLiked = state.likes.includes(car.idVehicle);
-
     if (isAlreadyLiked) {
       await dislikeVehicle(car.idVehicle);
       alert("Este vehículo ha sido eliminado de tu lista de favoritos.");
@@ -19,11 +17,7 @@ const Card = ({ car, isFav, handleRemoveSingle, key }) => {
       await likeVehicle(car.idVehicle);
       alert("El vehículo se agregó satisfactoriamente a tu lista de favoritos.");
     }
-
-     console.log("car.idVehicle: " + car.idVehicle);
   };
-
-  const isLiked = state.likes.includes(car.idVehicle);
 
   return (
     <>
@@ -35,20 +29,6 @@ const Card = ({ car, isFav, handleRemoveSingle, key }) => {
             <p>{car.model.name}</p>
             <p>${utils.convertirPrecioIntAPesosStr(car.price)} ARS</p>
           </Link>
-          {/* ------VER CON TOMI-------------- */}
-          {/* {isFav ? (
-            <button className="button" onClick={() => handleRemoveSingle(car.idVehicle)}>
-              Eliminar favorito ❌
-            </button>
-          ) : (
-            <button
-              className={`container__heart ${isLiked ? "liked" : ""}`}
-              onClick={handleLike}
-            >
-              <FaHeart className="heart" />
-            </button>
-          )} */}
-          {/* ------VER CON TOMI-------------- */}
           {userLike? (
               <button className={`container__heart ${isLiked ? "liked" : ""}`} onClick={handleLike}>
                   <FaHeart className="heart" />

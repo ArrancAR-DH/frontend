@@ -12,12 +12,6 @@ export const reducer = (state, action) => {
         return { ...state, user: action.payload };
       case 'ADD_CAR':
         return { ...state, data: [...state.data, action.payload] };
-      case 'ADD_FAV':
-        return { ...state, favs: [...state.favs, action.payload] };
-      case 'REMOVE_ALL_FAVS':
-        return { ...state, favs: [] };
-      case 'REMOVE_SINGLE_FAV':
-        return { ...state, favs: state.favs.filter(car => car.idVehicle !== action.payload) };
       case 'ADD_LIKE':
         return { ...state, likes: [...state.likes, action.payload] };
       case 'REMOVE_LIKE':

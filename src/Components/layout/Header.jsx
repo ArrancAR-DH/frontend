@@ -1,20 +1,14 @@
 import React from "react";
 import logoConTitulo from "../../assets/ArrancAR logo con titulo sin fondo.png";
-import { useNavigate, NavLink, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useContextGlobal } from "../../Context/GlobalContext";
+import DropDown from "../Dropdown";
+
 
 const Header = () => {
-  const { getLoggedInUser, logout,  } = useContextGlobal();
+  const { getLoggedInUser} = useContextGlobal();
   const isAuth = getLoggedInUser();
-  const navigator = useNavigate();
-  const avatar = isAuth == null ? "" : isAuth[0].toUpperCase();
-
-  function handleLogout() {
-    logout();
-    navigator("/login");
-    window.location.reload();
-  }
-
+  
   return (
     <nav>
       <Link to="/">
@@ -31,13 +25,9 @@ const Header = () => {
             </Link>
           </>
         )}
-        {isAuth && (
-          <div className="container__user">
-            <h3 className="avatar">{avatar}</h3>
-            <NavLink to="/" onClick={handleLogout}>
-              <h6 className="logout">Cerrar sesión</h6>
-            </NavLink>
-          </div>
+
+    {isAuth && (
+      <DropDown isAuth={isAuth}/>      
         )}
       </div>
     </nav>

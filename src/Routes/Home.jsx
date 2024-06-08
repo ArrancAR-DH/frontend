@@ -4,7 +4,6 @@ import ArrancARLogo from "../assets/logo-light-transparente.png";
 import { Link } from "react-router-dom";
 import Pagination from "../Components/Pagination";
 import backgroundImage from "../assets/rental-cars-image.png"
-
 import Spinner from "../Components/Spinner";
 import { useContextGlobal } from "../Context/GlobalContext";
 import DatePicker from 'react-datepicker';

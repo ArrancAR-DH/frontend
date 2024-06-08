@@ -1,18 +1,14 @@
-import { createContext, useContext, useEffect, useReducer, useState } from "react";
+import { createContext, useContext, useEffect, useReducer } from "react";
 import { reducer } from "../Reducers/reducer";
 import axios from "axios";
 import { routes } from "../utils/routes";
 
 export const initialState = {
-  check: {
-    checked: "true" || "false",
-  },
   data: [],
   brand: [],
   type: [],
   model: [],
   user: [],
-  favs: JSON.parse(localStorage.getItem("favs")) || [],
   carSelected: {},
   likes: JSON.parse(localStorage.getItem("likes")) || [],
   idUser: JSON.parse(localStorage.getItem("idUser")) || null
@@ -22,11 +18,9 @@ export const ContextGlobal = createContext();
 
 const ContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { check } = state;
-  const [checked, setChecked] = useState(check.checked);
-
   const registerAPICall = (registerObj) =>
     axios.post(routes.url_rest_api + "/register", registerObj);
+
   const loginAPICall = async (data, token) => {
     try {
       const response = await axios.post(
@@ -125,9 +119,7 @@ const ContextProvider = ({ children }) => {
   useEffect(() => {
     localStorage.setItem("likes", JSON.stringify(state.likes));
   }, [state.likes]);
-  useEffect(() => {
-    localStorage.setItem("favs", JSON.stringify(state.favs));
-  }, [state.favs]);
+
 
   useEffect(() => {
     axios(routes.url_allVehicles).then((res) =>
@@ -180,8 +172,6 @@ const ContextProvider = ({ children }) => {
         getLoggedInUser,
         logout,
         state,
-        checked,
-        setChecked,
         dispatch,
         likeVehicle,
         dislikeVehicle,
