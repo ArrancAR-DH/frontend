@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import axios from 'axios'
 import AdministracionPhoneError from '../Components/Phone Error/AdministracionPhoneError'
  import { Link } from 'react-router-dom'
@@ -11,34 +11,63 @@ const CreateCategories = () => {
     const [models, setModels] = useState([]);
     const [types, setTypes] = useState([]);
     const [render, setRender] = useState(true);
+    const [referenceToForm, setReferenceToForm] = useState();
+    const [ brandInputValue, setBrandInputValue ] = useState();
+    const [ modelInputValue, setModelInputValue ] = useState();
+    const [ typeInputValue, setTypeInputValue ] = useState();
     
+    const formReference = useRef(null);
+
     useEffect(() => {
         setBrands(state.brand);
         setModels(state.model);
         setTypes(state.type)
     }, [state])
  
+    useEffect(() => {
+        let formulario = formReference.current;
+        console.log( formulario );
+        setReferenceToForm( formulario );
+        // formulario?.addEventListener('submit', function() {
+        //     formulario.reset();
+        // });
+    });
 
+    const handleBrandInput = (e) => {
+        setBrandInputValue(e.target.value);
+    }
+    const handleModelInput = (e) => {
+        setModelInputValue(e.target.value);
+    }
+    const handleTypeInput = (e) => {
+        setTypeInputValue(e.target.value);
+    }
 
-    function createCategory(category, value) {
+    function createCategory(e, category, value, input) {
+        e.preventDefault()
         if (value === '') return;
         let exists;
         switch (category) {
             case 'brand':
                 exists = brands.filter(brand => brand.name === value);
+                setBrandInputValue("");
                 if (exists.length > 0) return alert('Ya existe esa categoría');
                 break;
             case 'type':
                 exists = types.filter(type => type.name === value);
+                setTypeInputValue("");
                 if (exists.length > 0) return alert('Ya existe esa categoría');
                 break;
             case 'model':
                 exists = models.filter(model => model.name === value);
+                setModelInputValue("");
                 if (exists.length > 0) return alert('Ya existe esa categoría');
                 break;
             default:
                 break;
         }
+        // referenceToForm.reset();
+        console.log(input);;
         axios.post(`http://localhost:8080/${category}`, { name: value }, {
             headers: {
                 'Content-Type': 'application/json',
@@ -85,12 +114,13 @@ const CreateCategories = () => {
             }
         })
     }
-    document.addEventListener('DOMContentLoaded', function(){
-        let formulario = document.getElementById('formu');
-        formulario.addEventListener('submit', function() {
-          formulario.reset();
-        });
-      });
+
+
+    // let formulario = formReference.current;
+    // formulario.addEventListener('submit', function() {
+    //   formulario.reset();
+    // });
+
     function submitDeleteForm(e) {
         e.preventDefault()
 
@@ -111,6 +141,7 @@ const CreateCategories = () => {
         }
         e.target[0].value = ""
     }
+
     setTimeout(() => {
         setRender(false)  
     }, 180);
@@ -125,36 +156,40 @@ const CreateCategories = () => {
             <div className="administracion__funciones">
                 <div className="administracion__categories">
                     <div className="create__categories">
-                    <form action="" id='formu'>
+                    <form action="" id='formu' ref={formReference}>
                         <h3 id='create'>Crear categorías</h3>
                         <div>
                             <h4>Marca: </h4>
-                            <input type="text" id='brand-input' />
-                            <button onClick={() => {
-                                const brand = document.getElementById('brand-input').value
+                            <input type="text" id='brand-input' value={brandInputValue} onInput={handleBrandInput}/>
+                            <button onClick={(e) => {
+                                const input = document.getElementById('brand-input');
+                                const brand = input.value;
                                 if (brands.includes(brand)) return alert("Ya existe esa categoría")
-                                createCategory('brand', brand)
+                                createCategory(e, 'brand', brand, input)
                                     .then(brand.value = "")
                             }}>Crear</button>
                         </div>
                         <div>
                             <h4>Modelo: </h4>
-                            <input type="text" id='model-input' />
-                            <button onClick={() => {
-                                const model = document.getElementById('model-input').value
+                            <input type="text" id='model-input' value={modelInputValue} onInput={handleModelInput}/>
+                            <button onClick={ (e) => {
+
+                                const input = document.getElementById('model-input');
+                                const model = input.value;
                                 if (models.includes(model)) return alert("Ya existe esa categoría")
-                                createCategory('model', model)
+                                createCategory(e, 'model', model, input)
                                     .then(model.value = "")
                             }}>Crear</button>
 
                         </div>
                         <div>
                             <h4>Tipo: </h4>
-                            <input type="text" id='type-input' />
-                            <button onClick={() => {
-                                const type = document.getElementById('type-input').value
-                                if (types.includes(type)) return alert('Ya existe esa categoría')
-                                createCategory('type', type)
+                            <input type="text" id='type-input' value={typeInputValue} onInput={handleTypeInput}/>
+                            <button onClick={(e) => {
+                                const input = document.getElementById('type-input');
+                                const type = input.value;
+                                if (types.includes(type)) return alert('Ya existe esa categoría');
+                                createCategory(e, 'type', type, input)
                                     .then(type.value = "")
                             }}>Crear</button>
 

@@ -16,7 +16,8 @@ import Register from "./Routes/Register";
 import Favs from "./Routes/Favs";
 import Profile from "./Routes/Profile";
 import ContextProvider from "./Context/GlobalContext";
-import './styles/styles.scss'
+import ProtectedRoute from "./Routes/ProtectedRoute";
+import './styles/styles.scss';
 
 function App() {
   return (
@@ -31,10 +32,31 @@ function App() {
               <Route path={routes.detail} element={<Detail />} />
               <Route path={routes.gallery} element={<ImageGallery />} />
               <Route path={routes.search} element={<Search />} />
-              <Route path={routes.admin} element={<Administracion />} />
+              <Route 
+                  path={routes.admin} 
+                  element={
+                        <ProtectedRoute>
+                              <Administracion />
+                        </ProtectedRoute>
+                  } 
+              />
               <Route path={routes.listVehicles}element={<ListVehicles />} />
-              <Route path={routes.categories} element={<Categories />} />
-              <Route path={routes.listUsers} element={<ListUsers />} />
+              <Route 
+                  path={routes.categories} 
+                  element={
+                        <ProtectedRoute>
+                              <Categories />
+                        </ProtectedRoute>
+                  } 
+              />
+              <Route 
+                  path={routes.listUsers} 
+                  element={
+                        <ProtectedRoute>
+                              <ListUsers />
+                        </ProtectedRoute>
+                  } 
+              />
               <Route path={routes.login} element={<Login />} />
               <Route path={routes.register} element={<Register />} />
               <Route path={routes.favs} element={<Favs />} />
