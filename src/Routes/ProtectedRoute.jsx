@@ -7,7 +7,6 @@ const ProtectedRoute = ({children}) => {
 
       
      const { isAdmin } = useContextGlobal();
-      console.log( isAdmin() );
 
       return (
             <>
