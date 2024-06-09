@@ -9,9 +9,8 @@ import { useContextGlobal } from "../Context/GlobalContext";
 const Login = () => {
   const [user, setUser] = useState({ usernameOrEmail: "", password: "" });
   const { usernameOrEmail, password } = user;
-  const { loginAPICall, storeToken, saveLoggedInUser, storeRol } = useContextGlobal();
+  const { loginAPICall, storeToken, saveLoggedInUser, storeRol, state } = useContextGlobal();
   const navigator = useNavigate();
-
   const [validateUsername, setValidateUsername] = useState(false);
   const [validatePassword, setValidatePassword] = useState(false);
   const [boton, habilitarBoton] = useState(true);
@@ -47,7 +46,6 @@ const Login = () => {
 
     try {
       const result = await loginAPICall(user, config);
-      console.log(result);
       storeRol(result.role.name);
       storeToken(token);
       saveLoggedInUser(usernameOrEmail);

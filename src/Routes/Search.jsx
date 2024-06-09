@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import axios from 'axios'
 import Card from '../Components/Card'
 import { useContextGlobal } from '../Context/GlobalContext'
 
@@ -10,11 +9,10 @@ const Search = () => {
     const { search } = useParams();
     const { state } = useContextGlobal();
     const {data} = state;
-
     const [cars, setCars] = useState([]);
-    console.log(state);
-    console.log(cars);
 
+    //console.log(state);
+    //console.log(cars);
     
     useEffect(() => {
         setCars(state.data)

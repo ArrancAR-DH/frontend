@@ -12,6 +12,7 @@ export const routes = {
     login: '/login', 
     register: '/register',
     favs: '/favs', 
+    profile: '/profile',
     url_allVehicles: `http://localhost:8080/vehicle/all`,
     url_allBrands: `http://localhost:8080/brand/all`,
     url_allModels: `http://localhost:8080/model/all`,
@@ -20,5 +21,4 @@ export const routes = {
     url_AllUsers: `http://localhost:8080/user/all`,
     url_postCar:  `http://localhost:8080/vehicle`,
     url_notificate: `http://localhost:8080/notification/send`
-
 } 

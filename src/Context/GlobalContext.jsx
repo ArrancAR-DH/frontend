@@ -11,7 +11,8 @@ export const initialState = {
   user: [],
   carSelected: {},
   likes: JSON.parse(localStorage.getItem("likes")) || [],
-  idUser: JSON.parse(localStorage.getItem("idUser")) || null
+  idUser: JSON.parse(localStorage.getItem("idUser")) || null,
+  loggedUser: JSON.parse(localStorage.getItem("user")) || null
 };
 
 export const ContextGlobal = createContext();
@@ -31,12 +32,16 @@ const ContextProvider = ({ children }) => {
       dispatch({ type: 'SET_LIKES', payload: likedVehicleIds });
       dispatch({ type: 'SET_USER_ID', payload: idUser });
       localStorage.setItem("idUser", JSON.stringify(idUser));
+      localStorage.setItem("user", JSON.stringify(response.data));
       return response.data;
     } catch (error) {
       console.error("Error:", error);
       throw error;
     }
   };
+
+
+
   const storeToken = (token) => localStorage.setItem("token", token);
   const storeRol = (rol) => localStorage.setItem("rol", rol);
   const getToken = () => localStorage.getItem("token");

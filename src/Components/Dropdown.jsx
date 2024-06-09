@@ -22,8 +22,8 @@ const DropDown = ({ isAuth }) => {
   };
 
   const handleChange = () => {
-    logout();
     navigator("/login");
+    logout();
     window.location.reload();
   };
   const handleClose = (event) => {
@@ -55,14 +55,14 @@ const DropDown = ({ isAuth }) => {
   return (
     <Stack direction="row" spacing={2}>
       <div>
-        <Button
+        <Button 
+          id="bg__button"
           ref={anchorRef}
-          id="composition-button"
+          // id="composition-button"
           aria-controls={open ? "composition-menu" : undefined}
           aria-expanded={open ? "true" : undefined}
           aria-haspopup="true"
-          onClick={handleToggle}
-        >
+          onClick={handleToggle}>
           {avatar}
         </Button>
         <Popper
@@ -87,10 +87,12 @@ const DropDown = ({ isAuth }) => {
                     autoFocusItem={open}
                     id="composition-menu"
                     aria-labelledby="composition-button"
-                    onKeyDown={handleListKeyDown}
-                  >
-                    <MenuItem onClick={handleClose}>Profile</MenuItem>
-                    <NavLink to="favs">
+                    
+                    onKeyDown={handleListKeyDown}>
+                    <NavLink to="/profile">
+                      <MenuItem onClick={handleClose} className="styles">Profile</MenuItem>
+                    </NavLink>
+                    <NavLink to="/favs">
                       <MenuItem onClick={handleClose}>Favs</MenuItem>
                     </NavLink>
                     <NavLink to="/login" onClick={handleChange}>

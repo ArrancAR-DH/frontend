@@ -14,6 +14,7 @@ import ListUsers from "./Routes/ListUsers";
 import Login from "./Routes/Login";
 import Register from "./Routes/Register";
 import Favs from "./Routes/Favs";
+import Profile from "./Routes/Profile";
 import ContextProvider from "./Context/GlobalContext";
 import './styles/styles.scss'
 
@@ -37,6 +38,7 @@ function App() {
               <Route path={routes.login} element={<Login />} />
               <Route path={routes.register} element={<Register />} />
               <Route path={routes.favs} element={<Favs />} />
+              <Route path={routes.profile} element={<Profile/>} />
             </Route>
           </Routes>
           </ContextProvider>
