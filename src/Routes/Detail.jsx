@@ -11,6 +11,7 @@ import { SiRoundcube } from "react-icons/si";
 import { FaBoxOpen } from "react-icons/fa";
 import { MdOutlinePlaylistAddCheckCircle } from "react-icons/md";
 import { FiAlertCircle } from "react-icons/fi";
+import DateRangePicker from "../Components/DateRangePicker.jsx";
 
 const Detail = () => {
       const { id } = useParams();
@@ -52,15 +53,19 @@ const Detail = () => {
                                                 <FaHeart className="heart" />
                                           </button>
                                     </div>
-                                    <h2>{car.brand?.name}</h2>
-                                    <h3>{car.model?.name}</h3>
-                                    <p>{car.description}</p>
-                                    <p>${utils.convertirPrecioIntAPesosStr(car.price)} ARS</p>
-                                    <p>{car.reserved ? "Reservado" : "Disponible"}</p>
+                                    <div className="details_container">
+                                          <h2>{car.brand?.name} {car.model?.name}</h2>
+                                          <p>{car.reserved ? "Reservado" : "Disponible"}</p>
+                                          
+                                          <p>{car.description}</p>
+                                          <p>${utils.convertirPrecioIntAPesosStr(car.price)} ARS</p>
                                     <Link to={`/cars/${id}/images`}>Ver más imágenes</Link>
+                                    </div>
+                                    <DateRangePicker/>
                               </div>
                         </div>
                   </div>
+                  
                   <div className="features__container">
                         <div className="features__frame">
                               <h3>Características</h3>
