@@ -123,38 +123,51 @@ const EditVehicleOverlay = ({ vehicle, setVehicleBeingEdited, setCars }) => {
         setImages([...images, response.data.secure_url]);
     };
     console.log(vehicle)
+
+    const [selectedBrand, setSelectedBrand] = useState(vehicle.brand.name);
+    const [selectedModel, setSelectedModel] = useState(vehicle.model.name);
+    const [selectedType, setSelectedType] = useState(vehicle.type.name);
+    const handleBrandChange = (e) => {
+        setSelectedBrand(e.target.value);
+    }
+    const handleModelChange = (e) => {
+        setSelectedModel(e.target.value);
+    }
+    const handleTypeChange = (e) => {
+        setSelectedType(e.target.value);
+    }
     return (
         <div className="editing__vehicle__overlay">
             <h2>Edicion de vehículo</h2>
             <form onSubmit={submitForm}>
                 <div>
                     <p>Marca:</p>
-                    <select defaultValue={vehicle.brand.name}>
-                        {brands?.map((brand, index) => {
-                            if (brand.name === vehicle.brand.name)
-                                return <option key={index} value={brand.name} selected>{brand.name}</option>
-                            return <option key={index} value={brand.name}>{brand.name}</option>
-                        })}
+                    <select value={selectedBrand} onChange={handleBrandChange}>
+                        {brands?.map((brand, index) => (
+                            <option key={index} value={brand.name}>
+                                {brand.name}
+                            </option>
+                        ))}
                     </select>
                 </div>
                 <div>
                     <p>Modelo:</p>
-                    <select defaultValue={vehicle.model.name}>
-                        {models?.map((model, index) => {
-                            if (model.name === vehicle.model.name)
-                                return <option key={index} value={model.name} selected>{model.name}</option>
-                            return <option key={index} value={model.name}>{model.name}</option>
-                        })}
+                    <select value={selectedModel} onChange={handleModelChange}>
+                        {models?.map((model, index) => (
+                            <option key={index} value={model.name}>
+                                {model.name}
+                            </option>
+                        ))}
                     </select>
                 </div>
                 <div>
                     <p>Tipo:</p>
-                    <select defaultValue={vehicle.type.name}>
-                        {types?.map((type, index) => {
-                            if (type.name === vehicle.type.name)
-                                return <option key={index} value={type.name} selected>{type.name}</option>
-                            return <option key={index} value={type.name}>{type.name}</option>
-                        })}
+                    <select value={selectedType} onChange={handleTypeChange}>
+                        {types?.map((type, index) => (
+                            <option key={index} value={type.name}>
+                                {type.name}
+                            </option>
+                        ))}
                     </select>
                 </div>
                 <div>
