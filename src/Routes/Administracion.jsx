@@ -139,7 +139,7 @@ const Administracion = () => {
                         <button>Ver lista de vehículos</button>
                     </Link>
                     <Link to='categories'>
-                        <button>Crear categorías</button>
+                        <button>Crear Categorías y Características</button>
                     </Link>
                     <Link to='listusers'>
                         <button>Ver lista de usuarios</button>
