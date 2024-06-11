@@ -157,14 +157,15 @@ const CreateCategories = () => {
         // Input Vacio
         if (featureInputValue === '') return; // Salir
 
+        setFeatureInputValue(""); 
+
         // Input existe en el array de features
-        if ( (features.filter(feature => feature.name === featureInputValue)) > 0 ) {
+        if ( (features.find(feature => feature.name === featureInputValue))) {
+            // Limpiar input
+            setFeatureInputValue(""); 
             return alert('Ya existe esa categoría'); // Salir con mensaje de error
         }
 
-        console.log( featureInputValue );
-        // Limpiar input
-        setBrandInputValue(""); 
 
         // API Call ( POST /feature ) - Crear Feature en el back
         axios.post(`${routes.url_base}/feature`, 
@@ -181,6 +182,8 @@ const CreateCategories = () => {
             }
         ).then(res => {
             alert("Característica creada con éxito");
+            // Limpiar input
+            setFeatureInputValue(""); 
             setFeatures([...features, res.data]);
          }).catch(err => {
             // console.log(err)
