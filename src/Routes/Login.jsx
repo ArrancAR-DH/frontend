@@ -69,7 +69,7 @@ const Login = () => {
           <div className="inputContainer">
             <input
               value={usernameOrEmail}
-              placeholder="Ingrese su email"
+              placeholder="Ingrese su email o nombre de usuario"
               name="usernameOrEmail"
               type="text"
               onChange={(e) =>

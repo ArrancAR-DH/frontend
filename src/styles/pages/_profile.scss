@@ -1,0 +1,10 @@
+.profile-card{
+      display: flex;
+      flex-direction: column;
+      border-radius: 17px;
+      background-color: $darkmode-primary-color;
+      margin: 20px;
+      padding: 20px;
+      gap: 15px;
+      color: $darkmode-text-color;
+}
