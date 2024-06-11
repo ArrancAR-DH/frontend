@@ -7,15 +7,11 @@ import EditVehicleOverlay from "../Components/EditVehicleOverlay";
 import AdministracionPhoneError from "../Components/Phone Error/AdministracionPhoneError";
 import { useContextGlobal } from "../Context/GlobalContext";
 
-
-
 const ListVehicles = () => {
-    const{state, getToken} = useContextGlobal(); 
+    const { state, getToken } = useContextGlobal();
     const token = getToken();
     const [loader, setLoader] = useState(true);
     const [cars, setCars] = useState([state.data]);
-
-
 
     // TODO
     function deleteVehiculo(id) {
@@ -46,58 +42,55 @@ const ListVehicles = () => {
     }
 
     useEffect(() => {
-         setCars(state.data);
-      }, [])
-     
+        setCars(state.data);
+    }, [])
 
     useEffect(() => {
         setTimeout(() => {
-          setLoader(false);
+            setLoader(false);
         }, 780);
-      }, []);
-
-
+    }, []);
 
     return (
         <>
-       {loader ?  <p className="loader">Loading....</p> :
-        <div className="lista__vehiculos__container">
-            <Link to={`/administracion`}><h3>Volver</h3></Link>
-            <h2 className="title__admin">Administración</h2>
-            <div className="administracion__funciones">
-                <div className="titulos__categorias">
-                    <h3>Image</h3>
-                    <h3>ID</h3>
-                    <h3>Marca</h3>
-                    <h3>Modelo</h3>
-                    <h3>Tipo</h3>
-                    <h3>Acción</h3>
-                </div>
-                {cars.map((car, index) => {
-                console.log(cars);
-                    return (
-                        <div className="vehiculo__container" key={index}>
-                            <img className="img-history" src={car.imgUrls?.[0]?.url} alt="" />
-                            <h4>{car.idVehicle}</h4>
-                            <h4>{car.brand.name}</h4>
-                            <p>{car.model.name}</p>
-                            <h4>{car.type.name}</h4>
-                            <div className="container__buttons">
-                                <button onClick={() => deleteVehiculo(car.idVehicle)}>
-                                    <img src={trashCan} />
-                                </button>
-                                <button onClick={() => editVehicle(car)}>
-                                    <img src={pencil} />
-                                </button>
-                            </div>
+            {loader ? <p className="loader">Loading....</p> :
+                <div className="lista__vehiculos__container">
+                    <Link to={`/administracion`}><h3>Volver</h3></Link>
+                    <h2 className="title__admin">Administración</h2>
+                    <div className="administracion__funciones">
+                        <div className="titulos__categorias">
+                            <h3>Image</h3>
+                            <h3>ID</h3>
+                            <h3>Marca</h3>
+                            <h3>Modelo</h3>
+                            <h3>Tipo</h3>
+                            <h3>Acción</h3>
                         </div>
-                    );
-                })}
-            </div>
-            {vehicleBeingEdited && <EditVehicleOverlay vehicle={vehicleBeingEdited} setVehicleBeingEdited={setVehicleBeingEdited} setCars={setCars} />}
-            <AdministracionPhoneError />
-        </div>
-        }
+                        {cars.map((car, index) => {
+                            console.log(cars);
+                            return (
+                                <div className="vehiculo__container" key={index}>
+                                    <img className="img-history" src={car.imgUrls?.[0]?.url} alt="" />
+                                    <h4>{car.idVehicle}</h4>
+                                    <h4>{car.brand.name}</h4>
+                                    <p>{car.model.name}</p>
+                                    <h4>{car.type.name}</h4>
+                                    <div className="container__buttons">
+                                        <button onClick={() => deleteVehiculo(car.idVehicle)}>
+                                            <img src={trashCan} />
+                                        </button>
+                                        <button onClick={() => editVehicle(car)}>
+                                            <img src={pencil} />
+                                        </button>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                    {vehicleBeingEdited && <EditVehicleOverlay vehicle={vehicleBeingEdited} setVehicleBeingEdited={setVehicleBeingEdited} setCars={setCars} />}
+                    <AdministracionPhoneError />
+                </div>
+            }
         </>
     );
 };
