@@ -7,30 +7,52 @@ const Profile = () => {
       console.log(datosUser);
       return (
             <>
-                  <div className="profile-card">
-                        <h1>Perfil</h1>
+                  <div className="profile-card-wrapper">
+                        <div className="profile-card">
+                              <h1>Información Personal</h1>
 
-                        <div className="card-item">
-                              <h3>Nombre</h3>
-                              <div>{datosUser.firstName}</div>
+                              <div className="profile-card-information-wrapper">
+                                    <div className="card-item">
+                                          <h3>Nombre</h3>
+                                          <input
+                                                value={datosUser.firstName}
+                                                type="text"
+                                          />
+                                    </div>
+
+                                    <div className="card-item">
+                                          <h3>Apellido</h3>
+                                          <input
+                                                value={datosUser.lastName}
+                                                type="text"
+                                          />
+                                    </div>
+
+                                    <div className="card-item">
+                                          <h3>E-mail</h3>
+                                          <input
+                                                value={datosUser.email}
+                                                type="text"
+                                          />
+                                    </div>
+
+                                    <div className="card-item">
+                                          <h3>Nombre de usuario</h3>
+                                          <input
+                                                value={datosUser.userName}
+                                                type="text"
+                                          />
+                                    </div>
+
+                                    <div className="card-item">
+                                          <h3>Contraseña</h3>
+                                          <input
+                                                value="**********"
+                                                type="text"
+                                          />
+                                    </div>
+                              </div>
                         </div>
-
-                        <div className="card-item">
-                              <h3>Apellido</h3>
-                              <div>{datosUser.lastName}</div>
-                        </div>
-
-                        <div className="card-item">
-                              <h3>E-mail</h3>
-                              <div>{datosUser.email}</div>
-                        </div>
-
-                        <div className="card-item">
-                              <h3>Nombre de usuario</h3>
-                              <div>{datosUser.userName}</div>
-                        </div>
-
-
                   </div>
             </>
       )

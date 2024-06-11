@@ -1,10 +1,60 @@
-.profile-card{
+
+
+.profile-card-wrapper {
+
       display: flex;
       flex-direction: column;
+      align-items: center;
+      padding: 50px 33vw;
+
+}
+
+.profile-card{
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       border-radius: 17px;
-      background-color: $darkmode-primary-color;
-      margin: 20px;
-      padding: 20px;
+      background-color: $darkmode-background-color-lighter;
+      // margin: 20vh;
+      padding: 5vw;
       gap: 15px;
-      color: $darkmode-text-color;
+      color: $lightmode-background-color;
+      border: 1px solid $darkmode-primary-color;
+
+      h1, h3, div {
+            font-weight: 400;
+      }
+      h1 {
+            font-size: 1.5rem;
+      }
+      h3 {
+            font-size: 1rem;
+      }
+
+      .profile-card-information-wrapper {
+            margin-top: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+
+      }
+
+      .card-item {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+
+            h3 {
+                  width: 100px;
+                  text-align: right;
+            }
+            input {
+                  height: 33px;
+                  padding: 10px;
+            }
+      }
+
 }
