@@ -17,8 +17,10 @@ export const routes = {
     url_allBrands: `http://localhost:8080/brand/all`,
     url_allModels: `http://localhost:8080/model/all`,
     url_allTypes: `http://localhost:8080/type/all`,
+    url_allFeatures: `http://localhost:8080/feature/all`,
     url_rest_api: `http://localhost:8080/auth`,
     url_AllUsers: `http://localhost:8080/user/all`,
     url_postCar:  `http://localhost:8080/vehicle`,
-    url_notificate: `http://localhost:8080/notification/send`
+    url_notificate: `http://localhost:8080/notification/send`,
+    url_base: `http://localhost:8080`,
 } 

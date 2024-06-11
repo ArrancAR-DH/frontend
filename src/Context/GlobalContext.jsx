@@ -8,6 +8,7 @@ export const initialState = {
   brand: [],
   type: [],
   model: [],
+  feature: [],
   user: [],
   carSelected: {},
   likes: JSON.parse(localStorage.getItem("likes")) || [],
@@ -151,6 +152,12 @@ const ContextProvider = ({ children }) => {
         Authorization: "Basic " + token,
       },
     }).then((res) => dispatch({ type: "GET_LIST_TYPE", payload: res.data }));
+    axios(routes.url_allFeatures, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Basic " + token,
+      },
+    }).then((res) => dispatch({ type: "GET_LIST_FEATURE", payload: res.data }));
   }, []);
 
   useEffect(() => {
