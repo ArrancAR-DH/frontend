@@ -43,14 +43,6 @@ const Profile = () => {
                                                 type="text"
                                           />
                                     </div>
-
-                                    <div className="card-item">
-                                          <h3>Contraseña</h3>
-                                          <input
-                                                value="**********"
-                                                type="text"
-                                          />
-                                    </div>
                               </div>
                         </div>
                   </div>
