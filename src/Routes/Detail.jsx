@@ -12,6 +12,10 @@ import { FaBoxOpen } from "react-icons/fa";
 import { MdOutlinePlaylistAddCheckCircle } from "react-icons/md";
 import { FiAlertCircle } from "react-icons/fi";
 import DateRangePicker from "../Components/DateRangePicker.jsx";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { carReserved } from "../utils/modals.js";
+
 
 const Detail = () => {
   const { id } = useParams();
@@ -37,6 +41,12 @@ const Detail = () => {
     }
   };
 
+  const handleSubmit = () =>{
+      carReserved(); 
+      
+
+  }
+
   const isLiked = state.likes.includes(car.idVehicle);
   return (
     <>
@@ -61,7 +71,8 @@ const Detail = () => {
               <p className="details_paraghrap">{car.description}</p>
             </div>
             <DateRangePicker />
-            <button className="btn">Reservar</button>
+            <button className="btn" onClick={handleSubmit}>Reservar</button>
+            <ToastContainer />
           </div>
         </div>
         <div className="features__container">

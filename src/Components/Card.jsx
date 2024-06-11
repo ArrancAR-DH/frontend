@@ -13,9 +13,9 @@ const Card = ({car}) => {
     if (isAlreadyLiked) {
       await dislikeVehicle(car.idVehicle);
       alert("Este vehículo ha sido eliminado de tu lista de favoritos.");
-    } else {
+     } else {
       await likeVehicle(car.idVehicle);
-      alert("El vehículo se agregó satisfactoriamente a tu lista de favoritos.");
+       alert("El vehículo se agregó satisfactoriamente a tu lista de favoritos.");
     }
   };
 
