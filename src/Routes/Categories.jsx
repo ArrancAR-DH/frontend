@@ -49,7 +49,6 @@ const CreateCategories = () => {
     }
     const handleFeatureInput = (e) => {
         setFeatureInputValue(e.target.value);
-        console.log( featureInputValue );
     }
 
     function createCategory(e, category, value, input) {
