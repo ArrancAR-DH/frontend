@@ -9,7 +9,7 @@ import { useContextGlobal } from "../Context/GlobalContext";
 const Login = () => {
   const [user, setUser] = useState({ usernameOrEmail: "", password: "" });
   const { usernameOrEmail, password } = user;
-  const { loginAPICall, storeToken, saveLoggedInUser, storeRol, state } = useContextGlobal();
+  const { loginAPICall, storeToken, saveLoggedInUser, storeRol } = useContextGlobal();
   const navigator = useNavigate();
   const [validateUsername, setValidateUsername] = useState(false);
   const [validatePassword, setValidatePassword] = useState(false);
@@ -54,7 +54,7 @@ const Login = () => {
       
       setTimeout(() => {
         navigator("/");
-        window.location.reload();
+        // window.location.reload();
       }, 1800);
      } catch (error) {
       errorMessage();

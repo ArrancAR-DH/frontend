@@ -16,6 +16,22 @@
       background-size: var(--s) calc(var(--s) * 0.577);
 
 
+
+      .detail__title{
+            padding: 14px;
+      }
+
+      .btn{
+            width: 59%;
+            height: 34px;
+            text-transform: uppercase;
+            background-color: #662549;
+            border: 1px solid #ae445a;
+            color: #f7fafc;
+             margin-top: 9px;
+            font-size: 13px;
+      }
+
       .selected__car__detail__container {
             display: flex;
             flex-direction: row;
@@ -24,19 +40,18 @@
                   margin: 0 20px;
                   display: flex;
                   flex-direction: column;
-                  // align-items: center;
                   text-align: left;
                   justify-content: center;
+                  height: 280px;
             }
-
             padding: 30px;
 
             img {
                   // margin: 0 5px 0 0;
                   border-radius: 20px;
-                  height: 30vw;
+                  height: 20vw;
                   max-width: 2000px;
-                  width: 50vw;
+                  width: 35vw;
                   object-fit: cover;
             }
             .container__heart {
@@ -46,16 +61,31 @@
             }
 
             .heart {
-                  color: grey;
+                  color: white;
                   transition: color 0.3s;
                   height: 30px;
                   width: 30px;
+                  transform: translate(-74px, -8px);
             }
 
             .container__heart.liked .heart {
                   color: red;
             }
-
+            /* DateRangePicker.css */
+            .react-datepicker__day--in-range {
+                  background-color: #ae445a !important;
+                  color: white !important;
+            }
+            
+            .react-datepicker__day--hovered {
+                  background-color: #ae445a !important;
+                  color: white !important;
+            }
+    
+            .details_paraghrap{
+                  width: 750px;
+            }
+           
 
             @media (max-width: 400px) {
                   .imagen__y__detalles__container {
@@ -75,8 +105,7 @@
       // background-color: #444444;
       // color: white;
       display: flex;
-      padding: 30px;
-
+      padding-left: 33px;
       @media (max-width: 600px) {
 
             margin-top: 20px;
@@ -92,6 +121,12 @@
             background-color: #444444;
             padding: 30px;
             border-radius: 20px;
+            margin-bottom: 25px;
+            transform: translate(3px, -17px);
+            #detail_link{
+                  color: white;
+                  padding-top: 10px;
+            }
 
             @media (max-width: 600px) {
 

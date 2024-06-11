@@ -24,7 +24,7 @@ const DropDown = ({ isAuth }) => {
   const handleChange = () => {
     navigator("/login");
     logout();
-    window.location.reload();
+    // window.location.reload();
   };
   const handleClose = (event) => {
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
@@ -58,7 +58,6 @@ const DropDown = ({ isAuth }) => {
         <Button 
           id="bg__button"
           ref={anchorRef}
-          // id="composition-button"
           aria-controls={open ? "composition-menu" : undefined}
           aria-expanded={open ? "true" : undefined}
           aria-haspopup="true"
@@ -89,13 +88,13 @@ const DropDown = ({ isAuth }) => {
                     aria-labelledby="composition-button"
                     
                     onKeyDown={handleListKeyDown}>
-                    <NavLink to="/profile">
-                      <MenuItem onClick={handleClose} className="styles">Profile</MenuItem>
+                    <NavLink to="/profile" className="styles">
+                      <MenuItem onClick={handleClose}>Profile</MenuItem>
                     </NavLink>
-                    <NavLink to="/favs">
+                    <NavLink to="/favs" className="styles">
                       <MenuItem onClick={handleClose}>Favs</MenuItem>
                     </NavLink>
-                    <NavLink to="/login" onClick={handleChange}>
+                    <NavLink to="/login" onClick={handleChange} className="styles">
                       <MenuItem onClick={handleClose}>Cerrar Sesion</MenuItem>
                     </NavLink>
                   </MenuList>
