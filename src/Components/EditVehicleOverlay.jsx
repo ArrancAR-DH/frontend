@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useContextGlobal } from "../Context/GlobalContext";
 
-
 const URL = import.meta.env.VITE_BACKEND_URL;
 
 const EditVehicleOverlay = ({ vehicle, setVehicleBeingEdited, setCars }) => {
