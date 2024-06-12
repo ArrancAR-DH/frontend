@@ -4,7 +4,7 @@ import axios from 'axios'
 import { useContextGlobal } from "../Context/GlobalContext";
 
 
-const URL = import.meta.env.VITE_BACKEND_URL;
+
 
 const EditVehicleOverlay = ({ vehicle, setVehicleBeingEdited, setCars }) => {
     const { getToken } = useContextGlobal();
@@ -80,7 +80,7 @@ const EditVehicleOverlay = ({ vehicle, setVehicleBeingEdited, setCars }) => {
     const [models, setModels] = useState([]);
     const [types, setTypes] = useState([]);
     useEffect(() => {
-            axios.get(`${URL}/brand/all`, {
+            axios.get("http://localhost:8080/brand/all", {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic ' + token,

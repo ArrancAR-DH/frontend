@@ -54,7 +54,7 @@ const Login = () => {
       
       setTimeout(() => {
         navigator("/");
-        // window.location.reload();
+        window.location.reload();
       }, 1800);
      } catch (error) {
       errorMessage();

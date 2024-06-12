@@ -15,14 +15,14 @@ const Administracion = () => {
     const [models, setModels] = useState([]);
     const [types, setTypes] = useState([]);
     const [render, setRender] = useState(true);
-
+    console.log(brands);
 
 
     useEffect(() => {
         setBrands(state.brand);
         setModels(state.model);
         setTypes(state.type)
-    }, [])
+    }, [state])
     
 
     function postVehiculo(postJson) {
@@ -153,7 +153,7 @@ const Administracion = () => {
                             <p>Marca:</p>
                             <select>
                                 <option selected disabled hidden>Elegí la marca acá</option>
-                                {state.brand.map((brand, index) => (
+                                {brands.map((brand, index) => (
                                     <option key={index}>{brand.name}</option>
                                 ))}
                             </select>
