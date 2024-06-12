@@ -3,27 +3,23 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Spinner from "../Components/Spinner";
- import AdministracionPhoneError from "../Components/Phone Error/AdministracionPhoneError";
+import AdministracionPhoneError from "../Components/Phone Error/AdministracionPhoneError";
 import { useContextGlobal } from "../Context/GlobalContext";
 
 const Administracion = () => {
-     const { state, getToken } = useContextGlobal();
+    const { state, getToken } = useContextGlobal();
     const token = getToken();
-
 
     const [brands, setBrands] = useState([]);
     const [models, setModels] = useState([]);
     const [types, setTypes] = useState([]);
     const [render, setRender] = useState(true);
 
-
-
     useEffect(() => {
         setBrands(state.brand);
         setModels(state.model);
         setTypes(state.type)
     }, [])
-    
 
     function postVehiculo(postJson) {
         axios.post("http://localhost:8080/vehicle", postJson, {
@@ -97,7 +93,7 @@ const Administracion = () => {
         const marcaId = brands.find((brand) => brand.name === marcaLabel).idBrand;
         const modeloId = models.find((model) => model.name === modeloLabel).idModel;
         const tipoId = types.find((type) => type.name === tipoLabel).idType;
-       
+
         const postJson = {
             plate: patente,
             description: descripcion,
@@ -122,97 +118,97 @@ const Administracion = () => {
     }
 
     setTimeout(() => {
-        setRender(false)  
-        }, 780);
-        
+        setRender(false)
+    }, 780);
+
 
     return (
         <>
-      
-        {render ?  <p className="loader">Loading....</p> : 
-        <div className="administracion__container">
-            <h2 className="title__admin">Administración</h2>
-            <div className="administracion__funciones">
-                <div className="botones">
-                    <button onClick={pressButton}>Agregar Vehículo</button>
-                    <Link to="listvehicles">
-                        <button>Ver lista de vehículos</button>
-                    </Link>
-                    <Link to='categories'>
-                        <button>Crear categorías</button>
-                    </Link>
-                    <Link to='listusers'>
-                        <button>Ver lista de usuarios</button>
-                    </Link>
-                </div>
-                {error && <p className="administracion__error">{error}</p>}
-                {success && <p className="administracion__success">Vehículo agregado con éxito.</p>}
-                {pressedButton && (
-                    <form onSubmit={submitForm} className="administracion__form__agregar__veh">
-                        <div>
-                            <p>Marca:</p>
-                            <select>
-                                <option selected disabled hidden>Elegí la marca acá</option>
-                                {state.brand.map((brand, index) => (
-                                    <option key={index}>{brand.name}</option>
-                                ))}
-                            </select>
+            {render ? <p className="loader">Loading....</p> : (
+                <div className="administracion__container">
+                    <h2 className="title__admin">Administración</h2>
+                    <div className="administracion__funciones">
+                        <div className="botones">
+                            <button onClick={pressButton}>Agregar Vehículo</button>
+                            <Link to="listvehicles">
+                                <button>Ver lista de vehículos</button>
+                            </Link>
+                            <Link to='categories'>
+                                <button>Crear categorías</button>
+                            </Link>
+                            <Link to='listusers'>
+                                <button>Ver lista de usuarios</button>
+                            </Link>
                         </div>
-                        <div>
-                            <p>Modelo:</p>
-                            <select>
-                                <option selected disabled hidden>Elegí el modelo acá</option>
-                                {state.model.map((model, index) => (
-                                    <option key={index}>{model.name}</option>
-                                ))}
-                            </select>
-                        </div>
-                        <div>
-                            <p>Tipo:</p>
-                            <select>
-                                <option selected disabled hidden>Elegí el tipo acá</option>
-                                {state.type.map((type, index) => (
-                                    <option key={index}>{type.name}</option>
-                                ))}
-                            </select>
-                        </div>
-                        <div>
-                            <p>Año:</p>
-                            <input type="text" placeholder="1997" />
-                        </div>
-                        <div>
-                            <p>Precio:</p>
-                            <input type="text" placeholder="30000" />
-                        </div>
-                        <div>
-                            <p>Patente:</p>
-                            <input type="text" placeholder="RNV761" />
-                        </div>
-                        <div>
-                            <p>Descripción:</p>
-                            <input type="text" placeholder="Vehículo premium, clásico. En perfecto estado, sin detalles." />
-                        </div>
-                        <div>
-                            <p>Imágenes:</p>
-                            <input type="file" accept="image/*" onChange={changeUploadImage} />
-                        </div>
-                        <div className="imagenes__subidas">
-                            {images.map((imageUrl, index) => (
-                                <div key={index}>
-                                    <a href={imageUrl} target="_blank"><img src={imageUrl} alt={`Imagen ${index + 1}`} /></a>
-                                    <button type="button" onClick={() => setImages(images.filter((_, i) => i !== index))}>Eliminar</button>
+                        {error && <p className="administracion__error">{error}</p>}
+                        {success && <p className="administracion__success">Vehículo agregado con éxito.</p>}
+                        {pressedButton && (
+                            <form onSubmit={submitForm} className="administracion__form__agregar__veh">
+                                <div>
+                                    <p>Marca:</p>
+                                    <select>
+                                        <option selected disabled hidden>Elegí la marca acá</option>
+                                        {state.brand.map((brand, index) => (
+                                            <option key={index}>{brand.name}</option>
+                                        ))}
+                                    </select>
                                 </div>
-                            ))}
-                        </div>
-                        <div className="botones__form">
-                            <button type="submit" className="administracion__submit__button">Agregar</button>
-                            <button type="button" onClick={pressButton}>Cancelar</button>
-                        </div>
-                    </form>
-                )}
-            </div>
-            <AdministracionPhoneError />
-        </div>}
+                                <div>
+                                    <p>Modelo:</p>
+                                    <select>
+                                        <option selected disabled hidden>Elegí el modelo acá</option>
+                                        {state.model.map((model, index) => (
+                                            <option key={index}>{model.name}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div>
+                                    <p>Tipo:</p>
+                                    <select>
+                                        <option selected disabled hidden>Elegí el tipo acá</option>
+                                        {state.type.map((type, index) => (
+                                            <option key={index}>{type.name}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div>
+                                    <p>Año:</p>
+                                    <input type="text" placeholder="1997" />
+                                </div>
+                                <div>
+                                    <p>Precio:</p>
+                                    <input type="text" placeholder="30000" />
+                                </div>
+                                <div>
+                                    <p>Patente:</p>
+                                    <input type="text" placeholder="RNV761" />
+                                </div>
+                                <div>
+                                    <p>Descripción:</p>
+                                    <input type="text" placeholder="Vehículo premium, clásico. En perfecto estado, sin detalles." />
+                                </div>
+                                <div>
+                                    <p>Imágenes:</p>
+                                    <input type="file" accept="image/*" onChange={changeUploadImage} />
+                                </div>
+                                <div className="imagenes__subidas">
+                                    {images.map((imageUrl, index) => (
+                                        <div key={index}>
+                                            <a href={imageUrl} target="_blank"><img src={imageUrl} alt={`Imagen ${index + 1}`} /></a>
+                                            <button type="button" onClick={() => setImages(images.filter((_, i) => i !== index))}>Eliminar</button>
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className="botones__form">
+                                    <button type="submit" className="administracion__submit__button">Agregar</button>
+                                    <button type="button" onClick={pressButton}>Cancelar</button>
+                                </div>
+                            </form>
+                        )}
+                    </div>
+                    <AdministracionPhoneError />
+                </div>
+            )}
         </>
     );
 };

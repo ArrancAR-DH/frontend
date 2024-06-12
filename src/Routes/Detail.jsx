@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
 import axios from "axios";
 import utils from "../functions/utils.js";
-import { useContextGlobal} from '../Context/GlobalContext.jsx'
+import { useContextGlobal } from '../Context/GlobalContext.jsx'
 import { FaHeart } from "react-icons/fa";
 import { FaShapes } from "react-icons/fa6";
 import { PiCube } from "react-icons/pi";
@@ -29,17 +29,17 @@ const Detail = () => {
             const isAlreadyLiked = state.likes.includes(car.idVehicle);
             if (isAlreadyLiked) {
                   await dislikeVehicle(car.idVehicle);
-                  alert("Este vehículo ha sido eliminado de tu lista de favoritos.");
+                  // alert("Este vehículo ha sido eliminado de tu lista de favoritos.");
             } else {
                   await likeVehicle(car.idVehicle);
-                  alert("El vehículo se agregó satisfactoriamente a tu lista de favoritos.");
-            }    
+                  // alert("El vehículo se agregó satisfactoriamente a tu lista de favoritos.");
+            }
             console.log("car.idVehicle: " + car.idVehicle);
       };
 
       const isLiked = state.likes.includes(car.idVehicle);
 
-      console.log( car );
+      console.log(car);
 
       return (
             <>
@@ -56,16 +56,14 @@ const Detail = () => {
                                     <div className="details_container">
                                           <h2>{car.brand?.name} {car.model?.name}</h2>
                                           <p>{car.reserved ? "Reservado" : "Disponible"}</p>
-                                          
                                           <p>{car.description}</p>
                                           <p>${utils.convertirPrecioIntAPesosStr(car.price)} ARS</p>
-                                    <Link to={`/cars/${id}/images`}>Ver más imágenes</Link>
+                                          <Link to={`/cars/${id}/images`}>Ver más imágenes</Link>
                                     </div>
-                                    <DateRangePicker/>
+                                    <DateRangePicker />
                               </div>
                         </div>
                   </div>
-                  
                   <div className="features__container">
                         <div className="features__frame">
                               <h3>Características</h3>
