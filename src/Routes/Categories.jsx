@@ -26,7 +26,7 @@ const CreateCategories = () => {
         setModels(state.model);
         setTypes(state.type);
         setFeatures(state.feature);
-    }, [state])
+    }, [])
  
     useEffect(() => {
         let formulario = formReference.current;
@@ -36,7 +36,7 @@ const CreateCategories = () => {
         //     formulario.reset();
         // });
         console.log( features );
-    });
+    },[]);
 
     const handleBrandInput = (e) => {
         setBrandInputValue(e.target.value);
@@ -96,8 +96,9 @@ const CreateCategories = () => {
                     setModels([...models, res.data])
                     break;
                 default:
-                    break;
+                    break;                
             }
+            window.location.reload();
          }).catch(err => {
             console.log(err)
         })

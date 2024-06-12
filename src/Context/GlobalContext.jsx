@@ -84,6 +84,7 @@ const ContextProvider = ({ children }) => {
   const logout = () => {
     localStorage.clear();
     sessionStorage.clear();
+    window.location.reload();
   };
 
   const likeVehicle = async (idVehicle) => {
