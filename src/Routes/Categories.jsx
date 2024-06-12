@@ -35,7 +35,7 @@ const CreateCategories = () => {
         // formulario?.addEventListener('submit', function() {
         //     formulario.reset();
         // });
-        console.log( features );
+        // console.log( features );
     },[]);
 
     const handleBrandInput = (e) => {
@@ -334,7 +334,7 @@ const CreateCategories = () => {
                           <div className="delete__features">
                               <h3>Eliminar característica</h3>
                               <div>
-                                  <h4>Marca: </h4>
+                                  <h4>Característica: </h4>
                                   <form onSubmit={deleteFeature} className='delete-feature-form'>
                                       <select>
                                           {features?.map((type, index) => {

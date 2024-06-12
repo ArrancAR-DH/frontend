@@ -10,7 +10,10 @@ import { PiCube } from "react-icons/pi";
 import { SiRoundcube } from "react-icons/si";
 import { FaBoxOpen } from "react-icons/fa";
 import { MdOutlinePlaylistAddCheckCircle } from "react-icons/md";
+import { FaRegSnowflake } from "react-icons/fa";
 import { FiAlertCircle } from "react-icons/fi";
+import { GiGearStickPattern } from "react-icons/gi";
+import { GiGearStick } from "react-icons/gi";
 import DateRangePicker from "../Components/DateRangePicker.jsx";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -80,17 +83,23 @@ const Detail = () => {
             <h3>Características</h3>
             <div className="items__frame">
               <div>
-                <FiAlertCircle />
-                &nbsp;&nbsp;{car.brand?.name}
+                <FaRegSnowflake />
+                &nbsp;&nbsp;Aire Acondicionado
+                {/* &nbsp;&nbsp;{car.brand?.name} */}
               </div>
               <div>
-                <MdOutlinePlaylistAddCheckCircle />
-                &nbsp;&nbsp;{car.model?.name}
+                <GiGearStickPattern />
+                &nbsp;&nbsp;Automático
+                {/* &nbsp;&nbsp;{car.brand?.name} */}
               </div>
-              <div>
-                <FaShapes />
-                &nbsp;&nbsp;{car.type?.name}
-              </div>
+              {/* <div> */}
+              {/*   <MdOutlinePlaylistAddCheckCircle /> */}
+              {/*   &nbsp;&nbsp;{car.model?.name} */}
+              {/* </div> */}
+              {/* <div> */}
+              {/*   <FaShapes /> */}
+              {/*   &nbsp;&nbsp;{car.type?.name} */}
+              {/* </div> */}
             </div>
             <Link to={`/cars/${id}/images`} id="detail_link">
               Ver más imágenes
