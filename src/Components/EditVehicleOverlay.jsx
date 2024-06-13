@@ -77,7 +77,7 @@ const EditVehicleOverlay = ({ vehicle, setVehicleBeingEdited, setCars }) => {
     const [models, setModels] = useState([]);
     const [types, setTypes] = useState([]);
     useEffect(() => {
-            axios.get("http://localhost:8080/brand/all", {
+        axios.get("http://localhost:8080/brand/all", {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic ' + token,
