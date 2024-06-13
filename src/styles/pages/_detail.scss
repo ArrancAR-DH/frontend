@@ -1,4 +1,5 @@
 .detail__container {
+      //! BACKGROUND
       /* control the size */
       --s: 400px;
 
@@ -7,38 +8,27 @@
       --c3: #302f2f;
 
       background: repeating-conic-gradient(from 30deg,
-            #0000 0 120deg,
-            var(--c3) 0 180deg) calc(0.5 * var(--s)) calc(0.5 * var(--s) * 0.577),
+                  #0000 0 120deg,
+                  var(--c3) 0 180deg) calc(0.5 * var(--s)) calc(0.5 * var(--s) * 0.577),
             repeating-conic-gradient(from 30deg,
-            var(--c1) 0 60deg,
-            var(--c2) 0 120deg,
-            var(--c3) 0 180deg);
+                  var(--c1) 0 60deg,
+                  var(--c2) 0 120deg,
+                  var(--c3) 0 180deg);
       background-size: var(--s) calc(var(--s) * 0.577);
-
 
       .selected__car__detail__container {
             display: flex;
-            flex-direction: row;
-
-            .imagen__y__detalles__container {
-                  margin: 0 20px;
-                  display: flex;
-                  flex-direction: column;
-                  // align-items: center;
-                  text-align: left;
-                  justify-content: center;
-            }
-
             padding: 30px;
 
             img {
                   // margin: 0 5px 0 0;
                   border-radius: 20px;
-                  height: 30vw;
-                  max-width: 2000px;
-                  width: 35vw;
+                  // height: 30vw;
+                  // max-width: 2000px;
+                  // width: 35vw;
                   object-fit: cover;
             }
+
             .container__heart {
                   background-color: transparent;
                   border: none;
@@ -52,95 +42,97 @@
                   width: 30px;
             }
 
+            .detalles__container {
+                  display: flex;
+                  justify-content: center;
+                  margin: 0 20px;
+                  flex-direction: column;
+                  text-align: left;
+
+                  .descripciones {
+                        max-width: 600px;
+
+                        h2 {
+                              display: flex;
+                              align-items: center;
+
+                              button {
+                                    padding-right: 10px;
+                                    width: fit-content;
+                              }
+                        }
+                  }
+
+                  .features__container {
+                        display: flex;
+                        flex-direction: column;
+                        background-color: #444444;
+                        width: fit-content;
+                        padding: 20px;
+                        margin-top: 20px;
+                        border-radius: 20px;
+
+                        .items__frame {
+                              display: flex;
+                              flex-wrap: wrap;
+                              margin-top: 10px;
+                              display: flex;
+                              flex-direction: row;
+                              width: 100%;
+
+                              div {
+                                    display: flex;
+                                    flex-direction: row;
+                                    align-items: center;
+                                    background-color: black;
+                                    padding: 10px;
+                                    margin-right: 5px;
+                              }
+                        }
+                  }
+            }
+
             .container__heart.liked .heart {
                   color: red;
             }
+
             /* DateRangePicker.css */
             .react-datepicker__day--in-range {
                   background-color: #ae445a !important;
                   color: white !important;
             }
-            
+
             .react-datepicker__day--hovered {
                   background-color: #ae445a !important;
                   color: white !important;
             }
-    
 
-
-            @media (max-width: 400px) {
-                  .imagen__y__detalles__container {
-                        flex-direction: column;
-
-                        img {
-                              margin: 0 0 20px 0;
-                              width: 80vw;
-                              height: 40vh;
-                        }
-                  }
-            }
       }
 }
 
-.features__container {
-      // background-color: #444444;
-      // color: white;
-      display: flex;
-      padding: 30px;
-
-      @media (max-width: 600px) {
-
-            margin-top: 20px;
-            padding-top: 20px;
-            border-radius: 0px;
+@media (max-width: 1000px) {
+      .selected__car__detail__container {
             flex-direction: column;
-            background-color: #444444;
-      }
 
-      .features__frame {
-            display: flex;
-            flex-direction: column;
-            background-color: #444444;
-            padding: 30px;
-            border-radius: 20px;
-
-            @media (max-width: 600px) {
-
-                  padding: 0px;
-                  border-radius: 0px;
-                  flex-direction: column;
-                  background-color: #00000000;
-            }
-
-            .items__frame {
-                  margin-top: 10px;
-                  display: flex;
-                  flex-direction: row;
+            img {
+                  height: 100%;
                   width: 100%;
+            }
 
-                  @media (max-width: 600px) {
-                        flex-direction: column;
-                  }
-
-                  div {
-                        display: flex;
-                        flex-direction: row;
-                        align-items: center;
-                        background-color: black;
-                        padding: 10px;
-                        margin-right: 5px;
-                        @media (max-width: 600px) {
-                              margin-right: 0px;
-                              margin-top: 10px;
-                        }
-                  }
+            .detalles__container {
+                  padding: 20px 0;
+                  margin-left: 0px;
+                  width: 100%;
             }
       }
-
 }
 
-@media (max-width: 600px) {
-      .items__frame {
-            flex-direction: column;
+@media (min-width: 1000px) {
+      .selected__car__detail__container {
+            img {
+                  height: 30vw;
+                  max-width: 2000px;
+                  width: 35vw;
+            }
       }
 }

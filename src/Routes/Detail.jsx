@@ -42,39 +42,35 @@ const Detail = () => {
       console.log(car);
 
       return (
-            <>
-                  <div className="detail__container">
-                        <h2>Vehículo seleccionado:</h2>
-                        <div className='selected__car__detail__container'>
-                              <img src={car.imgUrls?.[0]?.url} />
-                              <div className='imagen__y__detalles__container'>
-                                    <div className="card__car__information ">
+            <div className="detail__container">
+                  <h2>Vehículo seleccionado:</h2>
+                  <div className='selected__car__detail__container'>
+                        <img src={car.imgUrls?.[0]?.url} />
+                        <div className='detalles__container'>
+                              <div className="descripciones">
+                                    <h2>
                                           <button className={`container__heart ${isLiked ? "liked" : ""}`} onClick={handleLike}>
                                                 <FaHeart className="heart" />
                                           </button>
-                                    </div>
-                                    <div className="details_container">
-                                          <h2>{car.brand?.name} {car.model?.name}</h2>
-                                          <p>{car.reserved ? "Reservado" : "Disponible"}</p>
-                                          <p>{car.description}</p>
-                                          <p>${utils.convertirPrecioIntAPesosStr(car.price)} ARS</p>
-                                          <Link to={`/cars/${id}/images`}>Ver más imágenes</Link>
-                                    </div>
-                                    <DateRangePicker />
+                                          {car.brand?.name} {car.model?.name}
+                                    </h2>
+                                    <p>{car.reserved ? "Reservado" : "Disponible"}</p>
+                                    <p>{car.description}</p>
+                                    <p>${utils.convertirPrecioIntAPesosStr(car.price)} ARS</p>
+                                    <Link to={`/cars/${id}/images`}>Ver más imágenes</Link>
                               </div>
+                              <div className="features__container">
+                                    <h3>Características</h3>
+                                    <div className="items__frame">
+                                          <div><FiAlertCircle />&nbsp;&nbsp;{car.brand?.name}</div>
+                                          <div><MdOutlinePlaylistAddCheckCircle />&nbsp;&nbsp;{car.model?.name}</div>
+                                          <div><FaShapes />&nbsp;&nbsp;{car.type?.name}</div>
+                                    </div>
+                              </div>
+                              <DateRangePicker />
                         </div>
                   </div>
-                  <div className="features__container">
-                        <div className="features__frame">
-                              <h3>Características</h3>
-                              <div className="items__frame">
-                                    <div><FiAlertCircle />&nbsp;&nbsp;{car.brand?.name}</div>
-                                    <div><MdOutlinePlaylistAddCheckCircle />&nbsp;&nbsp;{car.model?.name}</div>
-                                    <div><FaShapes />&nbsp;&nbsp;{car.type?.name}</div>
-                              </div>
-                        </div>
-                  </div>
-            </>
+            </div>
       )
 }
 export default Detail
