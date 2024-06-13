@@ -3,26 +3,30 @@ import axios from 'axios'
 import AdministracionPhoneError from '../Components/Phone Error/AdministracionPhoneError'
  import { Link } from 'react-router-dom'
 import { useContextGlobal } from "../Context/GlobalContext";
+import { routes } from "../utils/routes";
 
 const CreateCategories = () => {
-     const { state, getToken } = useContextGlobal();
+    const { state, getToken } = useContextGlobal();
     const token = getToken();
     const [brands, setBrands] = useState([]);
     const [models, setModels] = useState([]);
     const [types, setTypes] = useState([]);
+    const [features, setFeatures] = useState([]);
     const [render, setRender] = useState(true);
     const [referenceToForm, setReferenceToForm] = useState();
-    const [ brandInputValue, setBrandInputValue ] = useState();
-    const [ modelInputValue, setModelInputValue ] = useState();
-    const [ typeInputValue, setTypeInputValue ] = useState();
+    const [ brandInputValue, setBrandInputValue ] = useState("");
+    const [ modelInputValue, setModelInputValue ] = useState("");
+    const [ typeInputValue, setTypeInputValue ] = useState("");
+    const [ featureInputValue, setFeatureInputValue ] = useState("");
     
     const formReference = useRef(null);
 
     useEffect(() => {
         setBrands(state.brand);
         setModels(state.model);
-        setTypes(state.type)
-    }, [state])
+        setTypes(state.type);
+        setFeatures(state.feature);
+    }, [])
  
     useEffect(() => {
         let formulario = formReference.current;
@@ -31,7 +35,8 @@ const CreateCategories = () => {
         // formulario?.addEventListener('submit', function() {
         //     formulario.reset();
         // });
-    });
+        console.log( features );
+    },[]);
 
     const handleBrandInput = (e) => {
         setBrandInputValue(e.target.value);
@@ -41,6 +46,10 @@ const CreateCategories = () => {
     }
     const handleTypeInput = (e) => {
         setTypeInputValue(e.target.value);
+    }
+    const handleFeatureInput = (e) => {
+        setFeatureInputValue(e.target.value);
+        console.log( featureInputValue );
     }
 
     function createCategory(e, category, value, input) {
@@ -67,7 +76,7 @@ const CreateCategories = () => {
                 break;
         }
         // referenceToForm.reset();
-        console.log(input);;
+        // console.log(input);;
         axios.post(`http://localhost:8080/${category}`, { name: value }, {
             headers: {
                 'Content-Type': 'application/json',
@@ -87,8 +96,9 @@ const CreateCategories = () => {
                     setModels([...models, res.data])
                     break;
                 default:
-                    break;
+                    break;                
             }
+            window.location.reload();
          }).catch(err => {
             console.log(err)
         })
@@ -140,6 +150,78 @@ const CreateCategories = () => {
             deleteCategory('type', typeObj.id)
         }
         e.target[0].value = ""
+    }
+
+    function createFeature(e) {
+        e.preventDefault()
+
+        // Input Vacio
+        if (featureInputValue === '') return; // Salir
+
+        setFeatureInputValue(""); 
+
+        // Input existe en el array de features
+        if ( (features.find(feature => feature.name === featureInputValue))) {
+            // Limpiar input
+            setFeatureInputValue(""); 
+            return alert('Ya existe esa categoría'); // Salir con mensaje de error
+        }
+
+
+        // API Call ( POST /feature ) - Crear Feature en el back
+        axios.post(`${routes.url_base}/feature`, 
+            // Payload
+            { 
+                name: featureInputValue 
+            }, 
+            // Headers
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': "Basic " + token,
+                },
+            }
+        ).then(res => {
+            alert("Característica creada con éxito");
+            // Limpiar input
+            setFeatureInputValue(""); 
+            setFeatures([...features, res.data]);
+         }).catch(err => {
+            // console.log(err)
+        })
+    }
+
+    const deleteFeature = (e) => {
+        e.preventDefault();
+
+            console.log( features );
+        // String Seleccionado
+        // console.log( e.target.elements[0].value );
+
+        const featureToDelete = features.find( 
+            (value) => {
+                return ( e.target.elements[0].value === value.name );
+            }
+        );
+
+        // Elemento del array local de features encontrado (el que voy a eliminar)
+        // console.log(featureToDelete);
+
+        // API Call ( POST /feature ) - Crear Feature en el back
+        axios.delete(`${routes.url_base}/feature/delete/${featureToDelete.idFeature}`, 
+            // Headers
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': "Basic " + token,
+                },
+            }
+        ).then(res => {
+            alert("Característica eliminada")
+            setFeatures(features.filter( (feature) => feature.idFeature !== featureToDelete.idFeature) )
+         }).catch(err => {
+            // console.log(err)
+        })
     }
 
     setTimeout(() => {
@@ -236,7 +318,37 @@ const CreateCategories = () => {
                             </form>
                         </div>
                     </div>
-                </div>
+
+                  </div>
+                        <div className='administracion__features'>
+                                <div className="create__features">
+                                          <form action="" id='formu-caracteristicas'>
+                                                <h3 id='create'>Crear característica</h3>
+                                                <div>
+                                                      <h4>Característica: </h4>
+                                                      <input type="text" id='feature-input' value={featureInputValue} onInput={handleFeatureInput}/>
+                                                      <button onClick={createFeature}>Crear</button>
+                                                </div>
+
+                                          </form>
+                                    </div>
+                          <div className="delete__features">
+                              <h3>Eliminar característica</h3>
+                              <div>
+                                  <h4>Marca: </h4>
+                                  <form onSubmit={deleteFeature} className='delete-feature-form'>
+                                      <select>
+                                          {features?.map((type, index) => {
+                                              return (
+                                                  <option key={index}>{type.name}</option>
+                                              )
+                                          })}
+                                      </select>
+                                      <button>Borrar</button>
+                                  </form>
+                              </div>
+                        </div>
+                  </div>
             </div>
             <AdministracionPhoneError />
         </div>}

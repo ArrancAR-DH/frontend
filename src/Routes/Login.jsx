@@ -9,7 +9,7 @@ import { useContextGlobal } from "../Context/GlobalContext";
 const Login = () => {
   const [user, setUser] = useState({ usernameOrEmail: "", password: "" });
   const { usernameOrEmail, password } = user;
-  const { loginAPICall, storeToken, saveLoggedInUser, storeRol, state } = useContextGlobal();
+  const { loginAPICall, storeToken, saveLoggedInUser, storeRol } = useContextGlobal();
   const navigator = useNavigate();
   const [validateUsername, setValidateUsername] = useState(false);
   const [validatePassword, setValidatePassword] = useState(false);
@@ -69,7 +69,7 @@ const Login = () => {
           <div className="inputContainer">
             <input
               value={usernameOrEmail}
-              placeholder="Ingrese su email"
+              placeholder="Ingrese su email o nombre de usuario"
               name="usernameOrEmail"
               type="text"
               onChange={(e) =>

@@ -8,6 +8,8 @@ export const reducer = (state, action) => {
         return { ...state, type: action.payload };
       case 'GET_LIST_MODEL':
         return { ...state, model: action.payload };
+      case 'GET_LIST_FEATURE':
+        return { ...state, feature: action.payload };
       case 'GET_LIST_USER':
         return { ...state, user: action.payload };
       case 'ADD_CAR':

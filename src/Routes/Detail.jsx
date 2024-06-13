@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Link } from 'react-router-dom'
-import { useParams } from 'react-router-dom'
+import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import utils from "../functions/utils.js";
 import { useContextGlobal } from '../Context/GlobalContext.jsx'
@@ -12,18 +12,21 @@ import { FaBoxOpen } from "react-icons/fa";
 import { MdOutlinePlaylistAddCheckCircle } from "react-icons/md";
 import { FiAlertCircle } from "react-icons/fi";
 import DateRangePicker from "../Components/DateRangePicker.jsx";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { carReserved } from "../utils/modals.js";
+
 
 const Detail = () => {
-      const { id } = useParams();
-      const { state, likeVehicle, dislikeVehicle } = useContextGlobal();
-      const [car, setCar] = useState({});
+  const { id } = useParams();
+  const { state, likeVehicle, dislikeVehicle } = useContextGlobal();
+  const [car, setCar] = useState({});
 
-      useEffect(() => {
-            axios.get(`http://localhost:8080/vehicle/${id}`).then((res) => {
-                  setCar(res.data);
-            });
-      }, []);
-
+  useEffect(() => {
+    axios.get(`http://localhost:8080/vehicle/${id}`).then((res) => {
+      setCar(res.data);
+    });
+  }, []);
 
       const handleLike = async () => {
             const isAlreadyLiked = state.likes.includes(car.idVehicle);

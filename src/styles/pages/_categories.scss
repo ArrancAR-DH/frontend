@@ -8,7 +8,8 @@
     }
     .administracion__categories {
         display: flex;
-        justify-content: space-around;
+        justify-content: center;
+        // gap: 5vw;
         flex-direction: row;
 
         button {
@@ -51,7 +52,7 @@
                 margin-top: 20px;
 
                 h4 {
-                    width: 72px;
+                    width: 120px;
 
                     text-align: right;
                 }
@@ -80,7 +81,96 @@
                 margin-top: 20px;
 
                 h4 {
-                    width: 72px;
+                    width: 120px;
+                    text-align: right;
+                }
+
+                select {
+                    max-width: 500px;
+                }
+
+                button {
+                    text-align: center;
+                    max-width: 100px;
+                }
+            }
+        }
+    }
+    .administracion__features {
+        display: flex;
+        justify-content: center;
+        // gap: 5vw;
+        flex-direction: row;
+
+        button {
+            font-size: 16px;
+            background-color: $darkmode-primary-color;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: background-color 100ms ease-in-out;
+
+            &:hover {
+                background-color: $darkmode-accent-color;
+            }
+        }
+
+        input,
+        select {
+            height: 40px;
+            width: 20vw;
+            font-size: 16px;
+            margin: 0 10px;
+            padding: 5px;
+            border: none;
+            border-radius: 5px;
+            background-color: $darkmode-background-color-lighter;
+            color: $darkmode-text-color;
+        }
+
+        .create__features {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100%;
+
+            div {
+                display: flex;
+                align-items: center;
+                width: fit-content;
+                margin-top: 20px;
+
+                h4 {
+                    width: 120px;
+                    text-align: right;
+                }
+
+                input {
+                    max-width: 500px;
+                }
+
+                button {
+                    text-align: center;
+                    max-width: 100px;
+                }
+            }
+        }
+
+        .delete__features {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100%;
+
+            div {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                margin-top: 20px;
+
+                h4 {
+                    width: 120px;
 
                     text-align: right;
                 }

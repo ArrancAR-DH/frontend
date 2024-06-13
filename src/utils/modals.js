@@ -57,4 +57,15 @@ export const userMessage = () =>
         draggable: true,
         progress: undefined,
     });
-    
+
+export const carReserved = () =>
+    toast.success("Auto reservado exitosamente", {
+        position: "top-right",
+        autoClose: 1800,
+        hideProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+    });
+        

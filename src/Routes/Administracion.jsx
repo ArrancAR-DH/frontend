@@ -19,7 +19,8 @@ const Administracion = () => {
         setBrands(state.brand);
         setModels(state.model);
         setTypes(state.type)
-    }, [])
+    }, [state])
+    
 
     function postVehiculo(postJson) {
         axios.post("http://localhost:8080/vehicle", postJson, {

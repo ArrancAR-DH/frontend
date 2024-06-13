@@ -6,6 +6,9 @@ import pencil from "../assets/pencil-solid.svg"
 import EditVehicleOverlay from "../Components/EditVehicleOverlay";
 import AdministracionPhoneError from "../Components/Phone Error/AdministracionPhoneError";
 import { useContextGlobal } from "../Context/GlobalContext";
+import { routes } from "../utils/routes"; 
+
+
 
 const ListVehicles = () => {
     const { state, getToken } = useContextGlobal();
@@ -40,6 +43,11 @@ const ListVehicles = () => {
 
         setVehicleBeingEdited(car);
     }
+    useEffect(() => {
+        axios(routes.url_allVehicles).then((res) =>         
+          setCars(res.data)
+        );
+      }, []);
 
     useEffect(() => {
         setCars(state.data);

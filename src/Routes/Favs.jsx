@@ -1,13 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import Card from "../Components/Card";
 import { useContextGlobal } from "../Context/GlobalContext";
 
 const Favs = () => {
   const { state } = useContextGlobal();
-   const { data, likes } = state;
+  const { data, likes } = state;
   const dataCars = [];
-  
-  
+    
   data.forEach((element) => {
     if (likes.includes(element.idVehicle)) {
       dataCars.push(element);
@@ -15,7 +14,7 @@ const Favs = () => {
   });
 
   return (
-    <>
+    <div className="container__favs">
       <h1>Destacados</h1>
       <div className="card__grid">
         {dataCars.map((car) => (
@@ -25,7 +24,7 @@ const Favs = () => {
       {state.likes.length === 0 && (
         <p>Ud. no tiene favoritos agregados aún!</p>
       )}
-    </>
+    </div>
   );
 };
 
