@@ -90,7 +90,7 @@ const ListUsers = () => {
                             <h3>ID</h3>
                             <h3>Nombre</h3>
                             <h3>Apellido</h3>
-                            <h3>Administrador</h3>
+                            <h3>Admin</h3>
                             <h3>Acciones</h3>
                         </div>
                         <ToastContainer />
@@ -100,19 +100,23 @@ const ListUsers = () => {
                                 <h4>{user.firstName}</h4>
                                 <h4>{user.lastName}</h4>
                                 <div>
-                                    {rol && (
+                                    {rol ? (
                                         <input
                                             className="check"
                                             type="checkbox"
                                             checked={checkedState[index]}
-                                            onChange={() => handleCheckboxChange(index)} />)}
+                                            onChange={() => handleCheckboxChange(index)}
+                                        />
+                                    ) : (
+                                        "-"
+                                    )}
                                 </div>
                                 <div className="container__buttons">
                                     <button onClick={() => handleApply(user, index)}>
-                                        <img src={pencil} />
+                                        <img src={pencil} alt="edit-image"/>
                                     </button>
                                     <button>
-                                        <img src={trashCan} alt="Delete" />
+                                        <img src={trashCan} alt="delete-image" />
                                     </button>
                                 </div>
                             </div>
