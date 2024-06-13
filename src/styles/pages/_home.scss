@@ -80,21 +80,22 @@
             }
         }
     }
+
     .container__heart {
         background-color: transparent;
         border: none;
         cursor: pointer;
-      }
-      
-      .heart {
+    }
+
+    .heart {
         color: grey;
         transition: color 0.3s;
-      }
-      
-      .container__heart.liked .heart {
+    }
+
+    .container__heart.liked .heart {
         color: red;
-      }
-      
+    }
+
 
     @media (max-width: 1219px) {
         flex-direction: column;
