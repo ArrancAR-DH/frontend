@@ -5,7 +5,6 @@
   font-family: $font-family;
 }
 
-
 .title__admin {
   width: fit-content;
   margin: 20px auto;
@@ -47,15 +46,16 @@ a {
   color: $lightmode-accent-color;
 }
 
-.loader{
- height: 80vh;
- width: 480px;
- margin: 0 auto;
- text-align: center;
- display: flex;
- justify-content: center;
- align-items: center;
+.loader {
+  height: 80vh;
+  width: 480px;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
 /* DateRangePicker.css */
 .datepicker-container {
   display: flex;
@@ -143,8 +143,3 @@ a {
   background-color: #ae445a !important;
   color: white !important;
 }
-
-
-
-
-
