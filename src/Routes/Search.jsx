@@ -3,8 +3,6 @@ import { useParams } from 'react-router-dom'
 import Card from '../Components/Card'
 import { useContextGlobal } from '../Context/GlobalContext'
 
-
-
 const Search = () => {
     const { search } = useParams();
     const { state } = useContextGlobal();

@@ -50,7 +50,7 @@ const Search = () => {
         <div className="outer__search">
             <form className='search' onSubmit={onFormSubmit}>
                 <input placeholder="Buscar autos..." type="text" value={search} onChange={onSearchChange} />
-                <DatePicker className='datepicker' selected={startDate} onChange={handleDateChange} startDate={startDate} endDate={endDate} dateFormat={'dd/MM/yyyy'} selectsRange />
+                <DatePicker className='datepicker' selected={startDate} onChange={handleDateChange} startDate={startDate} endDate={endDate} dateFormat={'dd/MM/yyyy'} selectsRange minDate={new Date()} />
                 <button type="submit">
                     Buscar 🔎
                 </button>

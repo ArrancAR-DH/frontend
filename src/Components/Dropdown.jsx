@@ -55,7 +55,7 @@ const DropDown = ({ isAuth }) => {
   return (
     <Stack direction="row" spacing={2}>
       <div>
-        <Button 
+        <Button
           id="bg__button"
           ref={anchorRef}
           aria-controls={open ? "composition-menu" : undefined}
@@ -86,7 +86,7 @@ const DropDown = ({ isAuth }) => {
                     autoFocusItem={open}
                     id="composition-menu"
                     aria-labelledby="composition-button"
-                    
+
                     onKeyDown={handleListKeyDown}>
                     <NavLink to="/profile" className="styles">
                       <MenuItem onClick={handleClose}>Profile</MenuItem>
