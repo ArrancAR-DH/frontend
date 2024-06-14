@@ -110,6 +110,35 @@
                     width: 40%;
                 }
             }
+
+            .features_assignment_section {
+                display: flex;
+                flex-direction: row;
+                gap: 15px;
+
+                .feature_checkboxes_block {
+
+                    width: 100%;
+                    display: grid;
+                    grid-template-columns: auto auto;
+                    // grid-template-columns: 50% 50%;
+
+                    .checkbox_and_feature_couple {
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: flex-start;
+                        align-items: center;
+                        width: 100%;
+                        input {
+                            width: 10%;
+                        }
+                        p {
+                            width: 90%;
+                        }
+                    }
+
+                }
+            }
         }
     }
 

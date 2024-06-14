@@ -22,6 +22,17 @@ export const reducer = (state, action) => {
         return { ...state, likes: action.payload };
       case 'SET_USER_ID':
         return { ...state, idUser: action.payload };  
+
+    // Agrego las siguientes funciones para poder manejar las actualizaciones del DOM de React de manera global, y que no tenga que recargar la pagina
+      case 'SET_LIST_BRAND': // Sobreescribo array de marcas (en el estado)
+        return { ...state, brand: action.payload };
+      case 'SET_LIST_TYPE': // Sobreescribo array de tipos (en el estado)
+        return { ...state, type: action.payload };
+      case 'SET_LIST_MODEL': // Sobreescribo array de modelos (en el estado)
+        return { ...state, model: action.payload };
+      case 'SET_LIST_FEATURES': // Sobreescribo array de caracteristicas (en el estado)
+        return { ...state, feature: action.payload };  
+
       default:
         return state;
     }

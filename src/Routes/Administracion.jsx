@@ -7,13 +7,14 @@ import Spinner from "../Components/Spinner";
 import { useContextGlobal } from "../Context/GlobalContext";
 
 const Administracion = () => {
-     const { state, getToken } = useContextGlobal();
+     const { state, getToken, dispatch } = useContextGlobal();
     const token = getToken();
 
 
     const [brands, setBrands] = useState([]);
     const [models, setModels] = useState([]);
     const [types, setTypes] = useState([]);
+    const [selectedFeatures, setSelectedFeatures] = useState([]);
     const [render, setRender] = useState(true);
     console.log(brands);
 
@@ -102,6 +103,7 @@ const Administracion = () => {
             plate: patente,
             description: descripcion,
             price: parseFloat(price),
+            // reserved: true/false. // Creo que faltaria este campo para el sprint 4
             model: {
                 idModel: modeloId,
             },
@@ -113,6 +115,12 @@ const Administracion = () => {
                 idBrand: marcaId,
             },
             imgUrls: [],
+            // "features": [ // Array de caracteristicas
+            //     {
+            //         "idFeature": 0,
+            //         "name": "string"
+            //     }
+            // ]
         };
         images.forEach((imagen) => {
             postJson.imgUrls.push({ url: imagen });
@@ -191,6 +199,25 @@ const Administracion = () => {
                         <div>
                             <p>Descripción:</p>
                             <input type="text" placeholder="Vehículo premium, clásico. En perfecto estado, sin detalles." />
+                        </div>
+                        <div className="features_assignment_section">
+                            <p>Características:</p>
+                            <div className="feature_checkboxes_block">
+                                {
+                                    state.feature.map(
+                                        (feature) => {
+                                            return(
+                                                <>
+                                                    <div className="checkbox_and_feature_couple">
+                                                        <input type="checkbox" />
+                                                        <p>{feature.name}</p>
+                                                    </div>
+                                                </>
+                                            )
+                                        }
+                                    )
+                                }
+                            </div>
                         </div>
                         <div>
                             <p>Imágenes:</p>

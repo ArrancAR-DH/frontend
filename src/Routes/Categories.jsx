@@ -1,42 +1,38 @@
 import React, { useEffect, useState, useRef } from 'react'
 import axios from 'axios'
 import AdministracionPhoneError from '../Components/Phone Error/AdministracionPhoneError'
- import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useContextGlobal } from "../Context/GlobalContext";
 import { routes } from "../utils/routes";
 
 const CreateCategories = () => {
-    const { state, getToken } = useContextGlobal();
+    const { state, getToken, dispatch } = useContextGlobal();
     const token = getToken();
-    const [brands, setBrands] = useState([]);
-    const [models, setModels] = useState([]);
-    const [types, setTypes] = useState([]);
-    const [features, setFeatures] = useState([]);
     const [render, setRender] = useState(true);
-    const [referenceToForm, setReferenceToForm] = useState();
+    // const [referenceToForm, setReferenceToForm] = useState();
     const [ brandInputValue, setBrandInputValue ] = useState("");
     const [ modelInputValue, setModelInputValue ] = useState("");
     const [ typeInputValue, setTypeInputValue ] = useState("");
     const [ featureInputValue, setFeatureInputValue ] = useState("");
-    
+
     const formReference = useRef(null);
 
-    useEffect(() => {
-        setBrands(state.brand);
-        setModels(state.model);
-        setTypes(state.type);
-        setFeatures(state.feature);
-    }, [])
- 
-    useEffect(() => {
-        let formulario = formReference.current;
-        console.log( formulario );
-        setReferenceToForm( formulario );
-        // formulario?.addEventListener('submit', function() {
-        //     formulario.reset();
-        // });
-        // console.log( features );
-    },[]);
+    // useEffect(() => {
+    //     setBrands(state.brand);
+    //     setModels(state.model);
+    //     setTypes(state.type);
+    //     setFeatures(state.feature);
+    // }, [])
+
+    // useEffect(() => {
+    //     let formulario = formReference.current;
+    //     console.log( formulario );
+    //     setReferenceToForm( formulario );
+    //     formulario?.addEventListener('submit', function() {
+    //         formulario.reset();
+    //     });
+    //     console.log( features );
+    // },[]);
 
     const handleBrandInput = (e) => {
         setBrandInputValue(e.target.value);
@@ -57,17 +53,17 @@ const CreateCategories = () => {
         let exists;
         switch (category) {
             case 'brand':
-                exists = brands.filter(brand => brand.name === value);
+                exists = state.brand.filter(brand => brand.name === value);
                 setBrandInputValue("");
                 if (exists.length > 0) return alert('Ya existe esa categoría');
                 break;
             case 'type':
-                exists = types.filter(type => type.name === value);
+                exists = state.type.filter(type => type.name === value);
                 setTypeInputValue("");
                 if (exists.length > 0) return alert('Ya existe esa categoría');
                 break;
             case 'model':
-                exists = models.filter(model => model.name === value);
+                exists = state.model.filter(model => model.name === value);
                 setModelInputValue("");
                 if (exists.length > 0) return alert('Ya existe esa categoría');
                 break;
@@ -82,46 +78,113 @@ const CreateCategories = () => {
                 'Authorization': "Basic " + token,
             },
         }).then(res => {
-            alert("Categoría creada con éxito")
-            console.log(res)
-            switch (category) {
-                case 'brand':
-                    setBrands([...brands, res.data])
-                    break;
-                case 'type':
-                    setTypes([...types, res.data])
-                    break;
-                case 'model':
-                    setModels([...models, res.data])
-                    break;
-                default:
-                    break;                
-            }
-            window.location.reload();
-         }).catch(err => {
-            console.log(err)
-        })
+                alert("Categoría creada con éxito")
+                console.log(res)
+                switch (category) {
+                    case 'brand':
+                        dispatch({ type: 'SET_LIST_BRAND', payload: [...state.brand, res.data] });
+                        break;
+                    case 'type':
+                        dispatch({ type: 'SET_LIST_TYPE', payload: [...state.type, res.data] });
+                        break;
+                    case 'model':
+                        dispatch({ type: 'SET_LIST_MODEL', payload: [...state.model, res.data] });
+                        break;
+                    default:
+                        break;                
+                }
+                // window.location.reload(); // Buenas chicos, saco esto debido a que hace una interrupcion en el flujo normal de actualizaciones del DOM de REACT
+            }).catch(err => {
+                console.log(err)
+            })
     }
 
-    // todo: delete category (falta del lado del back)
-    function deleteCategory(category, id) {
-        axios.delete(`http://localhost:8080/${category}/delete/${id}`, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Basic ' + token
+    function deleteCategory(e, string) {
+        e.preventDefault()
+
+        // Busco en el array correspondiente ( acceso a un campo del objeto <state> dinamicamente -> [`${string}`] ) el 
+        // objeto que debo usar como payload para hacer la llamada a la API usando una operacion DELETE en axios
+        const categoryToDelete = state[`${string}`].find( 
+            (value) => {
+                return ( e.target.elements[0].value === value.name );
             }
-        }).then(() => {
-            switch (category) {
-                case 'brand':
-                    setBrands(brands.filter(brand => brand.id !== id))
-                    break;
-                case 'type':
-                    setTypes(types.filter(type => type.id !== id))
-                    break;
-                default:
-                    break;
+        );
+
+        // Convierto el string normal que indica el tipo de categoria (brand, model, o type) a un arreglo
+        let aux = Array.from( string );
+
+        // Para luego hacer su primera letra, una mayuscula
+        let categoryIdField = ( aux.map( (letter, index) => { return ( index === 0 ) ? letter.toUpperCase() : letter } ) )
+
+        // // Prueba
+        // console.log( categoryIdField ); // Output: Array(5) [ "B", "r", "a", "n", "d" ]
+
+        // Convierto ahora el array de strings a un objeto de tipo String:
+        categoryIdField = categoryIdField.join(""); // Output: "Brand"/"Type"/"Model"
+
+        // Concateno al comienzo del string la palabra "id"
+        categoryIdField = "id" + categoryIdField; // Output: "idBrand"/"idType"/"idModel"
+
+        // API Call ( POST /feature ) - Eliminar Category en el back
+        axios.delete(
+            // URL:
+            `${ routes.url_base }/${ string }/delete/${ categoryToDelete[`${categoryIdField}`] }`,  // Ejemplo:
+            //        ^          ^     ^        ^                         ^
+            //       URL         |     |        |                         |
+            //                  "/"    |        |                         |
+            //                      category    |                         |
+            //                              "/delete/"                    |
+            //                                  ObjetoCategoria.campoIDdeObjetoCategoria (accedido dinamicamente)
+            // Headers:
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': "Basic " + token,
+                },
             }
-        })
+        ).then(res => {
+                alert("Categoria eliminada")
+                // setFeatures(features.filter( (feature) => feature.idFeature !== featureToDelete.idFeature) )
+                // console.log( state[`${string}`] );
+                // state[`${string}`].forEach(element => {
+                //     console.log( element );
+                //     console.log(element[`${categoryIdField}`]);
+                //     console.log(featureToDelete[`${categoryIdField}`]);
+                // });
+                // console.log( state[`${string}`].filter( (element) => element[`${categoryIdField}`] !== featureToDelete[`${categoryIdField}`] ) );
+                dispatch({ 
+                    type: `SET_LIST_${string.toUpperCase()}`, 
+                    payload: ( state[`${string}`].filter( (element) => element[`${categoryIdField}`] !== categoryToDelete[`${categoryIdField}`]) ) 
+                });
+                console.log( state[`${string}`] );
+            }).catch(err => {
+                alert("Categoria en uso: No es posible, eliminar una categoría que esté siendo usada!");
+            })
+        // }
+        //
+        // axios.delete(`http://localhost:8080/${category}/delete/${id}`, {
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         'Authorization': 'Basic ' + token
+        //     }
+        // }).then(() => {
+        //         switch (category) {
+        //             case 'brand':
+        //                 // setBrands(brands.filter(brand => brand.id !== id))
+        //                 dispatch({ type: 'SET_LIST_BRAND', payload: ( state.brand.filter(brand => brand.id !== id) ) });
+        //                 break;
+        //             case 'type':
+        //                 // setTypes(types.filter(type => type.id !== id))
+        //                 dispatch({ type: 'SET_LIST_TYPE', payload: ( state.type.filter(type => type.id !== id) ) });
+        //                 break;
+        //             case 'model':
+        //                 // setBrands(brands.filter(brand => brand.id !== id))
+        //                 dispatch({ type: 'SET_LIST_MODEL', payload: ( state.model.filter(type => type.id !== id) ) });
+        //                 break;
+        //             default:
+        //                 break;
+        //         }
+        //     })
     }
 
 
@@ -129,27 +192,6 @@ const CreateCategories = () => {
     // formulario.addEventListener('submit', function() {
     //   formulario.reset();
     // });
-
-    function submitDeleteForm(e) {
-        e.preventDefault()
-
-        if (confirm("¿Estás seguro de que deseas eliminar esta categoría?") === false) return console.log('cancelado')
-
-        // todo: agregar axios.delete(), eliminar esta linea
-        return alert("Función no implementada")
-
-        console.log(e.target[0])
-        const catLabel = e.target[0].value.toLowerCase();
-        // check for form's class to know which category to delete
-        if (e.target.className === 'delete-brand-form') {
-            const brandObj = brands.find(brand => brand.name.toLowerCase() === catLabel)
-            deleteCategory('brand', brandObj.id)
-        } else if (e.target.className === 'delete-type-form') {
-            const typeObj = types.find(type => type.name.toLowerCase() === catLabel)
-            deleteCategory('type', typeObj.id)
-        }
-        e.target[0].value = ""
-    }
 
     function createFeature(e) {
         e.preventDefault()
@@ -160,12 +202,11 @@ const CreateCategories = () => {
         setFeatureInputValue(""); 
 
         // Input existe en el array de features
-        if ( (features.find(feature => feature.name === featureInputValue))) {
+        if ( (state.feature.find(feature => feature.name === featureInputValue))) {
             // Limpiar input
             setFeatureInputValue(""); 
             return alert('Ya existe esa categoría'); // Salir con mensaje de error
         }
-
 
         // API Call ( POST /feature ) - Crear Feature en el back
         axios.post(`${routes.url_base}/feature`, 
@@ -181,23 +222,23 @@ const CreateCategories = () => {
                 },
             }
         ).then(res => {
-            alert("Característica creada con éxito");
-            // Limpiar input
-            setFeatureInputValue(""); 
-            setFeatures([...features, res.data]);
-         }).catch(err => {
-            // console.log(err)
-        })
+                alert("Característica creada con éxito");
+                // Limpiar input
+                setFeatureInputValue(""); 
+                dispatch({ type: 'SET_LIST_FEATURES', payload: [...state.feature, res.data] });
+                // setFeatures([...features, res.data]);
+            }).catch(err => {
+                // console.log(err)
+            })
     }
 
     const deleteFeature = (e) => {
         e.preventDefault();
 
-            console.log( features );
         // String Seleccionado
         // console.log( e.target.elements[0].value );
 
-        const featureToDelete = features.find( 
+        const featureToDelete = state.feature.find( 
             (value) => {
                 return ( e.target.elements[0].value === value.name );
             }
@@ -206,7 +247,7 @@ const CreateCategories = () => {
         // Elemento del array local de features encontrado (el que voy a eliminar)
         // console.log(featureToDelete);
 
-        // API Call ( POST /feature ) - Crear Feature en el back
+        // API Call ( POST /feature ) - Eliminar Feature en el back
         axios.delete(`${routes.url_base}/feature/delete/${featureToDelete.idFeature}`, 
             // Headers
             {
@@ -216,11 +257,12 @@ const CreateCategories = () => {
                 },
             }
         ).then(res => {
-            alert("Característica eliminada")
-            setFeatures(features.filter( (feature) => feature.idFeature !== featureToDelete.idFeature) )
-         }).catch(err => {
-            // console.log(err)
-        })
+                alert("Característica eliminada")
+                // setFeatures(features.filter( (feature) => feature.idFeature !== featureToDelete.idFeature) )
+                dispatch({ type: 'SET_LIST_FEATURES', payload: ( state.feature.filter( (feature) => feature.idFeature !== featureToDelete.idFeature)  ) });
+            }).catch(err => {
+                alert("Característica en uso: No es posible, eliminar una característica que esté siendo usada!");
+            })
     }
 
     setTimeout(() => {
@@ -229,128 +271,126 @@ const CreateCategories = () => {
 
     return (
         <>
-           {render ?  <p className="loader">Loading....</p> :  
+            {render ?  <p className="loader">Loading....</p> :  
 
-        <div className='create__categories__container'>
-            <Link to={`/administracion`}><h3>Volver</h3></Link>
-            <h2 className='title__admin'>Administración</h2>
-            <div className="administracion__funciones">
-                <div className="administracion__categories">
-                    <div className="create__categories">
-                    <form action="" id='formu' ref={formReference}>
-                        <h3 id='create'>Crear categorías</h3>
-                        <div>
-                            <h4>Marca: </h4>
-                            <input type="text" id='brand-input' value={brandInputValue} onInput={handleBrandInput}/>
-                            <button onClick={(e) => {
-                                const input = document.getElementById('brand-input');
-                                const brand = input.value;
-                                if (brands.includes(brand)) return alert("Ya existe esa categoría")
-                                createCategory(e, 'brand', brand, input)
-                                    .then(brand.value = "")
-                            }}>Crear</button>
-                        </div>
-                        <div>
-                            <h4>Modelo: </h4>
-                            <input type="text" id='model-input' value={modelInputValue} onInput={handleModelInput}/>
-                            <button onClick={ (e) => {
-
-                                const input = document.getElementById('model-input');
-                                const model = input.value;
-                                if (models.includes(model)) return alert("Ya existe esa categoría")
-                                createCategory(e, 'model', model, input)
-                                    .then(model.value = "")
-                            }}>Crear</button>
-
-                        </div>
-                        <div>
-                            <h4>Tipo: </h4>
-                            <input type="text" id='type-input' value={typeInputValue} onInput={handleTypeInput}/>
-                            <button onClick={(e) => {
-                                const input = document.getElementById('type-input');
-                                const type = input.value;
-                                if (types.includes(type)) return alert('Ya existe esa categoría');
-                                createCategory(e, 'type', type, input)
-                                    .then(type.value = "")
-                            }}>Crear</button>
-
-                        </div>
-                        </form>
-                    </div>
-                    <div className="delete__categories">
-                        <h3>Eliminar categorías</h3>
-                        <div>
-                            <h4>Marca: </h4>
-                            <form onSubmit={submitDeleteForm} className='delete-brand-form'>
-                                <select>
-                                    {brands?.map((type, index) => {
-                                        return (
-                                            <option key={index}>{type.name}</option>
-                                        )
-                                    })}
-                                </select>
-                                <button>Borrar</button>
-                            </form>
-                        </div>
-                        <div>
-                            <h4>Modelo: </h4>
-                            <select>
-                                {models?.map((type, index) => {
-                                    return (
-                                        <option key={index}>{type.name}</option>
-                                    )
-                                })}
-                            </select>
-                            <button>Borrar</button>
-                        </div>
-                        <div>
-                            <h4>Tipo: </h4>
-                            <form onSubmit={submitDeleteForm} className='delete-type-form'>
-                                <select>
-                                    {types?.map((type, index) => {
-                                        return (
-                                            <option key={index}>{type.name}</option>
-                                        )
-                                    })}
-                                </select>
-                                <button>Borrar</button>
-                            </form>
-                        </div>
-                    </div>
-
-                  </div>
-                        <div className='administracion__features'>
-                                <div className="create__features">
-                                          <form action="" id='formu-caracteristicas'>
-                                                <h3 id='create'>Crear característica</h3>
-                                                <div>
-                                                      <h4>Característica: </h4>
-                                                      <input type="text" id='feature-input' value={featureInputValue} onInput={handleFeatureInput}/>
-                                                      <button onClick={createFeature}>Crear</button>
-                                                </div>
-
-                                          </form>
+                <div className='create__categories__container'>
+                    <Link to={`/administracion`}><h3>Volver</h3></Link>
+                    <h2 className='title__admin'>Administración</h2>
+                    <div className="administracion__funciones">
+                        <div className="administracion__categories">
+                            <div className="create__categories">
+                                <form action="" id='formu' ref={formReference}>
+                                    <h3 id='create'>Crear categorías</h3>
+                                    <div>
+                                        <h4>Marca: </h4>
+                                        <input type="text" id='brand-input' value={brandInputValue} onInput={handleBrandInput}/>
+                                        <button onClick={(e) => {
+                                            const input = document.getElementById('brand-input');
+                                            const brand = input.value;
+                                            if (state.brand.includes(brand)) return alert("Ya existe esa categoría")
+                                            createCategory(e, 'brand', brand, input)
+                                        }}>Crear</button>
                                     </div>
-                          <div className="delete__features">
-                              <h3>Eliminar característica</h3>
-                              <div>
-                                  <h4>Característica: </h4>
-                                  <form onSubmit={deleteFeature} className='delete-feature-form'>
-                                      <select>
-                                          {features?.map((type, index) => {
-                                              return (
-                                                  <option key={index}>{type.name}</option>
-                                              )
-                                          })}
-                                      </select>
-                                      <button>Borrar</button>
-                                  </form>
-                              </div>
+                                    <div>
+                                        <h4>Modelo: </h4>
+                                        <input type="text" id='model-input' value={modelInputValue} onInput={handleModelInput}/>
+                                        <button onClick={ (e) => {
+                                            const input = document.getElementById('model-input');
+                                            const model = input.value;
+                                            if (state.model.includes(model)) return alert("Ya existe esa categoría")
+                                            createCategory(e, 'model', model, input)
+                                        }}>Crear</button>
+
+                                    </div>
+                                    <div>
+                                        <h4>Tipo: </h4>
+                                        <input type="text" id='type-input' value={typeInputValue} onInput={handleTypeInput}/>
+                                        <button onClick={(e) => {
+                                            const input = document.getElementById('type-input');
+                                            const type = input.value;
+                                            if (state.type.includes(type)) return alert('Ya existe esa categoría');
+                                            createCategory(e, 'type', type, input)
+                                        }}>Crear</button>
+
+                                    </div>
+                                </form>
+                            </div>
+                            <div className="delete__categories">
+                                <h3>Eliminar categorías</h3>
+                                <div>
+                                    <h4>Marca: </h4>
+                                    <form onSubmit={(e) => deleteCategory(e, "brand")} className='delete-brand-form'>
+                                        <select>
+                                            {state.brand?.map((type, index) => {
+                                                return (
+                                                    <option key={index}>{type.name}</option>
+                                                )
+                                            })}
+                                        </select>
+                                        <button>Borrar</button>
+                                    </form>
+                                </div>
+                                <div>
+                                    <h4>Modelo: </h4>
+                                    <form onSubmit={(e) => deleteCategory(e, "model")} className='delete-model-form'>
+                                        <select>
+                                            {state.model?.map((type, index) => {
+                                                return (
+                                                    <option key={index}>{type.name}</option>
+                                                )
+                                            })}
+                                        </select>
+                                        <button>Borrar</button>
+                                    </form>
+                                </div>
+                                <div>
+                                    <h4>Tipo: </h4>
+                                    <form onSubmit={(e) => deleteCategory(e, "type")} className='delete-type-form'>
+                                        <select>
+                                            {state.type?.map((type, index) => {
+                                                return (
+                                                    <option key={index}>{type.name}</option>
+                                                )
+                                            })}
+                                        </select>
+                                        <button>Borrar</button>
+                                    </form>
+                                </div>
+                            </div>
+
                         </div>
-                  </div>
-            </div>
-            <AdministracionPhoneError />
-        </div>}
+                        <div className='administracion__features'>
+                            <div className="create__features">
+                                <form action="" id='formu-caracteristicas'>
+                                    <h3 id='create'>Crear característica</h3>
+                                    <div>
+                                        <h4>Característica: </h4>
+                                        <input type="text" id='feature-input' value={featureInputValue} onInput={handleFeatureInput}/>
+                                        <button onClick={createFeature}>Crear</button>
+                                    </div>
+
+                                </form>
+                            </div>
+                            <div className="delete__features">
+                                <h3>Eliminar característica</h3>
+                                <div>
+                                    <h4>Característica: </h4>
+                                    <form onSubmit={deleteFeature} className='delete-feature-form'>
+                                        <select>
+                                            {state.feature?.map((type, index) => {
+                                                return (
+                                                    <option key={index}>{type.name}</option>
+                                                )
+                                            })}
+                                        </select>
+                                        <button>Borrar</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <AdministracionPhoneError />
+                </div>}
         </>
     )
 }
