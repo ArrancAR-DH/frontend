@@ -1,19 +1,21 @@
+.container__favs {
+    .card__grid {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+        justify-content: space-evenly;
 
-.container__favs{
+        a {
+            margin: 5px 20px;
+            width: 450px;
 
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 25px;
-    height: 65vh;
-}
-.card__grid{
-width: 650px;
- margin: 0 auto;
-text-align: center;
- padding-top: 15px;
-//  display: flex;
-//  justify-content: center;
-//  flex-wrap: wrap;
+            .car__card {
+                width: 100%;
+
+                .heart {
+                    color: red
+                }
+            }
+        }
+    }
 }

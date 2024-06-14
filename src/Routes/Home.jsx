@@ -6,9 +6,8 @@ import Pagination from "../Components/Pagination";
 import backgroundImage from "../assets/rental-cars-image.png"
 import Spinner from "../Components/Spinner";
 import { useContextGlobal } from "../Context/GlobalContext";
-import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-
+import Search from "../Components/Search/Search";
 
 const URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -23,31 +22,15 @@ const Home = () => {
   const currentRecords = state.data.slice(indexOfFirstRecord, indexOfLastRecord);
   const nPages = Math.ceil(state.data.length / recordsPerPage);
 
-  const onFormSubmit = (e) => {
-    e.preventDefault();
-    const text = e.target[0].value;
-    window.location.href = `/search/${text}`;
-  };
-  
   useEffect(() => {
     setTimeout(() => {
       setLoader(false);
     }, 780);
   }, []);
 
-  //? datepicker
-  const [date, setDate] = useState(new Date());
-  const [startDate, setStartDate] = useState();
-  const [endDate, setEndDate] = useState();
-  const handleDateChange = (dates) => {
-    const [start, end] = dates;
-    setStartDate(start);
-    setEndDate(end);
-  }
-
   return (
     <>
-       {loader ? <Spinner/> :  <div className="container__home">
+      {loader ? <Spinner /> : <div className="container__home">
         <div className="left__column">
           <img src={backgroundImage} alt="" className="background__image" />
           <div className="info">
@@ -62,16 +45,7 @@ const Home = () => {
           </div>
         </div>
         <div className="right__column">
-          <form className="search" onSubmit={onFormSubmit}>
-            <input placeholder="Buscar autos..." type="text" />
-            <DatePicker className='datepicker' selected={startDate} onChange={handleDateChange} startDate={startDate} endDate={endDate} dateFormat={
-              'dd/MM/yyyy'
-            
-            } selectsRange />
-            <button type="submit">
-              Buscar 🔎
-            </button>
-          </form>
+          <Search />
           <div className="container__cars__showcase">
             {currentRecords.map((car, key) => {
               return (
@@ -79,7 +53,7 @@ const Home = () => {
               );
             })}
           </div>
-          <Pagination nPages={nPages} currentPage={currentPage} setCurrentPage={setCurrentPage}/>
+          <Pagination nPages={nPages} currentPage={currentPage} setCurrentPage={setCurrentPage} />
         </div>
       </div>}
     </>

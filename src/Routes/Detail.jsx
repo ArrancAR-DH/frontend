@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import utils from "../functions/utils.js";
-import { useContextGlobal } from "../Context/GlobalContext.jsx";
+import { useContextGlobal } from '../Context/GlobalContext.jsx'
 import { FaHeart } from "react-icons/fa";
 import { FaShapes } from "react-icons/fa6";
 import { PiCube } from "react-icons/pi";
@@ -31,83 +31,52 @@ const Detail = () => {
     });
   }, []);
 
-  const handleLike = async () => {
-    const isAlreadyLiked = state.likes.includes(car.idVehicle);
-    if (isAlreadyLiked) {
-      await dislikeVehicle(car.idVehicle);
-      alert("Este vehículo ha sido eliminado de tu lista de favoritos.");
-    } else {
-      await likeVehicle(car.idVehicle);
-      alert(
-        "El vehículo se agregó satisfactoriamente a tu lista de favoritos."
-      );
-    }
-  };
+      const handleLike = async () => {
+            const isAlreadyLiked = state.likes.includes(car.idVehicle);
+            if (isAlreadyLiked) {
+                  await dislikeVehicle(car.idVehicle);
+                  // alert("Este vehículo ha sido eliminado de tu lista de favoritos.");
+            } else {
+                  await likeVehicle(car.idVehicle);
+                  // alert("El vehículo se agregó satisfactoriamente a tu lista de favoritos.");
+            }
+            console.log("car.idVehicle: " + car.idVehicle);
+      };
 
-  const handleSubmit = () =>{
-      carReserved(); 
-      
+      const isLiked = state.likes.includes(car.idVehicle);
 
-  }
+      console.log(car);
 
-  const isLiked = state.likes.includes(car.idVehicle);
-  return (
-    <>
-      <div className="detail__container">
-        <h2 className="detail__title">Vehículo seleccionado:</h2>
-        <div className="selected__car__detail__container">
-          <img src={car.imgUrls?.[0]?.url} />
-          <div className="imagen__y__detalles__container">
-            <div className="card__car__information ">
-              <div></div>
-              <button
-                className={`container__heart ${isLiked ? "liked" : ""}`}
-                onClick={handleLike}>
-                <FaHeart className="heart" />
-              </button>
+      return (
+            <div className="detail__container">
+                  <h2>Vehículo seleccionado:</h2>
+                  <div className='selected__car__detail__container'>
+                        <img src={car.imgUrls?.[0]?.url} />
+                        <div className='detalles__container'>
+                              <div className="descripciones">
+                                    <h2>
+                                          <button className={`container__heart ${isLiked ? "liked" : ""}`} onClick={handleLike}>
+                                                <FaHeart className="heart" />
+                                          </button>
+                                          {car.brand?.name} {car.model?.name}
+                                    </h2>
+                                    <p>{car.reserved ? "Reservado" : "Disponible"}</p>
+                                    <p>{car.description}</p>
+                                    <p>${utils.convertirPrecioIntAPesosStr(car.price)} ARS</p>
+                                    <Link to={`/cars/${id}/images`}>Ver más imágenes</Link>
+                              </div>
+                              <div className="features__container">
+                                    <h3>Características</h3>
+                                    <div className="items__frame">
+                                          <div><FiAlertCircle />&nbsp;&nbsp;{car.brand?.name}</div>
+                                          <div><MdOutlinePlaylistAddCheckCircle />&nbsp;&nbsp;{car.model?.name}</div>
+                                          <div><FaShapes />&nbsp;&nbsp;{car.type?.name}</div>
+                                    </div>
+                              </div>
+                              <DateRangePicker />
+                        </div>
+                  </div>
             </div>
-            <div className="details_container">
-              <h2>{car.brand?.name} {car.model?.name}</h2>
-              <p>${utils.convertirPrecioIntAPesosStr(car.price)} ARS</p>
-              <br />
-              {/* <p>{car.reserved ? "Reservado" : "Disponible"}</p> */}
-              <p className="details_paraghrap">{car.description}</p>
-            </div>
-            <DateRangePicker />
-            <button className="btn" onClick={handleSubmit}>Reservar</button>
-            <ToastContainer />
-          </div>
-        </div>
-        <div className="features__container">
-          <div className="features__frame">
-            <h3>Características</h3>
-            <div className="items__frame">
-              <div>
-                <FaRegSnowflake />
-                &nbsp;&nbsp;Aire Acondicionado
-                {/* &nbsp;&nbsp;{car.brand?.name} */}
-              </div>
-              <div>
-                <GiGearStickPattern />
-                &nbsp;&nbsp;Automático
-                {/* &nbsp;&nbsp;{car.brand?.name} */}
-              </div>
-              {/* <div> */}
-              {/*   <MdOutlinePlaylistAddCheckCircle /> */}
-              {/*   &nbsp;&nbsp;{car.model?.name} */}
-              {/* </div> */}
-              {/* <div> */}
-              {/*   <FaShapes /> */}
-              {/*   &nbsp;&nbsp;{car.type?.name} */}
-              {/* </div> */}
-            </div>
-            <Link to={`/cars/${id}/images`} id="detail_link">
-              Ver más imágenes
-            </Link>
-          </div>
-        </div>
-      </div>
-    </>
-  );
-};
-export default Detail;
+      )
+}
+export default Detail

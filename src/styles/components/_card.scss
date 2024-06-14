@@ -6,18 +6,13 @@
   --c2: #3d3e3f;
   --c3: #302f2f;
 
-  background: repeating-conic-gradient(
-        from 30deg,
-        #0000 0 120deg,
-        var(--c3) 0 180deg
-      )
-      calc(0.5 * var(--s)) calc(0.5 * var(--s) * 0.577),
-    repeating-conic-gradient(
-      from 30deg,
+  background: repeating-conic-gradient(from 30deg,
+      #0000 0 120deg,
+      var(--c3) 0 180deg) calc(0.5 * var(--s)) calc(0.5 * var(--s) * 0.577),
+    repeating-conic-gradient(from 30deg,
       var(--c1) 0 60deg,
       var(--c2) 0 120deg,
-      var(--c3) 0 180deg
-    );
+      var(--c3) 0 180deg);
   background-size: var(--s) calc(var(--s) * 0.577);
 
   display: flex;
@@ -29,23 +24,45 @@
   transition: transform 100ms ease-in-out;
   box-shadow: 0 0 30px 0 $darkmode-primary-color;
 
+  .car__image {
+    width: 60%;
+    position: relative;
+
+    img {
+      border-radius: 17px;
+      width: 100%;
+      box-shadow: 0 0 30px 0 black;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .container__heart {
+      position: absolute;
+      top: 120px;
+      right: 0;
+      left: 0;
+      bottom: 0;
+
+      .heart {
+        color: var(--c1);
+      }
+    }
+  }
+
   .card__car__information {
     display: flex;
     font-size: larger;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-evenly;
     // text-align: right;
     align-items: end;
     width: 40%;
     color: white;
-  }
 
-  img {
-    border-radius: 17px;
-    width: 60%;
-    box-shadow: 0 0 30px 0 black;
-    height: 200px;
-    object-fit: cover;
+    .name {
+      font-size: 20px;
+      text-align: right;
+    }
   }
 
   &:hover {
@@ -55,6 +72,7 @@
     --c2: #6e7072;
     --c3: #302f2f;
   }
+
   .favs {
     width: 40px;
     height: 40px;
@@ -66,63 +84,68 @@
     width: 45px;
     height: 45px;
     transform: translate(0px, -120px);
+
+    &.liked .heart {
+      color: red;
+    }
   }
+
   .heart {
     color: whitesmoke;
     color: $lightmode-primary-color;
     width: 30px;
     height: 25px;
+
     // transform: translate(-25px, 20px);
     &:hover {
       cursor: pointer;
     }
   }
 
-/** DARK-LIGHT MODE **/
-.checked{
+  /** DARK-LIGHT MODE **/
+  .checked {
     background-color: #12121296;
     color: white;
   }
-  .checked > h3 {
+
+  .checked>h3 {
     color: white;
   }
+
   .checked .card {
     background-color: #333;
     color: #fff;
   }
-  .checked a{
+
+  .checked a {
     color: #fff;
   }
-  .light{
+
+  .light {
     background-color: #ffffff;
     color: rgb(9, 9, 9);
   }
+
   .light a {
     color: rgb(7, 7, 7)
-  };
-  
-
+  }
 }
-
-
-
-
-
-
-
-
-
-
 
 @media (max-width: 750px) {
   .car__card {
     flex-direction: column;
-    max-height: 350px;
+    max-height: 300px;
     height: 400px;
+    justify-content: space-between;
 
-    img {
+    .car__image {
       width: 100%;
-      margin-bottom: 20px;
+      height: 200px;
+
+      img {
+        width: 100%;
+        margin-bottom: 20px;
+      }
     }
 
     .card__car__information {
