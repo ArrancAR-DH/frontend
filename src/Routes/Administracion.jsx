@@ -15,11 +15,12 @@ const Administracion = () => {
     const [types, setTypes] = useState([]);
     const [selectedFeatures, setSelectedFeatures] = useState([]);
     const [render, setRender] = useState(true);
-
+    const [cars, setCars] = useState([]);
     useEffect(() => {
         setBrands(state.brand);
         setModels(state.model);
         setTypes(state.type)
+        setCars(state.data);
     }, [state])
 
 
@@ -30,13 +31,13 @@ const Administracion = () => {
                 "Authorization": "Basic " + token,
             },
         }).then((response) => {
-                console.log(response);
-                setError("");
-            }).catch((error) => {
-                console.log(error);
-                setError("Hubo un error al guardar el vehículo.");
-                setSuccess(false);
-            });
+            console.log(response);
+            setError("");
+        }).catch((error) => {
+            console.log(error);
+            setError("Hubo un error al guardar el vehículo.");
+            setSuccess(false);
+        });
     }
 
     const [error, setError] = useState("");
@@ -76,12 +77,18 @@ const Administracion = () => {
 
     function submitForm(e) {
         e.preventDefault();
+        const patente = e.target[5].value.toUpperCase();
+        const patenteEnUso = cars.filter(car => car.plate === patente);
+        if (patenteEnUso.length > 0) {
+            setError("La patente ingresada ya está en uso.");
+            return;
+        }
+
         const marcaLabel = e.target[0].value;
         const modeloLabel = e.target[1].value;
         const tipoLabel = e.target[2].value;
         const year = e.target[3].value;
         const price = e.target[4].value;
-        const patente = e.target[5].value.toUpperCase();
         const descripcion = e.target[6].value;
         // if (!patente || !descripcion || !modeloLabel || !tipoLabel || !marcaLabel || !price || !year) {
         //     errorHandling("Por favor, complete todos los campos.");
@@ -149,7 +156,6 @@ const Administracion = () => {
                                 <button>Ver lista de usuarios</button>
                             </Link>
                         </div>
-
                         {error && <p className="administracion__error">{error}</p>}
                         {success && <p className="administracion__success">Vehículo agregado con éxito.</p>}
                         {pressedButton && (
@@ -203,7 +209,7 @@ const Administracion = () => {
                                         {
                                             state.feature.map(
                                                 (feature) => {
-                                                    return(
+                                                    return (
                                                         <>
                                                             <div className="checkbox_and_feature_couple">
                                                                 <input type="checkbox" />
