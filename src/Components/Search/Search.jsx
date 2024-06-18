@@ -18,7 +18,9 @@ const Search = () => {
                 car.model?.name.toLowerCase().includes(searchTerm) ||
                 (car.brand?.name.toLowerCase() + " " + car.model?.name.toLowerCase()).includes(searchTerm);
         })
-        const result = newCarsList.map(car => `${car.brand.name} ${car.model.name}`);
+        const result = newCarsList
+            .map(car => `${car.brand.name} ${car.model.name}`) // formatear lista
+            .slice(0, 5); // quedarse nada mas con los primeros 5 resultados
         setDropdownList(result);
     }
 
