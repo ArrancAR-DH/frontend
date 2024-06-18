@@ -4,7 +4,7 @@ import axios from 'axios'
 import { useContextGlobal } from "../Context/GlobalContext";
 
 const EditVehicleOverlay = ({ vehicle, setVehicleBeingEdited, setCars }) => {
-    const { getToken } = useContextGlobal();
+    const { state, getToken } = useContextGlobal();
     const token = getToken();
 
     const [error, setError] = useState("");
@@ -22,12 +22,17 @@ const EditVehicleOverlay = ({ vehicle, setVehicleBeingEdited, setCars }) => {
 
     function submitForm(e) {
         e.preventDefault();
+        const plate = e.target[5].value.toUpperCase();
+        const patenteEnUso = carsList.filter(car => car.plate === plate);
+        if (patenteEnUso.length > 0) {
+            setError("La patente ingresada ya está en uso.");
+            return;
+        }
         const brandLabel = e.target[0].value;
         const modelLabel = e.target[1].value;
         const typeLabel = e.target[2].value;
         const year = e.target[3].value;
         const price = e.target[4].value;
-        const plate = e.target[5].value.toUpperCase();
         const description = e.target[6].value;
 
         if (!plate || !description || !modelLabel || !typeLabel || !brandLabel || !price || !year) {
@@ -75,35 +80,16 @@ const EditVehicleOverlay = ({ vehicle, setVehicleBeingEdited, setCars }) => {
     const [images, setImages] = useState([]);
     const [brands, setBrands] = useState([]);
     const [models, setModels] = useState([]);
+    const [carsList, setCarsList] = useState([]);
     const [types, setTypes] = useState([]);
     useEffect(() => {
-        axios.get("http://localhost:8080/brand/all", {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Basic ' + token,
-            }
-        }).then((res) => {
-            setBrands(res.data);
-        });
-        axios.get("http://localhost:8080/model/all", {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Basic ' + token,
-            }
-        }).then((res) => {
-            setModels(res.data);
-        });
-        axios.get('http://localhost:8080/type/all', {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Basic ' + token,
-            }
-        }).then(res => {
-            setTypes(res.data)
-        })
+        setBrands(state.brand);
+        setModels(state.model);
+        setTypes(state.type);
+        setCarsList(state.data);
         const images = vehicle.imgUrls.map((img) => img.url);
         setImages(images);
-    }, [])
+    }, [state]);
 
     const changeUploadImage = async (e) => {
         const file = e.target.files[0];

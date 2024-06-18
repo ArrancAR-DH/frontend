@@ -21,8 +21,7 @@ const Administracion = () => {
         setModels(state.model);
         setTypes(state.type)
         setCars(state.data);
-    }, [state])
-
+    }, [state]);
 
     function postVehiculo(postJson) {
         axios.post("http://localhost:8080/vehicle", postJson, {
