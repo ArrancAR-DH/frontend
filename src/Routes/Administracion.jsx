@@ -166,6 +166,7 @@ const Administracion = () => {
         const year = e.target[3].value;
         const price = e.target[4].value;
         const descripcion = e.target[6].value;
+        const patente = e.target[5].value.toUpperCase();
 
         // Valido los campos del form de creacion de vehiculo
         if ( !validateFields(
