@@ -152,7 +152,6 @@ const Administracion = () => {
 
     function submitForm(e) {
         e.preventDefault();
-<<<<<<< HEAD
         // console.log( e.target );
         //
 
