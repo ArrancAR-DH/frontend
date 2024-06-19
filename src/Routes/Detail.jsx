@@ -6,9 +6,6 @@ import utils from "../functions/utils.js";
 import { useContextGlobal } from '../Context/GlobalContext.jsx'
 import { FaHeart } from "react-icons/fa";
 import { FaShapes } from "react-icons/fa6";
-import { PiCube } from "react-icons/pi";
-import { SiRoundcube } from "react-icons/si";
-import { FaBoxOpen } from "react-icons/fa";
 import { MdOutlinePlaylistAddCheckCircle } from "react-icons/md";
 import { FaRegSnowflake } from "react-icons/fa";
 import { FiAlertCircle } from "react-icons/fi";
@@ -18,15 +15,18 @@ import DateRangePicker from "../Components/DateRangePicker.jsx";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { carReserved } from "../utils/modals.js";
+import ShareRedes from "../Components/ShareRedes.jsx";
+import {routes} from "../utils/routes.js";
 
 const Detail = () => {
       const { id } = useParams();
       const { state, likeVehicle, dislikeVehicle } = useContextGlobal();
       const [car, setCar] = useState({});
-
+      const shareUrl = routes.url_front + "/cars/" + id ;
       useEffect(() => {
-            axios.get(`http://localhost:8080/vehicle/${id}`).then((res) => {
+            axios.get(`http://www.localhost:8080/vehicle/${id}`).then((res) => {
                   setCar(res.data);
+                 
             });
       }, []);
 
@@ -63,6 +63,7 @@ const Detail = () => {
                                     <p>{car.description}</p>
                                     <p>${utils.convertirPrecioIntAPesosStr(car.price)} ARS</p>
                                     <Link to={`/cars/${id}/images`}>Ver más imágenes</Link>
+                                    <ShareRedes url={shareUrl}/>
                               </div>
                               <div className="features__container">
                                     <h3>Características</h3>

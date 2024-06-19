@@ -16,12 +16,13 @@ const Administracion = () => {
     const [types, setTypes] = useState([]);
     const [selectedFeatures, setSelectedFeatures] = useState([]);
     const [render, setRender] = useState(true);
-
+    const [cars, setCars] = useState([]);
     useEffect(() => {
         setBrands(state.brand);
         setModels(state.model);
         setTypes(state.type)
         populateSelectedFeaturesArray();
+        setCars(state.data);
     }, [state]);
 
     function featuresCheckUncheck( e, feature, index ) {
@@ -151,6 +152,7 @@ const Administracion = () => {
 
     function submitForm(e) {
         e.preventDefault();
+<<<<<<< HEAD
         // console.log( e.target );
         //
 
@@ -164,7 +166,6 @@ const Administracion = () => {
         const tipoLabel = e.target[2].value;
         const year = e.target[3].value;
         const price = e.target[4].value;
-        const patente = e.target[5].value.toUpperCase();
         const descripcion = e.target[6].value;
 
         // Valido los campos del form de creacion de vehiculo
@@ -242,7 +243,6 @@ const Administracion = () => {
                                 <button>Ver lista de usuarios</button>
                             </Link>
                         </div>
-
                         {error && <p className="administracion__error">{error}</p>}
                         {success && <p className="administracion__success">Vehículo agregado con éxito.</p>}
                         {pressedButton && (

@@ -23,4 +23,5 @@ export const routes = {
     url_postCar:  `http://localhost:8080/vehicle`,
     url_notificate: `http://localhost:8080/notification/send`,
     url_base: `http://localhost:8080`,
+    url_front:`http://localhost:5173`,
 } 
