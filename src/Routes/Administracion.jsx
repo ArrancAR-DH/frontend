@@ -5,6 +5,7 @@ import axios from "axios";
 import Spinner from "../Components/Spinner";
 import AdministracionPhoneError from "../Components/Phone Error/AdministracionPhoneError";
 import { useContextGlobal } from "../Context/GlobalContext";
+import { routes } from "../utils/routes";
 
 const Administracion = () => {
     const { state, getToken, dispatch } = useContextGlobal();
@@ -20,17 +21,62 @@ const Administracion = () => {
         setBrands(state.brand);
         setModels(state.model);
         setTypes(state.type)
-    }, [state])
+        populateSelectedFeaturesArray();
+    }, [state]);
+
+    function featuresCheckUncheck( e, feature, index ) {
+        // e.preventDefault();
+        // console.log( e.target.checked );
+        // console.log( index );
+        selectedFeatures[index] = e.target.checked; // Modificacion en la referenciad del array de selectedFeatures
+        // console.log( selectedFeatures );
+    }
+
+    function populateSelectedFeaturesArray() {
+        let aux = state.feature.map(
+            (element, index) => {
+                return false;
+            }
+        )
+        setSelectedFeatures(aux);
+    };
+
+    function inyectarFeatures( res, feat, form ){
+        console.log(res.data.idVehicle);
+
+        console.log( feat );
+
+        // return;
+        //
 
 
-    function postVehiculo(postJson) {
+
+        feat.forEach(element => {
+            axios.post( `${routes.url_postCar}/${res.data.idVehicle}/features/${element.idFeature}`, 
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Basic " + token,
+                },
+            }).then((response) => {
+                    setError("");
+                }).catch((error) => {
+                    console.log(error);
+                    setError("Hubo un error al guardar el vehículo.");
+                    setSuccess(false);
+                });
+        });
+        setSuccess(true);
+    }
+
+    function postVehiculo(postJson, features, form) {
         axios.post("http://localhost:8080/vehicle", postJson, {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": "Basic " + token,
             },
         }).then((response) => {
-                console.log(response);
+                inyectarFeatures(response, features, form);
                 setError("");
             }).catch((error) => {
                 console.log(error);
@@ -74,8 +120,45 @@ const Administracion = () => {
         setImages([])
     }
 
+    function validateFields(
+        marca,
+        modelo,
+        tipo,
+        year,
+        price,
+        patente,
+        descripcion,
+        featuresV
+    ){
+
+        // console.log( marca );
+        // console.log( featuresV );
+        if ( 
+            marca === "" |
+                modelo === "" |
+                tipo === "" |
+                year === "" | year[0] === " " |
+                price === "" | price[0] === " " |
+                patente === "" | patente[0] === " " |
+                descripcion === "" | descripcion[0] === " " |
+                featuresV.length === 0
+        ){
+            setError( "Por favor completar todos los campos" );
+            return false;
+        }
+        return true;
+    }
+
     function submitForm(e) {
         e.preventDefault();
+        // console.log( e.target );
+        //
+
+        const featuresV = [];
+        selectedFeatures.forEach((element, index) => {
+            if( element === true ) featuresV.push( state.feature[index] );
+        });
+
         const marcaLabel = e.target[0].value;
         const modeloLabel = e.target[1].value;
         const tipoLabel = e.target[2].value;
@@ -83,18 +166,28 @@ const Administracion = () => {
         const price = e.target[4].value;
         const patente = e.target[5].value.toUpperCase();
         const descripcion = e.target[6].value;
-        // if (!patente || !descripcion || !modeloLabel || !tipoLabel || !marcaLabel || !price || !year) {
-        //     errorHandling("Por favor, complete todos los campos.");
-        //     return;
-        // }
-        // if (isNaN(parseFloat(price)) || isNaN(parseInt(year))) {
-        //     errorHandling("Por favor, ingrese un precio y un año válidos.");
-        //     return;
-        // }
-        // errorHandling(false);
+
+        // Valido los campos del form de creacion de vehiculo
+        if ( !validateFields(
+            marcaLabel,
+            modeloLabel,
+            tipoLabel,
+            year,
+            price,
+            patente,
+            descripcion,
+            featuresV )
+        ){
+            // Clear form
+            e.target.reset();
+            return;
+        }
+
         const marcaId = brands.find((brand) => brand.name === marcaLabel).idBrand;
         const modeloId = models.find((model) => model.name === modeloLabel).idModel;
         const tipoId = types.find((type) => type.name === tipoLabel).idType;
+
+
 
         const postJson = {
             plate: patente,
@@ -103,27 +196,27 @@ const Administracion = () => {
             // reserved: true/false. // Creo que faltaria este campo para el sprint 4
             model: {
                 idModel: modeloId,
+                name: modeloLabel,
             },
             type: {
                 idType: tipoId,
+                name: tipoLabel,
             },
             year: year,
             brand: {
                 idBrand: marcaId,
+                name: marcaLabel,
             },
             imgUrls: [],
-            // "features": [ // Array de caracteristicas
-            //     {
-            //         "idFeature": 0,
-            //         "name": "string"
-            //     }
-            // ]
         };
+
+        console.log( postJson );
+
+        // return;
         images.forEach((imagen) => {
             postJson.imgUrls.push({ url: imagen });
         });
-        postVehiculo(postJson);
-        setSuccess(true);
+        postVehiculo(postJson, featuresV, e.target);
     }
 
     setTimeout(() => {
@@ -153,87 +246,101 @@ const Administracion = () => {
                         {error && <p className="administracion__error">{error}</p>}
                         {success && <p className="administracion__success">Vehículo agregado con éxito.</p>}
                         {pressedButton && (
-                            <form onSubmit={submitForm} className="administracion__form__agregar__veh">
-                                <div>
-                                    <p>Marca:</p>
-                                    <select>
-                                        <option selected disabled hidden>Elegí la marca acá</option>
-                                        {state.brand.map((brand, index) => (
-                                            <option key={index}>{brand.name}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div>
-                                    <p>Modelo:</p>
-                                    <select>
-                                        <option selected disabled hidden>Elegí el modelo acá</option>
-                                        {state.model.map((model, index) => (
-                                            <option key={index}>{model.name}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div>
-                                    <p>Tipo:</p>
-                                    <select>
-                                        <option selected disabled hidden>Elegí el tipo acá</option>
-                                        {state.type.map((type, index) => (
-                                            <option key={index}>{type.name}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div>
-                                    <p>Año:</p>
-                                    <input type="text" placeholder="1997" />
-                                </div>
-                                <div>
-                                    <p>Precio:</p>
-                                    <input type="text" placeholder="30000" />
-                                </div>
-                                <div>
-                                    <p>Patente:</p>
-                                    <input type="text" placeholder="RNV761" />
-                                </div>
-                                <div>
-                                    <p>Descripción:</p>
-                                    <input type="text" placeholder="Vehículo premium, clásico. En perfecto estado, sin detalles." />
-                                </div>
-                                <div className="features_assignment_section">
-                                    <p>Características:</p>
-                                    <div className="feature_checkboxes_block">
-                                        {
-                                            state.feature.map(
-                                                (feature) => {
-                                                    return(
-                                                        <>
-                                                            <div className="checkbox_and_feature_couple">
-                                                                <input type="checkbox" />
-                                                                <p>{feature.name}</p>
-                                                            </div>
-                                                        </>
-                                                    )
-                                                }
-                                            )
-                                        }
+                            <>
+                                <form onSubmit={submitForm} className="administracion__form__agregar__veh">
+                                    <h3 className="titulo_agregar_vehiculo_form">Crear un nuevo vehículo</h3>
+                                    <div className="vehicle_form_row">
+                                        <div className="first_column">Marca:</div>
+                                        <select defaultValue="" required>
+                                            <option value="" selected disabled hidden>Seleccionar la marca del vehiculo</option>
+                                            {state.brand.map((brand, index) => (
+                                                <option key={index}>{brand.name}</option>
+                                            ))}
+                                        </select>
                                     </div>
-                                </div>
-                                <div>
-                                    <p>Imágenes:</p>
-                                    <input type="file" accept="image/*" onChange={changeUploadImage} />
-                                </div>
-                                <div className="imagenes__subidas">
-                                    {images.map((imageUrl, index) => (
-                                        <div key={index}>
-                                            <a href={imageUrl} target="_blank"><img src={imageUrl} alt={`Imagen ${index + 1}`} /></a>
-                                            <button type="button" onClick={() => setImages(images.filter((_, i) => i !== index))}>Eliminar</button>
-
+                                    <div className="vehicle_form_row">
+                                        <div className="first_column">Modelo:</div>
+                                        <select defaultValue="" required>
+                                            <option value="" selected disabled hidden>Seleccionar el modelo del vehículo</option>
+                                            {state.model.map((model, index) => (
+                                                <option key={index}>{model.name}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    <div className="vehicle_form_row">
+                                        <div className="first_column">Tipo:</div>
+                                        <select defaultValue="" required>
+                                            <option value="" selected disabled hidden>Seleccionar el tipo del vehículo</option>
+                                            {state.type.map((type, index) => (
+                                                <option key={index}>{type.name}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    <div className="vehicle_form_row">
+                                        <div className="first_column">Año:</div>
+                                        <input type="text" placeholder="Insertar año del vehículo" />
+                                    </div>
+                                    <div className="vehicle_form_row">
+                                        <div className="first_column">Precio:</div>
+                                        <input type="text" placeholder="Insertar precio de vehículo" />
+                                    </div>
+                                    <div className="vehicle_form_row">
+                                        <div className="first_column">Patente:</div>
+                                        <input type="text" placeholder="Insertar patente del vehículo" />
+                                    </div>
+                                    <div className="vehicle_form_row">
+                                        <div className="first_column">Descripción:</div>
+                                        <input type="text" placeholder="Insertar una breve Descripción del vehiculo" />
+                                    </div>
+                                    <div className="vehicle_form_row">
+                                        <div className="first_column">Características:</div>
+                                        <div className="second_column" className="feature_checkboxes_block">
+                                            {
+                                                state.feature.map(
+                                                    (feature, index) => {
+                                                        return( // (El key es para eliminar un warning de REACT sobre la performance de la pag.)
+                                                            <React.Fragment key={feature.idFeature}> 
+                                                                <div className="checkbox_and_feature_couple">
+                                                                    <input 
+                                                                        className="feature_input_checkbox"
+                                                                        type="checkbox" 
+                                                                        id={`feature${feature.idFeature}`} 
+                                                                        onInput={(e) => featuresCheckUncheck(e, feature, index)}
+                                                                    />
+                                                                    <label 
+                                                                        className="feature_checkbox_title" 
+                                                                        htmlFor={`feature${feature.idFeature}`}
+                                                                    >
+                                                                        {feature.name}
+                                                                    </label>
+                                                                </div>
+                                                            </React.Fragment>
+                                                        )
+                                                    }
+                                                )
+                                            }
                                         </div>
-                                    ))}
-                                </div>
-                                <div className="botones__form">
-                                    <button type="submit" className="administracion__submit__button">Agregar</button>
-                                    <button type="button" onClick={pressButton}>Cancelar</button>
-                                </div>
-                            </form>
+                                    </div>
+                                    <div className="vehicle_form_row">
+                                        <div className="first_column">Imágenes:</div>
+                                        <input id="file_input" type="file" accept="image/*" onChange={changeUploadImage} />
+                                        <label htmlFor="file_input" className="file_input_label">Choose a file...</label>
+                                    </div>
+                                    <div className="imagenes__subidas">
+                                        {images.map((imageUrl, index) => (
+                                            <div key={index}>
+                                                <a href={imageUrl} target="_blank"><img src={imageUrl} alt={`Imagen ${index + 1}`} /></a>
+                                                <button type="button" onClick={() => setImages(images.filter((_, i) => i !== index))}>Eliminar</button>
+
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <div className="botones__form">
+                                        <button type="submit" className="administracion__submit__button">Agregar</button>
+                                        <button type="button" onClick={pressButton}>Cancelar</button>
+                                    </div>
+                                </form>
+                            </>
                         )}
                     </div>
                     <AdministracionPhoneError />

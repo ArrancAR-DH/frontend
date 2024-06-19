@@ -16,7 +16,7 @@
     }
 
     .administracion__funciones {
-        margin: auto auto;
+        // margin: auto auto;
         display: flex;
         flex-direction: column;
         height: fit-content;
@@ -42,33 +42,118 @@
         }
 
         .administracion__form__agregar__veh {
-            width: 740px;
+            margin: 50px 0px;
+            width: 60%;
             background-color: $darkmode-background-color-lighter;
-            padding: 15px;
+            padding: 15px 25px;
             border-radius: 15px;
             display: flex;
             flex-direction: column;
 
-            div {
+            .titulo_agregar_vehiculo_form {
+                margin-bottom: 20px;
+                margin-top: 10px;
+                font-weight: 600;
+                font-size: 1.2rem;
+            }
+
+            .vehicle_form_row {
                 display: flex;
                 align-items: center;
+                justify-content: space-between;
+                flex-direction: row;
 
-                p {
-                    width: 15%;
+                .first_column {
+                    width: 20%;
+                    overflow:hidden;
                 }
 
                 input,
-                select {
+                select,
+                .file_input_label,
+                .second_column {
+                    overflow:hidden;
                     width: 80%;
                     font-size: 16px;
                     padding: 5px;
-                    margin: 10px;
+                    margin: 5px;
+                    // margin-left: 20px;
                     border: none;
                     border-radius: 5px;
-                    background-color: $darkmode-background-color-lighter;
+                    background-color: $darkmode-background-color;
+                }
+                input,
+                select {
                     color: $darkmode-text-color;
                 }
+                :invalid {
+                    color: $lightmode-background-grey;
+                }
+                ::placeholder {
+                    color: $lightmode-background-grey;
+                }
+
+                .feature_checkboxes_block {
+                    width: 80%;
+                    font-size: 16px;
+                    padding: 10px 13px;
+                    margin: 5px;
+                    // margin-left: 20px;
+                    border: none;
+                    border-radius: 5px;
+                    display: grid;
+                    grid-template-columns: 50% 50%;
+                    row-gap: 10px;
+                    background-color: $darkmode-background-color;
+                    color: $darkmode-text-color;
+                    overflow: hidden;
+
+                    .checkbox_and_feature_couple {
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: flex-start;
+                        align-items: center;
+                        width: 100%;
+
+                        .feature_checkbox_title {
+                            width: 90%;
+                            overflow: hidden;
+                            // position: relative;
+                            padding-left: 10px;
+                            display: block;
+                            cursor: pointer;
+                            user-select: none;
+                        }
+
+                        .feature_input_checkbox {
+                            // position: absolute;
+                            width: 15px;
+                            // width: 20px;
+                            height: 15px;
+                            padding: 0px;
+                            margin: 0px;
+                            cursor: pointer;
+                        }
+                    }
+
+                }
+
+                #file_input{
+                    display: none;
+                }
+
+                .file_input_label {
+                    color: $lightmode-background-grey;
+                    cursor: pointer;
+                }
+
+                .file_input_label:hover {
+                    color: $darkmode-text-color;
+                    font-weight: 600;
+                    cursor: pointer;
+                }
             }
+
 
             .imagenes__subidas {
                 display: flex;
@@ -80,11 +165,16 @@
                     width: 100%;
                     align-items: center;
                     justify-content: space-between;
+                    margin-top: 10px;
+                    border: 1px solid $darkmode-primary-color;
+                    border-radius: 17px;
+                    background-color: $darkmode-background-color;
+                    overflow: hidden;
 
                     a {
                         width: 40%;
                         height: 120px;
-                        margin: 5px;
+                        // margin: 5px;
 
                         img {
                             width: 100%;
@@ -104,41 +194,17 @@
 
             .botones__form {
                 display: flex;
-                justify-content: space-evenly;
+                justify-content: space-between;
+                align-items: center;
+                margin-top: 20px;
+                padding: 0px;
 
                 button {
+                    margin: 0px;
                     width: 40%;
                 }
             }
 
-            .features_assignment_section {
-                display: flex;
-                flex-direction: row;
-                gap: 15px;
-
-                .feature_checkboxes_block {
-
-                    width: 100%;
-                    display: grid;
-                    grid-template-columns: auto auto;
-                    // grid-template-columns: 50% 50%;
-
-                    .checkbox_and_feature_couple {
-                        display: flex;
-                        flex-direction: row;
-                        justify-content: flex-start;
-                        align-items: center;
-                        width: 100%;
-                        input {
-                            width: 10%;
-                        }
-                        p {
-                            width: 90%;
-                        }
-                    }
-
-                }
-            }
         }
     }
 

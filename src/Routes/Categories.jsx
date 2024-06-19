@@ -49,7 +49,8 @@ const CreateCategories = () => {
 
     function createCategory(e, category, value, input) {
         e.preventDefault()
-        if (value === '') return;
+        if (value === '') return alert("Campos vacios");
+        if (value[0] === " ") return alert("Campos vacios");
         let exists;
         switch (category) {
             case 'brand':
@@ -160,44 +161,14 @@ const CreateCategories = () => {
             }).catch(err => {
                 alert("Categoria en uso: No es posible, eliminar una categoría que esté siendo usada!");
             })
-        // }
-        //
-        // axios.delete(`http://localhost:8080/${category}/delete/${id}`, {
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         'Authorization': 'Basic ' + token
-        //     }
-        // }).then(() => {
-        //         switch (category) {
-        //             case 'brand':
-        //                 // setBrands(brands.filter(brand => brand.id !== id))
-        //                 dispatch({ type: 'SET_LIST_BRAND', payload: ( state.brand.filter(brand => brand.id !== id) ) });
-        //                 break;
-        //             case 'type':
-        //                 // setTypes(types.filter(type => type.id !== id))
-        //                 dispatch({ type: 'SET_LIST_TYPE', payload: ( state.type.filter(type => type.id !== id) ) });
-        //                 break;
-        //             case 'model':
-        //                 // setBrands(brands.filter(brand => brand.id !== id))
-        //                 dispatch({ type: 'SET_LIST_MODEL', payload: ( state.model.filter(type => type.id !== id) ) });
-        //                 break;
-        //             default:
-        //                 break;
-        //         }
-        //     })
     }
-
-
-    // let formulario = formReference.current;
-    // formulario.addEventListener('submit', function() {
-    //   formulario.reset();
-    // });
 
     function createFeature(e) {
         e.preventDefault()
 
         // Input Vacio
-        if (featureInputValue === '') return; // Salir
+        if (featureInputValue === "") return alert("Campos vacios");
+        if (featureInputValue[0] === " ") return alert("Campos vacios");
 
         setFeatureInputValue(""); 
 
