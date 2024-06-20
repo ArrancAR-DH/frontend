@@ -12,7 +12,7 @@ const Search = () => {
     useEffect(() => {
         setCars(state.data)
     }, [data])
-
+    console.log(search);
     const searchCars = () => {
         let result = [];
         if (!search) return cars;
