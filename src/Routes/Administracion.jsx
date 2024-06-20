@@ -294,7 +294,7 @@ const Administracion = () => {
                                     </div>
                                     <div className="vehicle_form_row">
                                         <div className="first_column">Características:</div>
-                                        <div className="second_column" className="feature_checkboxes_block">
+                                        <div className="second_column feature_checkboxes_block">
                                             {
                                                 state.feature.map(
                                                     (feature, index) => {
