@@ -4,27 +4,69 @@ import Card from '../Components/Card'
 import { useContextGlobal } from '../Context/GlobalContext'
 
 const Search = () => {
-    const { search } = useParams();
+    const { search } = useParams();    
+    const isNumber = ['0','1','2','3','4','5','6','7','8','9']   
     const { state } = useContextGlobal();
     const { data } = state;
     const [cars, setCars] = useState([]);
+    // if (search.split(' ')[0] == '$'){
+    //     const nombre = ''
+    // }
+    // else if (search.split(' ')[0]  != '$') {
+    //     const nombre = search.split(' ')[0]
+    // } 
+    
 
+    // }
+    let nombre = ''
+    let inicio = ''
+    let fin = ''
+    if (isNumber.includes(search.split(' ')[1][0])) {
+        nombre = search.split(' ')[0] == '$'? '': search.split(' ')[0]
+        inicio = search.split(' ')[1]
+        fin = search.split(' ')[2]
+    }
+    else{
+        nombre = search.split(' ')[0] + ' ' + search.split(' ')[1]
+        inicio = search.split(' ')[2]
+        fin = search.split(' ')[3]
+        
+    }
+    
+    
     useEffect(() => {
         setCars(state.data)
     }, [data])
-    console.log(search);
-    const searchCars = () => {
+     
+     const searchCars = () => {
         let result = [];
-        if (!search) return cars;
+        if (!nombre && !inicio && !fin) return cars;
         cars.forEach(car => {
-            if (car.brand?.name.toLowerCase().includes(search.toLowerCase()) ||
-                car.model?.name.toLowerCase().includes(search.toLowerCase()) ||
-                search.toLowerCase() == car.brand?.name.toLowerCase() + " " + car.model?.name.toLowerCase()) {
-                result.push(car);
+            const nombreEnMarcaOModelo = car.brand?.name.toLowerCase().includes(nombre.toLowerCase()) ||
+                                         car.model?.name.toLowerCase().includes(nombre.toLowerCase()) ||
+                                         nombre.toLowerCase() == car.brand?.name.toLowerCase() + " " + car.model?.name.toLowerCase();
+            
+            if (nombreEnMarcaOModelo) {
+                let valid = true;
+                car.bookings.forEach(booking => {
+                    const bookingStartsOn = new Date(booking.startsOn);
+                    const bookingEndsOn = new Date(booking.endsOn);
+                    const inicioDate = new Date(inicio);
+                    const finDate = new Date(fin);
+    
+                    if ((inicioDate >= bookingStartsOn && inicioDate <= bookingEndsOn) ||
+                        (finDate >= bookingStartsOn && finDate <= bookingEndsOn)) {
+                        valid = false;
+                    }
+                });
+    
+                if (valid) {
+                    result.push(car);
+                }
             }
         });
         return result;
-    }
+    };
 
     return (
         <div className="search__container">

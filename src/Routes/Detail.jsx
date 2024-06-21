@@ -26,6 +26,7 @@ const Detail = () => {
       useEffect(() => {
             axios.get(`http://www.localhost:8080/vehicle/${id}`).then((res) => {
                   setCar(res.data);
+                  
                  
             });
       }, []);
@@ -44,7 +45,7 @@ const Detail = () => {
 
       const isLiked = state.likes.includes(car.idVehicle);
 
-      console.log(car);
+      
 
       return (
             <div className="detail__container">
@@ -73,7 +74,7 @@ const Detail = () => {
                                           <div><FaShapes />&nbsp;&nbsp;{car.type?.name}</div>
                                     </div>
                               </div>
-                              <DateRangePicker />
+                              <DateRangePicker bookings={car.bookings} />
                         </div>
                   </div>
             </div>

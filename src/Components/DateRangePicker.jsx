@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css'; // Asegúrate de importar los estilos de react-datepicker
 
-const DateRangePicker = () => {
+const DateRangePicker = ({bookings}) => {
+    console.log(bookings);
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
     const [hoveredDate, setHoveredDate] = useState(null);
@@ -39,6 +41,27 @@ const DateRangePicker = () => {
         }
         return false;
     };
+    const getExcludedDates = () => {
+        const excludedDates = [];
+        bookings?.forEach(booking => {
+            let currentDate = new Date(booking.startsOn);
+            let endDate = new Date(booking.endsOn);
+            endDate.setDate(endDate.getDate() +1)
+            while (currentDate <= endDate) {
+                excludedDates.push(new Date(currentDate));
+                
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+        });
+        
+        return excludedDates;
+    };
+
+    const excludedDates = getExcludedDates();
+
+    const isDisabledDate = (date) => {
+        return date < today || (startDate && date < startDate) || (endDate && date > endDate);
+    };
 
     return (
         <div className="datepicker-container">
@@ -49,10 +72,15 @@ const DateRangePicker = () => {
                     onMonthChange={() => setHoveredDate(null)}
                     onDayMouseEnter={handleDayMouseEnter}
                     minDate={today}
+                    excludeDates={excludedDates}
                     dateFormat="dd/MM/yyyy"
                     placeholderText="Fecha inicio"
                     dayClassName={date =>
-                        isDateInRange(date) ? 'react-datepicker__day--in-range' : undefined
+                        isDateInRange(date)
+                            ? 'react-datepicker__day--in-range'
+                            : isDisabledDate(date)
+                            ? 'react-datepicker__day--disabled'
+                            : undefined
                     }
                     className="datepicker-input"
                 />
@@ -64,10 +92,15 @@ const DateRangePicker = () => {
                     onMonthChange={() => setHoveredDate(null)}
                     onDayMouseEnter={handleDayMouseEnter}
                     minDate={startDate || today}
+                    excludeDates={excludedDates}
                     dateFormat="dd/MM/yyyy"
                     placeholderText="Fecha finalizacion"
                     dayClassName={date =>
-                        isDateInRange(date) ? 'react-datepicker__day--in-range' : undefined
+                        isDateInRange(date)
+                            ? 'react-datepicker__day--in-range'
+                            : isDisabledDate(date)
+                            ? 'react-datepicker__day--disabled'
+                            : undefined
                     }
                     className="datepicker-input"
                 />

@@ -20,9 +20,12 @@ const Search = () => {
     }, [data]);
 
     const updateSearch = (input, start, end) => {
-        const formattedStartDate = start ? moment(start).format('DD/MM/YYYY') : '';
-        const formattedEndDate = end ? moment(end).format('DD/MM/YYYY') : '';
+        const formattedStartDate = start ? moment(start).format('YYYY-MM-DD') : '';
+        const formattedEndDate = end ? moment(end).format('YYYY-MM-DD') : ''; 
+        input == '' ? input = '$' : "";
+        
         setSearch(`${input} ${formattedStartDate} ${formattedEndDate}`.trim());
+        console.log(search);      
     };
 
     const onSearchChange = (e) => {
@@ -54,6 +57,10 @@ const Search = () => {
         setEndDate(end);
         updateSearch(searchInput, start, end);
     };
+    const hadleClickDropdown = (item) => {
+        setSearchInput(item)
+        updateSearch(item, startDate, endDate);
+    }
 
     const onFormSubmit = (e) => {
         e.preventDefault();
@@ -81,7 +88,7 @@ const Search = () => {
             {dropdownList.length > 0 &&
                 <div className="dropdown">
                     {dropdownList.map((item, index) => (
-                        <div key={index} className="dropdown__item" onClick={() => { setSearch(item); setDropdownList([]) }}>
+                        <div key={index} className="dropdown__item" onClick={() => { hadleClickDropdown(item); setDropdownList([]) }}>
                             <p>{item}</p>
                         </div>
                     ))}

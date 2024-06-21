@@ -89,3 +89,7 @@
     background-color: #ae445a !important;
     color: white !important;
   }
+  .react-datepicker__day--disabled {
+    background-color: black;
+    color: white; /* Si quieres cambiar el color del texto también */
+}
