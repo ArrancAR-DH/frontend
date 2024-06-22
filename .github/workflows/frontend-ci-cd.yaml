@@ -31,18 +31,10 @@ jobs:
           # Start the backend service
           sudo systemctl start arrancar-api.service
 
-      - name: Deploy
-        run: |
-          cd ./dist
-          sudo cp -r * /var/www/html/
-
   deploy:
     runs-on: self-hosted
     needs: build
     steps:
-      - name: Set Up git
-        uses: actions/checkout@v4
-
       - name: Deploy
         run: |
           pwd
