@@ -30,6 +30,7 @@ jobs:
           sudo systemctl stop arrancar-api.service || true
           # Start the backend service
           sudo systemctl start arrancar-api.service
+          sudo rm node_modules/ -r
 
   deploy:
     runs-on: self-hosted
@@ -37,11 +38,5 @@ jobs:
     steps:
       - name: Deploy
         run: |
-          pwd
-          pwd
-          pwd
-          pwd
-          pwd
-          pwd
           cd ./dist
           sudo cp -r * /var/www/html/
