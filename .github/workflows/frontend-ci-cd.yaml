@@ -26,6 +26,7 @@ jobs:
         # Start the backend service
         sudo systemctl start arrancar-api.service
 
+    # Modified
   deploy:
     runs-on: self-hosted
     steps:
