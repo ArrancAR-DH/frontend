@@ -67,7 +67,6 @@ const ListVehicles = () => {
                             <h3>Acción</h3>
                         </div>
                         {cars.map((car, index) => {
-                            console.log(cars);
                             return (
                                 <div className="vehiculo__container" key={index}>
                                     <img className="img-history" src={car.imgUrls?.[0]?.url} alt="" />

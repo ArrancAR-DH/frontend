@@ -22,10 +22,8 @@ const Search = () => {
     const updateSearch = (input, start, end) => {
         const formattedStartDate = start ? moment(start).format('YYYY-MM-DD') : '';
         const formattedEndDate = end ? moment(end).format('YYYY-MM-DD') : ''; 
-        input == '' ? input = '$' : "";
-        
+        input == '' ? input = '$' : "";        
         setSearch(`${input} ${formattedStartDate} ${formattedEndDate}`.trim());
-        console.log(search);      
     };
 
     const onSearchChange = (e) => {
@@ -79,8 +77,7 @@ const Search = () => {
                     endDate={endDate}
                     dateFormat='dd/MM/yyyy'
                     selectsRange
-                    minDate={new Date()}
-                />
+                    minDate={new Date()}/>
                 <button type="submit">
                     Buscar 🔎
                 </button>
