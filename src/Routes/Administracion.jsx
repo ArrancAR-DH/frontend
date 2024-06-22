@@ -25,7 +25,7 @@ const Administracion = () => {
         setCars(state.data);
     }, [state]);
 
-    function featuresCheckUncheck( e, feature, index ) {
+    function featuresCheckUncheck(e, feature, index) {
         // e.preventDefault();
         // console.log( e.target.checked );
         // console.log( index );
@@ -42,10 +42,10 @@ const Administracion = () => {
         setSelectedFeatures(aux);
     };
 
-    function inyectarFeatures( res, feat, form ){
+    function inyectarFeatures(res, feat, form) {
         console.log(res.data.idVehicle);
 
-        console.log( feat );
+        console.log(feat);
 
         // return;
         //
@@ -53,13 +53,13 @@ const Administracion = () => {
 
 
         feat.forEach(element => {
-            axios.post( `${routes.url_postCar}/${res.data.idVehicle}/features/${element.idFeature}`, 
+            axios.post(`${routes.url_postCar}/${res.data.idVehicle}/features/${element.idFeature}`,
                 {
                     headers: {
                         "Content-Type": "application/json",
                         "Authorization": "Basic " + token,
-                },
-            }).then((response) => {
+                    },
+                }).then((response) => {
                     setError("");
                 }).catch((error) => {
                     console.log(error);
@@ -77,13 +77,13 @@ const Administracion = () => {
                 "Authorization": "Basic " + token,
             },
         }).then((response) => {
-                inyectarFeatures(response, features, form);
-                setError("");
-            }).catch((error) => {
-                console.log(error);
-                setError("Hubo un error al guardar el vehículo.");
-                setSuccess(false);
-            });
+            inyectarFeatures(response, features, form);
+            setError("");
+        }).catch((error) => {
+            console.log(error);
+            setError("Hubo un error al guardar el vehículo.");
+            setSuccess(false);
+        });
     }
 
     const [error, setError] = useState("");
@@ -130,21 +130,21 @@ const Administracion = () => {
         patente,
         descripcion,
         featuresV
-    ){
+    ) {
 
         // console.log( marca );
         // console.log( featuresV );
-        if ( 
+        if (
             marca === "" |
-                modelo === "" |
-                tipo === "" |
-                year === "" | year[0] === " " |
-                price === "" | price[0] === " " |
-                patente === "" | patente[0] === " " |
-                descripcion === "" | descripcion[0] === " " |
-                featuresV.length === 0
-        ){
-            setError( "Por favor completar todos los campos" );
+            modelo === "" |
+            tipo === "" |
+            year === "" | year[0] === " " |
+            price === "" | price[0] === " " |
+            patente === "" | patente[0] === " " |
+            descripcion === "" | descripcion[0] === " " 
+            // featuresV.length === 0
+        ) {
+            setError("Por favor completar todos los campos");
             return false;
         }
         return true;
@@ -157,8 +157,15 @@ const Administracion = () => {
 
         const featuresV = [];
         selectedFeatures.forEach((element, index) => {
-            if( element === true ) featuresV.push( state.feature[index] );
+            if (element === true) featuresV.push(state.feature[index]);
         });
+
+        const patente = e.target[5].value.toUpperCase();
+        const patenteEnUso = cars.filter((car) => car.plate === patente);
+        if (patenteEnUso.length > 0) {
+            setError("La patente ingresada ya está en uso.");
+            return;
+        }
 
         const marcaLabel = e.target[0].value;
         const modeloLabel = e.target[1].value;
@@ -166,10 +173,9 @@ const Administracion = () => {
         const year = e.target[3].value;
         const price = e.target[4].value;
         const descripcion = e.target[6].value;
-        const patente = e.target[5].value.toUpperCase();
 
         // Valido los campos del form de creacion de vehiculo
-        if ( !validateFields(
+        if (!validateFields(
             marcaLabel,
             modeloLabel,
             tipoLabel,
@@ -177,10 +183,8 @@ const Administracion = () => {
             price,
             patente,
             descripcion,
-            featuresV )
-        ){
-            // Clear form
-            e.target.reset();
+            featuresV)
+        ) {
             return;
         }
 
@@ -211,7 +215,7 @@ const Administracion = () => {
             imgUrls: [],
         };
 
-        console.log( postJson );
+        console.log(postJson);
 
         // return;
         images.forEach((imagen) => {
@@ -298,17 +302,17 @@ const Administracion = () => {
                                             {
                                                 state.feature.map(
                                                     (feature, index) => {
-                                                        return( // (El key es para eliminar un warning de REACT sobre la performance de la pag.)
-                                                            <React.Fragment key={feature.idFeature}> 
+                                                        return ( // (El key es para eliminar un warning de REACT sobre la performance de la pag.)
+                                                            <React.Fragment key={feature.idFeature}>
                                                                 <div className="checkbox_and_feature_couple">
-                                                                    <input 
+                                                                    <input
                                                                         className="feature_input_checkbox"
-                                                                        type="checkbox" 
-                                                                        id={`feature${feature.idFeature}`} 
+                                                                        type="checkbox"
+                                                                        id={`feature${feature.idFeature}`}
                                                                         onInput={(e) => featuresCheckUncheck(e, feature, index)}
                                                                     />
-                                                                    <label 
-                                                                        className="feature_checkbox_title" 
+                                                                    <label
+                                                                        className="feature_checkbox_title"
                                                                         htmlFor={`feature${feature.idFeature}`}
                                                                     >
                                                                         {feature.name}
