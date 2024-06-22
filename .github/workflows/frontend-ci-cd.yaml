@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  Build and Deploy:
+  Build_and_Deploy:
     runs-on: self-hosted
     steps:
       - name: Set Up git
