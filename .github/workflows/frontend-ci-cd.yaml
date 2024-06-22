@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  Build_and_Deploy:
+  build:
     runs-on: self-hosted
     steps:
       - name: Set Up git
@@ -36,3 +36,20 @@ jobs:
           cd ./dist
           sudo cp -r * /var/www/html/
 
+  deploy:
+    runs-on: self-hosted
+    depends: build
+    steps:
+      - name: Set Up git
+        uses: actions/checkout@v4
+
+      - name: Deploy
+        run: |
+          pwd
+          pwd
+          pwd
+          pwd
+          pwd
+          pwd
+          cd ./dist
+          sudo cp -r * /var/www/html/
