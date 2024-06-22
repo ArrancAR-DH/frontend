@@ -22,8 +22,14 @@ jobs:
         sudo cp -r /home/ubuntu/deploying/* /var/www/html/
         npm install
         npm run build
-        cd ./dist
-        sudo cp -r * /var/www/html/
         sudo systemctl stop arrancar-api.service || true
         # Start the backend service
         sudo systemctl start arrancar-api.service
+
+  build:
+    runs-on: self-hosted
+    steps:
+    - uses: actions/checkout@v4
+    - run: |
+        cd ./dist
+        sudo cp -r * /var/www/html/
