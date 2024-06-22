@@ -15,9 +15,10 @@ import {routes} from "../utils/routes.js";
 
 const Detail = () => {
       const { id } = useParams();
-      const { state, likeVehicle, dislikeVehicle, isAuth } = useContextGlobal();
+      const { state, likeVehicle, dislikeVehicle } = useContextGlobal();
       const [car, setCar] = useState({});
       const shareUrl = routes.url_front + "/cars/" + id ;
+     
       useEffect(() => {
             axios.get(`http://www.localhost:8080/vehicle/${id}`).then((res) => {
                   setCar(res.data);   
@@ -35,9 +36,6 @@ const Detail = () => {
 
       const isLiked = state.likes.includes(car.idVehicle);
       
-  
-      
-
       return (
             <div className="detail__container">
                   <h2>Vehículo seleccionado:</h2>

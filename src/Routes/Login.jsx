@@ -5,16 +5,17 @@ import { useNavigate } from "react-router-dom";
 import { loginMessage, errorMessage } from "../utils/modals";
 import { useContextGlobal } from "../Context/GlobalContext";
 
-
 const Login = () => {
   const [user, setUser] = useState({ usernameOrEmail: "", password: "" });
   const { usernameOrEmail, password } = user;
-  const { loginAPICall, storeToken, saveLoggedInUser, storeRol } = useContextGlobal();
+  const { loginAPICall, storeToken, saveLoggedInUser, storeRol, state } = useContextGlobal();
   const navigator = useNavigate();
   const [validateUsername, setValidateUsername] = useState(false);
   const [validatePassword, setValidatePassword] = useState(false);
   const [boton, habilitarBoton] = useState(true);
+  const pathUserCar = localStorage.getItem("path") || null;
 
+ 
   useEffect(() => {
     if (usernameOrEmail.length !== 0) {
       setValidateUsername(usernameOrEmail.length > 3);
@@ -51,11 +52,18 @@ const Login = () => {
       saveLoggedInUser(usernameOrEmail);
       setUser({ usernameOrEmail: "", password: "" });
       loginMessage();
-      
-      setTimeout(() => {
-        navigator("/");
-        window.location.reload();
-      }, 1800);
+
+      if(!pathUserCar){       
+        setTimeout(() => {
+          navigator('/')
+          window.location.reload();
+        }, 1200);
+      }else{
+        setTimeout(() => {
+          navigator(`/cars/${pathUserCar}`)
+          window.location.reload();
+        }, 1200);
+      }
      } catch (error) {
       errorMessage();
     }

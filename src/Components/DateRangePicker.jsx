@@ -5,6 +5,7 @@ import { useContextGlobal } from '../Context/GlobalContext';
 import { ToastContainer } from "react-toastify";
 import { carReserved, carReboted } from '../utils/modals';
 import { useNavigate } from "react-router-dom";
+import { useParams } from 'react-router-dom'
 
 const DateRangePicker = ({bookings}) => {
     const {getLoggedInUser } = useContextGlobal();
@@ -14,7 +15,8 @@ const DateRangePicker = ({bookings}) => {
     const [endDate, setEndDate] = useState(null);
     const [hoveredDate, setHoveredDate] = useState(null);
     const today = new Date();
-
+    const { id } = useParams();
+ 
     const handleStartDateChange = (date) => {
         setStartDate(date);
         if (endDate && date > endDate) {
@@ -61,28 +63,21 @@ const DateRangePicker = ({bookings}) => {
         
         return excludedDates;
     };
-
     const excludedDates = getExcludedDates();
-
     const isDisabledDate = (date) => {
         return date < today || (startDate && date < startDate) || (endDate && date > endDate);
     };
-
     const handleSubmit = () =>{
         if(isAuth === null){
+        localStorage.setItem("path", id);
         carReboted();
-            setTimeout(() => {
-         navigator("/login");
-         
-        }, 3000);
-        console.log("no");
-
+        setTimeout(() => { 
+            navigator("/login");
+        },3000);
             }else{
                 carReserved();
-                console.log("no");
          }
     }
-
 
     return (
         <>
