@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css'; // Asegúrate de importar los estilos de react-datepicker
+import { useContextGlobal } from '../Context/GlobalContext';
+import { ToastContainer } from "react-toastify";
+import { carReserved, carReboted } from '../utils/modals';
+import { useNavigate } from "react-router-dom";
 
 const DateRangePicker = ({bookings}) => {
-    console.log(bookings);
+    const {getLoggedInUser } = useContextGlobal();
+    const isAuth = getLoggedInUser();
+    const navigator = useNavigate();
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
     const [hoveredDate, setHoveredDate] = useState(null);
@@ -49,8 +55,7 @@ const DateRangePicker = ({bookings}) => {
             endDate.setDate(endDate.getDate() +1)
             while (currentDate <= endDate) {
                 excludedDates.push(new Date(currentDate));
-                
-                currentDate.setDate(currentDate.getDate() + 1);
+                 currentDate.setDate(currentDate.getDate() + 1);
             }
         });
         
@@ -63,7 +68,24 @@ const DateRangePicker = ({bookings}) => {
         return date < today || (startDate && date < startDate) || (endDate && date > endDate);
     };
 
+    const handleSubmit = () =>{
+        if(isAuth === null){
+        carReboted();
+            setTimeout(() => {
+         navigator("/login");
+         
+        }, 3000);
+        console.log("no");
+
+            }else{
+                carReserved();
+                console.log("no");
+         }
+    }
+
+
     return (
+        <>
         <div className="datepicker-container">
             <div>
                 <DatePicker
@@ -101,11 +123,14 @@ const DateRangePicker = ({bookings}) => {
                             : isDisabledDate(date)
                             ? 'react-datepicker__day--disabled'
                             : undefined
-                    }
-                    className="datepicker-input"
-                />
+                        }
+                        className="datepicker-input"
+                        />
             </div>
         </div>
+            <button className='btn__picker' onClick={handleSubmit}>Reservar</button>
+      <ToastContainer />
+    </>
     );
 };
 

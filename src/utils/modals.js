@@ -13,16 +13,16 @@ export const loginMessage = () =>
     });
 
 
-  export const errorMessage = () =>
-    toast.error("Usuario no registrado", {
-        position: "top-right",
-        autoClose: 2500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-    });
+export const errorMessage = () =>
+toast.error("Usuario no registrado", {
+    position: "top-right",
+    autoClose: 2500,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+});
 
 export const registerMessage = () =>
     toast.success("Registro exitoso!!!", {
@@ -59,7 +59,7 @@ export const userMessage = () =>
     });
 
 export const carReserved = () =>
-    toast.success("Auto reservado exitosamente", {
+    toast.success("Reserva exitosa", {
         position: "top-right",
         autoClose: 1800,
         hideProgressBar: true,
@@ -68,4 +68,16 @@ export const carReserved = () =>
         draggable: true,
         progress: undefined,
     });
-        
+
+export const carReboted = () =>
+    toast.error("Debe loguearse para reservar", {
+        position: "top-center",
+        autoClose: 1800,
+        hideProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+    });
+            
+    

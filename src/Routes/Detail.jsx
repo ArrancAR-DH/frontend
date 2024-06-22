@@ -7,27 +7,20 @@ import { useContextGlobal } from '../Context/GlobalContext.jsx'
 import { FaHeart } from "react-icons/fa";
 import { FaShapes } from "react-icons/fa6";
 import { MdOutlinePlaylistAddCheckCircle } from "react-icons/md";
-import { FaRegSnowflake } from "react-icons/fa";
 import { FiAlertCircle } from "react-icons/fi";
-import { GiGearStickPattern } from "react-icons/gi";
-import { GiGearStick } from "react-icons/gi";
 import DateRangePicker from "../Components/DateRangePicker.jsx";
-import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { carReserved } from "../utils/modals.js";
 import ShareRedes from "../Components/ShareRedes.jsx";
 import {routes} from "../utils/routes.js";
 
 const Detail = () => {
       const { id } = useParams();
-      const { state, likeVehicle, dislikeVehicle } = useContextGlobal();
+      const { state, likeVehicle, dislikeVehicle, isAuth } = useContextGlobal();
       const [car, setCar] = useState({});
       const shareUrl = routes.url_front + "/cars/" + id ;
       useEffect(() => {
             axios.get(`http://www.localhost:8080/vehicle/${id}`).then((res) => {
-                  setCar(res.data);
-                  
-                 
+                  setCar(res.data);   
             });
       }, []);
 
@@ -35,16 +28,14 @@ const Detail = () => {
             const isAlreadyLiked = state.likes.includes(car.idVehicle);
             if (isAlreadyLiked) {
                   await dislikeVehicle(car.idVehicle);
-                  // alert("Este vehículo ha sido eliminado de tu lista de favoritos.");
             } else {
                   await likeVehicle(car.idVehicle);
-                  // alert("El vehículo se agregó satisfactoriamente a tu lista de favoritos.");
             }
-            console.log("car.idVehicle: " + car.idVehicle);
       };
 
       const isLiked = state.likes.includes(car.idVehicle);
-
+      
+  
       
 
       return (
