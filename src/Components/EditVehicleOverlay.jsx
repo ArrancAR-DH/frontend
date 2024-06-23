@@ -99,7 +99,7 @@ const EditVehicleOverlay = ({ vehicle, setVehicleBeingEdited, setCars }) => {
         data.append("upload_preset", "rfricega");
 
         const response = await axios.post(
-            "http://api.cloudinary.com/v1_1/dyypwqwgo/image/upload",
+            `${routes.url_postCloudinary}`,
             data
         );
         console.log(response.data);
