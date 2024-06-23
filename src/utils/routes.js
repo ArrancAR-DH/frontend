@@ -24,6 +24,8 @@ export const routes = {
     favs: '/favs', 
     profile: '/profile',
 
+    url_base: `${homemade_dotenv.url_base}`,
+    url_front: `${homemade_dotenv.url_front}`,
     url_postCloudinary: `http://api.cloudinary.com/v1_1/dyypwqwgo/image/upload`,
     url_allVehicles: `${homemade_dotenv.url_base}/vehicle/all`,
     url_allBrands: `${homemade_dotenv.url_base}/brand/all`,
