@@ -73,7 +73,7 @@ const CreateCategories = () => {
         }
         // referenceToForm.reset();
         // console.log(input);;
-        axios.post(`http://localhost:8080/${category}`, { name: value }, {
+        axios.post(`${routes.url_base}/${category}`, { name: value }, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': "Basic " + token,

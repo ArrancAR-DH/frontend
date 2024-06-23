@@ -90,7 +90,7 @@ const ContextProvider = ({ children }) => {
   const likeVehicle = async (idVehicle) => {
     try {
       const idUser = state.idUser || JSON.parse(localStorage.getItem("idUser"));
-      const response = await axios.post("http://localhost:8080/user/like", {
+      const response = await axios.post(`${routes.url_userLike}`, {
         idUser,
         idVehicle
       }, {
@@ -108,7 +108,7 @@ const ContextProvider = ({ children }) => {
   const dislikeVehicle = async (idVehicle) => {
     try {
       const idUser = state.idUser || JSON.parse(localStorage.getItem("idUser"));
-      const response = await axios.delete("http://localhost:8080/user/dislike", {
+      const response = await axios.delete(`${routes.url_userDislike}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Basic " + token,

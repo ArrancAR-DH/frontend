@@ -2,12 +2,13 @@ import React from 'react'
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import axios from 'axios'
+import { routes } from "../utils/routes.js";
 const ImageLibrary = () => {
     const { id } = useParams()
     const [car, setCar] = useState({});
 
     useEffect(() => {
-        axios.get(`http://localhost:8080/vehicle/${id}`).then((res) => {
+        axios.get(`${routes.url_postCar}/${id}`).then((res) => {
             setCar(res.data);
         });
     }, []);
