@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import { userMessage } from "../utils/modals";
 import { useContextGlobal } from "../Context/GlobalContext";
+import { routes } from "../utils/routes.js";
 
 
 const ListUsers = () => {
@@ -53,7 +54,7 @@ const ListUsers = () => {
 
         try {
             const response = await axios.put(
-                "http://localhost:8080/user/update",
+                `${routes.url_userUpdate}`,
                 user,
                 {
                     headers: {

@@ -2,6 +2,7 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useContextGlobal } from "../Context/GlobalContext";
+import {routes} from "../utils/routes"
 
 const EditVehicleOverlay = ({ vehicle, setVehicleBeingEdited, setCars }) => {
     const { state, getToken } = useContextGlobal();
@@ -62,7 +63,7 @@ const EditVehicleOverlay = ({ vehicle, setVehicleBeingEdited, setCars }) => {
             year: year
         }
         console.log(payload)
-        axios.put(`http://localhost:8080/vehicle/${vehicle.idVehicle}`, payload, {
+        axios.put(`${routes.url_postCar}/${vehicle.idVehicle}`, payload, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic ' + token,

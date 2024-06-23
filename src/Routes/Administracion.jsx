@@ -71,7 +71,7 @@ const Administracion = () => {
     }
 
     function postVehiculo(postJson, features, form) {
-        axios.post("http://localhost:8080/vehicle", postJson, {
+        axios.post(`${routes.url_postCar}`, postJson, {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": "Basic " + token,

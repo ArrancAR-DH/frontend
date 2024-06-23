@@ -6,6 +6,7 @@ import pencil from "../assets/pencil-solid.svg"
 import EditVehicleOverlay from "../Components/EditVehicleOverlay";
 import AdministracionPhoneError from "../Components/Phone Error/AdministracionPhoneError";
 import { useContextGlobal } from "../Context/GlobalContext";
+import { routes } from "../utils/routes.js";
 
 const ListVehicles = () => {
     const { state, getToken } = useContextGlobal();
@@ -20,7 +21,7 @@ const ListVehicles = () => {
         if (confirm("¿Estás seguro que deseas eliminar este vehículo?") === false)
             return;
 
-        axios.delete("http://localhost:8080/vehicle/delete/" + id, {
+        axios.delete(`${routes.url_deleteCar}/` + id, {
             headers: {
                 "Content-Type": "application/json",
                 'Authorization': 'Basic ' + token,

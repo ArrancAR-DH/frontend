@@ -21,7 +21,11 @@ export const routes = {
     url_rest_api: `http://localhost:8080/auth`,
     url_AllUsers: `http://localhost:8080/user/all`,
     url_postCar:  `http://localhost:8080/vehicle`,
+    url_deleteCar:  `http://localhost:8080/vehicle/delete`,
     url_notificate: `http://localhost:8080/notification/send`,
+    url_userLike: `http://localhost:8080/user/like`,
+    url_userDislike: `http://localhost:8080/user/dislike`,
+    url_userUpdate: `http://localhost:8080/user/update`,
     url_base: `http://localhost:8080`,
     url_front:`http://localhost:5173`,
 } 
