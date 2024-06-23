@@ -1,11 +1,11 @@
 const homemade_dotenv = {
     // API and SPA [URLs] --> Entornos locales ( Front y Back con localhost)
-    url_base: `http://localhost:8080`,
-    url_front: `http://localhost:5173`,
+    // url_base: `http://localhost:8080`,
+    // url_front: `http://localhost:5173`,
 
     // API and SPA [URLs] --> Entronos Web ( Front y Back deployados )
-    // url_base:`http://34.234.216.198:8080`,
-    // url_front: `http://34.234.216.198`,
+    url_base:`http://34.234.216.198:8080`,
+    url_front: `http://34.234.216.198`,
 }
 
 export const routes = {
