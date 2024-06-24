@@ -33,9 +33,9 @@ const formattedEndDate = end ? moment(end).format('DD-MM-YYYY') : '';
 const desde = start ? moment(start).format('YYYY-MM-DD') : '';
 const hasta = end ? moment(end).format('YYYY-MM-DD') : ''; 
 const {getToken, state } = useContextGlobal();
-const {idUser} = state; 
+const {idUser, loggedUser} = state; 
 const token = getToken(); 
-
+console.log(loggedUser);
 
   const handleClose = () => {
     setModal(false);
@@ -84,6 +84,9 @@ const handleConfirm = () => {
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
+          <Typography variant='h6'>
+                Nombre: {loggedUser?.firstName} Apellido: {loggedUser?.firstName}
+            </Typography>
             <Typography variant='h6'>
                 Usted esta a punto de reservar un auto {car.brand?.name} {car.model?.name}.
             </Typography>

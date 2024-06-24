@@ -21,11 +21,16 @@ const Search = () => {
     let nombre = ''
     let inicio = ''
     let fin = ''
-    if (isNumber.includes(search.split(' ')[1][0])) {
+    console.log();
+    if(search.split(' ')[1] == undefined){
+        nombre = search.split(' ')[0] == '$'? '': search.split(' ')[0]
+    }
+    else if (isNumber.includes(search.split(' ')[1][0])) {
         nombre = search.split(' ')[0] == '$'? '': search.split(' ')[0]
         inicio = search.split(' ')[1]
         fin = search.split(' ')[2]
     }
+    
     else{
         nombre = search.split(' ')[0] + ' ' + search.split(' ')[1]
         inicio = search.split(' ')[2]
