@@ -13,6 +13,7 @@ export const routes = {
     register: '/register',
     favs: '/favs', 
     profile: '/profile',
+    booking: 'http://localhost:8080/booking',
     url_allVehicles: `http://localhost:8080/vehicle/all`,
     url_allBrands: `http://localhost:8080/brand/all`,
     url_allModels: `http://localhost:8080/model/all`,

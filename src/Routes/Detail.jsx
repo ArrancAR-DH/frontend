@@ -18,6 +18,7 @@ const Detail = () => {
       const { state, likeVehicle, dislikeVehicle } = useContextGlobal();
       const [car, setCar] = useState({});
       const shareUrl = routes.url_front + "/cars/" + id ;
+      console.log(car)
      
       useEffect(() => {
             axios.get(`http://www.localhost:8080/vehicle/${id}`).then((res) => {
@@ -63,7 +64,7 @@ const Detail = () => {
                                           <div><FaShapes />&nbsp;&nbsp;{car.type?.name}</div>
                                     </div>
                               </div>
-                              <DateRangePicker bookings={car.bookings} />
+                              <DateRangePicker bookings={car.bookings} car={car}/>
                         </div>
                   </div>
             </div>
