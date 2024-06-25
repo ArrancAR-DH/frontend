@@ -13,7 +13,6 @@ const URL = import.meta.env.VITE_BACKEND_URL;
 
 const Home = () => {
   const { state } = useContextGlobal();
-  console.log(state.loggedUser);
   const [currentPage, setCurrentPage] = useState(1);
   const [recordsPerPage] = useState(5);
   const [loader, setLoader] = useState(true);

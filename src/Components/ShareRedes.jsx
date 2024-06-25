@@ -13,19 +13,11 @@ import { WhatsappShareButton, WhatsappIcon, LinkedinShareButton, LinkedinIcon, T
 
 
 const ShareRedes = ({url}) => {
-  console.log(url);  
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
 
-
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
-  };
-
-  const handleChange = () => {
-    
-    logout();
-    window.location.reload();
   };
 
   const handleClose = (event) => {

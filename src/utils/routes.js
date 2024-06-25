@@ -40,4 +40,6 @@ export const routes = {
     url_userLike: `${homemade_dotenv.url_base}/user/like`,
     url_userDislike: `${homemade_dotenv.url_base}/user/dislike`,
     url_userUpdate: `${homemade_dotenv.url_base}/user/update`,
+    booking: `${homemade_dotenv.url_base}/booking`,
+  
 } 

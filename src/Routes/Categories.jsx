@@ -9,31 +9,12 @@ const CreateCategories = () => {
     const { state, getToken, dispatch } = useContextGlobal();
     const token = getToken();
     const [render, setRender] = useState(true);
-    // const [referenceToForm, setReferenceToForm] = useState();
     const [ brandInputValue, setBrandInputValue ] = useState("");
     const [ modelInputValue, setModelInputValue ] = useState("");
     const [ typeInputValue, setTypeInputValue ] = useState("");
     const [ featureInputValue, setFeatureInputValue ] = useState("");
 
     const formReference = useRef(null);
-
-    // useEffect(() => {
-    //     setBrands(state.brand);
-    //     setModels(state.model);
-    //     setTypes(state.type);
-    //     setFeatures(state.feature);
-    // }, [])
-
-    // useEffect(() => {
-    //     let formulario = formReference.current;
-    //     console.log( formulario );
-    //     setReferenceToForm( formulario );
-    //     formulario?.addEventListener('submit', function() {
-    //         formulario.reset();
-    //     });
-    //     console.log( features );
-    // },[]);
-
     const handleBrandInput = (e) => {
         setBrandInputValue(e.target.value);
     }
@@ -47,7 +28,7 @@ const CreateCategories = () => {
         setFeatureInputValue(e.target.value);
     }
 
-    function createCategory(e, category, value, input) {
+    function createCategory(e, category, value) {
         e.preventDefault()
         if (value === '') return alert("Campos vacios");
         if (value[0] === " ") return alert("Campos vacios");
@@ -80,7 +61,6 @@ const CreateCategories = () => {
             },
         }).then(res => {
                 alert("Categoría creada con éxito")
-                console.log(res)
                 switch (category) {
                     case 'brand':
                         dispatch({ type: 'SET_LIST_BRAND', payload: [...state.brand, res.data] });
@@ -94,7 +74,6 @@ const CreateCategories = () => {
                     default:
                         break;                
                 }
-                // window.location.reload(); // Buenas chicos, saco esto debido a que hace una interrupcion en el flujo normal de actualizaciones del DOM de REACT
             }).catch(err => {
                 console.log(err)
             })
@@ -102,41 +81,18 @@ const CreateCategories = () => {
 
     function deleteCategory(e, string) {
         e.preventDefault()
-
-        // Busco en el array correspondiente ( acceso a un campo del objeto <state> dinamicamente -> [`${string}`] ) el 
-        // objeto que debo usar como payload para hacer la llamada a la API usando una operacion DELETE en axios
         const categoryToDelete = state[`${string}`].find( 
             (value) => {
                 return ( e.target.elements[0].value === value.name );
             }
         );
 
-        // Convierto el string normal que indica el tipo de categoria (brand, model, o type) a un arreglo
         let aux = Array.from( string );
-
-        // Para luego hacer su primera letra, una mayuscula
         let categoryIdField = ( aux.map( (letter, index) => { return ( index === 0 ) ? letter.toUpperCase() : letter } ) )
-
-        // // Prueba
-        // console.log( categoryIdField ); // Output: Array(5) [ "B", "r", "a", "n", "d" ]
-
-        // Convierto ahora el array de strings a un objeto de tipo String:
-        categoryIdField = categoryIdField.join(""); // Output: "Brand"/"Type"/"Model"
-
-        // Concateno al comienzo del string la palabra "id"
-        categoryIdField = "id" + categoryIdField; // Output: "idBrand"/"idType"/"idModel"
-
-        // API Call ( POST /feature ) - Eliminar Category en el back
+        categoryIdField = categoryIdField.join("");
+        categoryIdField = "id" + categoryIdField; 
         axios.delete(
-            // URL:
-            `${ routes.url_base }/${ string }/delete/${ categoryToDelete[`${categoryIdField}`] }`,  // Ejemplo:
-            //        ^          ^     ^        ^                         ^
-            //       URL         |     |        |                         |
-            //                  "/"    |        |                         |
-            //                      category    |                         |
-            //                              "/delete/"                    |
-            //                                  ObjetoCategoria.campoIDdeObjetoCategoria (accedido dinamicamente)
-            // Headers:
+            `${ routes.url_base }/${ string }/delete/${ categoryToDelete[`${categoryIdField}`] }`,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -145,15 +101,7 @@ const CreateCategories = () => {
             }
         ).then(res => {
                 alert("Categoria eliminada")
-                // setFeatures(features.filter( (feature) => feature.idFeature !== featureToDelete.idFeature) )
-                // console.log( state[`${string}`] );
-                // state[`${string}`].forEach(element => {
-                //     console.log( element );
-                //     console.log(element[`${categoryIdField}`]);
-                //     console.log(featureToDelete[`${categoryIdField}`]);
-                // });
-                // console.log( state[`${string}`].filter( (element) => element[`${categoryIdField}`] !== featureToDelete[`${categoryIdField}`] ) );
-                dispatch({ 
+                    dispatch({ 
                     type: `SET_LIST_${string.toUpperCase()}`, 
                     payload: ( state[`${string}`].filter( (element) => element[`${categoryIdField}`] !== categoryToDelete[`${categoryIdField}`]) ) 
                 });
@@ -165,27 +113,17 @@ const CreateCategories = () => {
 
     function createFeature(e) {
         e.preventDefault()
-
-        // Input Vacio
         if (featureInputValue === "") return alert("Campos vacios");
         if (featureInputValue[0] === " ") return alert("Campos vacios");
-
         setFeatureInputValue(""); 
-
-        // Input existe en el array de features
         if ( (state.feature.find(feature => feature.name === featureInputValue))) {
-            // Limpiar input
             setFeatureInputValue(""); 
-            return alert('Ya existe esa categoría'); // Salir con mensaje de error
+            return alert('Ya existe esa categoría');  
         }
-
-        // API Call ( POST /feature ) - Crear Feature en el back
         axios.post(`${routes.url_base}/feature`, 
-            // Payload
             { 
                 name: featureInputValue 
             }, 
-            // Headers
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -194,33 +132,22 @@ const CreateCategories = () => {
             }
         ).then(res => {
                 alert("Característica creada con éxito");
-                // Limpiar input
+ 
                 setFeatureInputValue(""); 
                 dispatch({ type: 'SET_LIST_FEATURES', payload: [...state.feature, res.data] });
-                // setFeatures([...features, res.data]);
             }).catch(err => {
-                // console.log(err)
-            })
+        })
     }
 
     const deleteFeature = (e) => {
         e.preventDefault();
-
-        // String Seleccionado
-        // console.log( e.target.elements[0].value );
-
         const featureToDelete = state.feature.find( 
             (value) => {
                 return ( e.target.elements[0].value === value.name );
             }
         );
-
-        // Elemento del array local de features encontrado (el que voy a eliminar)
-        // console.log(featureToDelete);
-
-        // API Call ( POST /feature ) - Eliminar Feature en el back
         axios.delete(`${routes.url_base}/feature/delete/${featureToDelete.idFeature}`, 
-            // Headers
+
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -229,7 +156,6 @@ const CreateCategories = () => {
             }
         ).then(res => {
                 alert("Característica eliminada")
-                // setFeatures(features.filter( (feature) => feature.idFeature !== featureToDelete.idFeature) )
                 dispatch({ type: 'SET_LIST_FEATURES', payload: ( state.feature.filter( (feature) => feature.idFeature !== featureToDelete.idFeature)  ) });
             }).catch(err => {
                 alert("Característica en uso: No es posible, eliminar una característica que esté siendo usada!");
@@ -365,5 +291,4 @@ const CreateCategories = () => {
         </>
     )
 }
-
 export default CreateCategories

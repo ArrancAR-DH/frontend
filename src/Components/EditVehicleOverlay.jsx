@@ -39,7 +39,6 @@ const EditVehicleOverlay = ({ vehicle, setVehicleBeingEdited, setCars }) => {
         if (!plate || !description || !modelLabel || !typeLabel || !brandLabel || !price || !year) {
             return errorHandling("Por favor, complete todos los campos.");
         }
-        // check if price is double and year is number
         if (isNaN(parseFloat(price)) || isNaN(parseInt(year))) {
             return errorHandling("Por favor, ingrese un precio y un año válidos.");
         }
@@ -62,8 +61,9 @@ const EditVehicleOverlay = ({ vehicle, setVehicleBeingEdited, setCars }) => {
             features: vehicle.features,
             year: year
         }
-        console.log(payload)
         axios.put(`${routes.url_postCar}/${vehicle.idVehicle}`, payload, {
+
+        
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic ' + token,
@@ -102,12 +102,8 @@ const EditVehicleOverlay = ({ vehicle, setVehicleBeingEdited, setCars }) => {
             `${routes.url_postCloudinary}`,
             data
         );
-        console.log(response.data);
-
         setImages([...images, response.data.secure_url]);
     };
-    console.log(vehicle)
-
     const [selectedBrand, setSelectedBrand] = useState(vehicle.brand.name);
     const [selectedModel, setSelectedModel] = useState(vehicle.model.name);
     const [selectedType, setSelectedType] = useState(vehicle.type.name);
