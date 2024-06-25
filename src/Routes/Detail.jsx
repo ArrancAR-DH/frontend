@@ -24,7 +24,7 @@ const Detail = () => {
       // console.log(car)
      
       useEffect(() => {
-            axios.get(`http://www.localhost:8080/vehicle/${id}`).then((res) => {
+            axios.get(`${routes.url_postCar}/${id}`).then((res) => {
                   setCar(res.data);   
             });
       }, []);
