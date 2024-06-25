@@ -13,11 +13,10 @@ export const initialState = {
   carSelected: {},
   likes: JSON.parse(localStorage.getItem("likes")) || [],
   idUser: JSON.parse(localStorage.getItem("idUser")) || null,
-  loggedUser: JSON.parse(localStorage.getItem("user")) || null
+  loggedUser: JSON.parse(localStorage.getItem("user")) || null, 
 };
 
 export const ContextGlobal = createContext();
-
 const ContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const registerAPICall = (registerObj) =>
@@ -40,9 +39,6 @@ const ContextProvider = ({ children }) => {
       throw error;
     }
   };
-
-
-
   const storeToken = (token) => localStorage.setItem("token", token);
   const storeRol = (rol) => localStorage.setItem("rol", rol);
   const getToken = () => localStorage.getItem("token");
@@ -169,6 +165,8 @@ const ContextProvider = ({ children }) => {
       },
     }).then((res) => dispatch({ type: "GET_LIST_USER", payload: res.data }));
   }, []);
+
+
 
   return (
     <ContextGlobal.Provider

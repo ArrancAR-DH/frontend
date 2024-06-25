@@ -2,13 +2,12 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import Spinner from "../Components/Spinner";
 import AdministracionPhoneError from "../Components/Phone Error/AdministracionPhoneError";
 import { useContextGlobal } from "../Context/GlobalContext";
 import { routes } from "../utils/routes";
 
 const Administracion = () => {
-    const { state, getToken, dispatch } = useContextGlobal();
+    const { state, getToken } = useContextGlobal();
     const token = getToken();
 
     const [brands, setBrands] = useState([]);
@@ -27,11 +26,8 @@ const Administracion = () => {
 
     function featuresCheckUncheck(e, feature, index) {
         // e.preventDefault();
-        // console.log( e.target.checked );
-        // console.log( index );
         selectedFeatures[index] = e.target.checked; // Modificacion en la referenciad del array de selectedFeatures
-        // console.log( selectedFeatures );
-    }
+     }
 
     function populateSelectedFeaturesArray() {
         let aux = state.feature.map(
@@ -42,14 +38,7 @@ const Administracion = () => {
         setSelectedFeatures(aux);
     };
 
-    function inyectarFeatures(res, feat, form) {
-        console.log(res.data.idVehicle);
-
-        console.log(feat);
-
-        // return;
-        //
-
+    function inyectarFeatures(res, feat, form) {      
 
 
         feat.forEach(element => {
@@ -62,7 +51,6 @@ const Administracion = () => {
                 }).then((response) => {
                     setError("");
                 }).catch((error) => {
-                    console.log(error);
                     setError("Hubo un error al guardar el vehículo.");
                     setSuccess(false);
                 });
@@ -115,7 +103,7 @@ const Administracion = () => {
     // }
 
     const [pressedButton, setPressedButton] = useState(false);
-    function pressButton() { //? reiniciar todos los campos al presionar "cancelar"/"agregar vehiculo"
+    function pressButton() {
         setPressedButton(!pressedButton);
         setError(false);
         setImages([])
@@ -130,11 +118,8 @@ const Administracion = () => {
         patente,
         descripcion,
         featuresV
-    ) {
-
-        // console.log( marca );
-        // console.log( featuresV );
-        if (
+    ){
+        if ( 
             marca === "" |
             modelo === "" |
             tipo === "" |
@@ -152,9 +137,6 @@ const Administracion = () => {
 
     function submitForm(e) {
         e.preventDefault();
-        // console.log( e.target );
-        //
-
         const featuresV = [];
         selectedFeatures.forEach((element, index) => {
             if (element === true) featuresV.push(state.feature[index]);
@@ -174,8 +156,7 @@ const Administracion = () => {
         const price = e.target[4].value;
         const descripcion = e.target[6].value;
 
-        // Valido los campos del form de creacion de vehiculo
-        if (!validateFields(
+        if ( !validateFields(
             marcaLabel,
             modeloLabel,
             tipoLabel,
@@ -183,8 +164,9 @@ const Administracion = () => {
             price,
             patente,
             descripcion,
-            featuresV)
-        ) {
+            featuresV )
+        ){
+            e.target.reset();
             return;
         }
 
@@ -214,10 +196,6 @@ const Administracion = () => {
             },
             imgUrls: [],
         };
-
-        console.log(postJson);
-
-        // return;
         images.forEach((imagen) => {
             postJson.imgUrls.push({ url: imagen });
         });

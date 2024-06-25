@@ -7,14 +7,9 @@ import { useContextGlobal } from '../Context/GlobalContext.jsx'
 import { FaHeart } from "react-icons/fa";
 import { FaShapes } from "react-icons/fa6";
 import { MdOutlinePlaylistAddCheckCircle } from "react-icons/md";
-import { FaRegSnowflake } from "react-icons/fa";
 import { FiAlertCircle } from "react-icons/fi";
-import { GiGearStickPattern } from "react-icons/gi";
-import { GiGearStick } from "react-icons/gi";
 import DateRangePicker from "../Components/DateRangePicker.jsx";
-import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { carReserved } from "../utils/modals.js";
 import ShareRedes from "../Components/ShareRedes.jsx";
 import { routes } from "../utils/routes.js";
 
@@ -23,26 +18,28 @@ const Detail = () => {
       const { state, likeVehicle, dislikeVehicle } = useContextGlobal();
       const [car, setCar] = useState({});
       const shareUrl = routes.url_front + "/cars/" + id;
+      // useEffect(() => {
+      //       setCar(state.data.find((car) => car.idVehicle === parseInt(id)));
+      // const shareUrl = routes.url_front + "/cars/" + id ;
+      // console.log(car)
+     
       useEffect(() => {
-            setCar(state.data.find((car) => car.idVehicle === parseInt(id)));
+            axios.get(`http://www.localhost:8080/vehicle/${id}`).then((res) => {
+                  setCar(res.data);   
+            });
       }, []);
 
       const handleLike = async () => {
             const isAlreadyLiked = state.likes.includes(car.idVehicle);
             if (isAlreadyLiked) {
                   await dislikeVehicle(car.idVehicle);
-                  // alert("Este vehículo ha sido eliminado de tu lista de favoritos.");
             } else {
                   await likeVehicle(car.idVehicle);
-                  // alert("El vehículo se agregó satisfactoriamente a tu lista de favoritos.");
             }
-            console.log("car.idVehicle: " + car.idVehicle);
       };
 
       const isLiked = state.likes.includes(car.idVehicle);
-
-      console.log(car);
-
+      
       return (
             <div className="detail__container">
                   <h2>Vehículo seleccionado:</h2>
@@ -70,7 +67,7 @@ const Detail = () => {
                                           <div><FaShapes />&nbsp;&nbsp;{car.type?.name}</div>
                                     </div>
                               </div>
-                              <DateRangePicker />
+                              <DateRangePicker bookings={car.bookings} car={car}/>
                         </div>
                   </div>
             </div>
