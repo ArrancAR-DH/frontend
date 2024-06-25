@@ -12,6 +12,7 @@ import DateRangePicker from "../Components/DateRangePicker.jsx";
 import "react-toastify/dist/ReactToastify.css";
 import ShareRedes from "../Components/ShareRedes.jsx";
 import { routes } from "../utils/routes.js";
+import BackButton from "../Components/BackButton/BackButton.jsx";
 
 const Detail = () => {
       const { id } = useParams();
@@ -22,10 +23,10 @@ const Detail = () => {
       //       setCar(state.data.find((car) => car.idVehicle === parseInt(id)));
       // const shareUrl = routes.url_front + "/cars/" + id ;
       // console.log(car)
-     
+
       useEffect(() => {
             axios.get(`${routes.url_postCar}/${id}`).then((res) => {
-                  setCar(res.data);   
+                  setCar(res.data);
             });
       }, []);
 
@@ -39,9 +40,10 @@ const Detail = () => {
       };
 
       const isLiked = state.likes.includes(car.idVehicle);
-      
+
       return (
             <div className="detail__container">
+                  <BackButton number={1} />
                   <h2>Vehículo seleccionado:</h2>
                   <div className='selected__car__detail__container'>
                         <img src={car.imgUrls?.[0]?.url} />
@@ -67,7 +69,7 @@ const Detail = () => {
                                           <div><FaShapes />&nbsp;&nbsp;{car.type?.name}</div>
                                     </div>
                               </div>
-                              <DateRangePicker bookings={car.bookings} car={car}/>
+                              <DateRangePicker bookings={car.bookings} car={car} />
                         </div>
                   </div>
             </div>

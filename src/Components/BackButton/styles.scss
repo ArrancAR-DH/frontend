@@ -1,0 +1,17 @@
+button.back-button {
+    font-size: 16px;
+    background-color: #ae445a;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 15px;
+    margin: 15px;
+    cursor: pointer;
+    transition: background-color 100ms ease-in-out;
+
+    &:hover {
+        background-color: #f39f5a;
+    }
+
+    // position: absolute;
+    width: fit-content;
+}

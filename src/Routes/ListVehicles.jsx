@@ -7,6 +7,7 @@ import EditVehicleOverlay from "../Components/EditVehicleOverlay";
 import AdministracionPhoneError from "../Components/Phone Error/AdministracionPhoneError";
 import { useContextGlobal } from "../Context/GlobalContext";
 import { routes } from "../utils/routes.js";
+import BackButton from "../Components/BackButton/BackButton.jsx";
 
 const ListVehicles = () => {
     const { state, getToken } = useContextGlobal();
@@ -56,7 +57,7 @@ const ListVehicles = () => {
         <>
             {loader ? <p className="loader">Loading....</p> :
                 <div className="lista__vehiculos__container">
-                    <Link to={`/administracion`}><h3>Volver</h3></Link>
+                    <BackButton />
                     <h2 className="title__admin">Administración</h2>
                     <div className="administracion__funciones">
                         <div className="titulos__categorias">

@@ -9,6 +9,7 @@ import { ToastContainer } from "react-toastify";
 import { userMessage } from "../utils/modals";
 import { useContextGlobal } from "../Context/GlobalContext";
 import { routes } from "../utils/routes.js";
+import BackButton from "../Components/BackButton/BackButton.jsx";
 
 
 const ListUsers = () => {
@@ -82,9 +83,7 @@ const ListUsers = () => {
         <>
             {loader ? (<p className="loader">Loading....</p>) : (
                 <div className="list__users__container">
-                    <Link to={`/administracion`}>
-                        <h3>Volver</h3>
-                    </Link>
+                    <BackButton />
                     <h2 className="title__admin">Administración</h2>
                     <div className="administracion__funciones">
                         <div className="titulos__categorias">
@@ -114,7 +113,7 @@ const ListUsers = () => {
                                 </div>
                                 <div className="container__buttons">
                                     <button onClick={() => handleApply(user, index)}>
-                                        <img src={pencil} alt="edit-image"/>
+                                        <img src={pencil} alt="edit-image" />
                                     </button>
                                     <button>
                                         <img src={trashCan} alt="delete-image" />

@@ -5,6 +5,7 @@ import axios from "axios";
 import AdministracionPhoneError from "../Components/Phone Error/AdministracionPhoneError";
 import { useContextGlobal } from "../Context/GlobalContext";
 import { routes } from "../utils/routes";
+import BackButton from "../Components/BackButton/BackButton";
 
 const Administracion = () => {
     const { state, getToken } = useContextGlobal();
@@ -27,7 +28,7 @@ const Administracion = () => {
     function featuresCheckUncheck(e, feature, index) {
         // e.preventDefault();
         selectedFeatures[index] = e.target.checked; // Modificacion en la referenciad del array de selectedFeatures
-     }
+    }
 
     function populateSelectedFeaturesArray() {
         let aux = state.feature.map(
@@ -38,7 +39,7 @@ const Administracion = () => {
         setSelectedFeatures(aux);
     };
 
-    function inyectarFeatures(res, feat, form) {      
+    function inyectarFeatures(res, feat, form) {
 
 
         feat.forEach(element => {
@@ -118,16 +119,16 @@ const Administracion = () => {
         patente,
         descripcion,
         featuresV
-    ){
-        if ( 
-            marca === "" |
-            modelo === "" |
-            tipo === "" |
-            year === "" | year[0] === " " |
-            price === "" | price[0] === " " |
-            patente === "" | patente[0] === " " |
-            descripcion === "" | descripcion[0] === " " 
-            // featuresV.length === 0
+    ) {
+        if (
+            marca === "" ||
+            modelo === "" ||
+            tipo === "" ||
+            year === "" || year[0] === " " ||
+            price === "" || price[0] === " " ||
+            patente === "" || patente[0] === " " ||
+            descripcion === "" || descripcion[0] === " "
+            // || featuresV.length === 0 //! comentado para que no sea obligatorio
         ) {
             setError("Por favor completar todos los campos");
             return false;
@@ -156,7 +157,7 @@ const Administracion = () => {
         const price = e.target[4].value;
         const descripcion = e.target[6].value;
 
-        if ( !validateFields(
+        if (!validateFields(
             marcaLabel,
             modeloLabel,
             tipoLabel,
@@ -164,17 +165,14 @@ const Administracion = () => {
             price,
             patente,
             descripcion,
-            featuresV )
-        ){
-            e.target.reset();
+            featuresV)
+        ) {
             return;
         }
 
         const marcaId = brands.find((brand) => brand.name === marcaLabel).idBrand;
         const modeloId = models.find((model) => model.name === modeloLabel).idModel;
         const tipoId = types.find((type) => type.name === tipoLabel).idType;
-
-
 
         const postJson = {
             plate: patente,
@@ -206,11 +204,11 @@ const Administracion = () => {
         setRender(false)
     }, 780);
 
-
     return (
         <>
             {render ? <p className="loader">Loading....</p> : (
                 <div className="administracion__container">
+                    <BackButton />
                     <h2 className="title__admin">Administración</h2>
                     <div className="administracion__funciones">
                         <div className="botones">
@@ -278,28 +276,30 @@ const Administracion = () => {
                                         <div className="first_column">Características:</div>
                                         <div className="second_column feature_checkboxes_block">
                                             {
-                                                state.feature.map(
-                                                    (feature, index) => {
-                                                        return ( // (El key es para eliminar un warning de REACT sobre la performance de la pag.)
-                                                            <React.Fragment key={feature.idFeature}>
-                                                                <div className="checkbox_and_feature_couple">
-                                                                    <input
-                                                                        className="feature_input_checkbox"
-                                                                        type="checkbox"
-                                                                        id={`feature${feature.idFeature}`}
-                                                                        onInput={(e) => featuresCheckUncheck(e, feature, index)}
-                                                                    />
-                                                                    <label
-                                                                        className="feature_checkbox_title"
-                                                                        htmlFor={`feature${feature.idFeature}`}
-                                                                    >
-                                                                        {feature.name}
-                                                                    </label>
-                                                                </div>
-                                                            </React.Fragment>
-                                                        )
-                                                    }
-                                                )
+                                                state.feature.length < 1 ?
+                                                    <p>No hay características creadas</p> :
+                                                    state.feature.map(
+                                                        (feature, index) => {
+                                                            return ( // (El key es para eliminar un warning de REACT sobre la performance de la pag.)
+                                                                <React.Fragment key={feature.idFeature}>
+                                                                    <div className="checkbox_and_feature_couple">
+                                                                        <input
+                                                                            className="feature_input_checkbox"
+                                                                            type="checkbox"
+                                                                            id={`feature${feature.idFeature}`}
+                                                                            onInput={(e) => featuresCheckUncheck(e, feature, index)}
+                                                                        />
+                                                                        <label
+                                                                            className="feature_checkbox_title"
+                                                                            htmlFor={`feature${feature.idFeature}`}
+                                                                        >
+                                                                            {feature.name}
+                                                                        </label>
+                                                                    </div>
+                                                                </React.Fragment>
+                                                            )
+                                                        }
+                                                    )
                                             }
                                         </div>
                                     </div>
