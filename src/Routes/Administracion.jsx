@@ -40,8 +40,6 @@ const Administracion = () => {
     };
 
     function inyectarFeatures(res, feat, form) {
-
-
         feat.forEach(element => {
             axios.post(`${routes.url_postCar}/${res.data.idVehicle}/features/${element.idFeature}`,
                 {

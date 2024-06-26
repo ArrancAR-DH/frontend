@@ -12,10 +12,25 @@ import BackButton from "../Components/BackButton/BackButton.jsx";
 const ListVehicles = () => {
     const { state, getToken } = useContextGlobal();
     const token = getToken();
+    // const {data} = state; 
     const [loader, setLoader] = useState(true);
     const [cars, setCars] = useState([state.data]);
+    let allBookings = []; 
 
-    // TODO
+    cars.map((value)=>{
+        console.log(value);
+        value.bookings?.map((all)=>{
+            console.log(all);
+            allBookings.push(all); 
+        })
+    })
+
+    allBookings.map((value)=>{
+        console.log(value);
+    })
+
+
+
     function deleteVehiculo(id) {
         if (vehicleBeingEdited)
             return
@@ -38,9 +53,7 @@ const ListVehicles = () => {
     const [vehicleBeingEdited, setVehicleBeingEdited] = useState(false);
     function editVehicle(car) {
         if (vehicleBeingEdited)
-            return
-
-        setVehicleBeingEdited(car);
+            return setVehicleBeingEdited(car);
     }
 
     useEffect(() => {

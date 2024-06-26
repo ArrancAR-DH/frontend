@@ -86,13 +86,15 @@ const DropDown = ({ isAuth }) => {
                     autoFocusItem={open}
                     id="composition-menu"
                     aria-labelledby="composition-button"
-
                     onKeyDown={handleListKeyDown}>
                     <NavLink to="/profile" className="styles">
                       <MenuItem onClick={handleClose}>Profile</MenuItem>
                     </NavLink>
                     <NavLink to="/favs" className="styles">
                       <MenuItem onClick={handleClose}>Favs</MenuItem>
+                    </NavLink>                   
+                     <NavLink to="/booking" onClick={handleChange} className="styles">
+                      <MenuItem onClick={handleClose}>Favs2</MenuItem>
                     </NavLink>
                     <NavLink to="/login" onClick={handleChange} className="styles">
                       <MenuItem onClick={handleClose}>Cerrar Sesion</MenuItem>
