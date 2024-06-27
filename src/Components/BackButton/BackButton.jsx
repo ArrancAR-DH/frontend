@@ -1,5 +1,4 @@
-import './styles.scss'
-import React from 'react'
+ import React from 'react'
 
 const BackButton = ({ number = 0 }) => {
     const link = window.location.href
