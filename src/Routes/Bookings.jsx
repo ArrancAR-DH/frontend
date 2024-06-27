@@ -54,7 +54,7 @@ const Bookings = () => {
         <h2 className="title__admin">Detalle de reservas</h2>
         <div className="administracion__funciones">
           <div className="titulos__categorias">
-            <h3>ID</h3>
+            <h3>ID Reserva </h3>
             <h3>User</h3>
             <h3>Desde</h3>
             <h3>Hasta</h3>
