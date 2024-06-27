@@ -19,10 +19,6 @@ const Detail = () => {
       const { state, likeVehicle, dislikeVehicle } = useContextGlobal();
       const [car, setCar] = useState({});
       const shareUrl = routes.url_front + "/cars/" + id;
-      // useEffect(() => {
-      //       setCar(state.data.find((car) => car.idVehicle === parseInt(id)));
-      // const shareUrl = routes.url_front + "/cars/" + id ;
-      // console.log(car)
 
       useEffect(() => {
             axios.get(`${routes.url_postCar}/${id}`).then((res) => {

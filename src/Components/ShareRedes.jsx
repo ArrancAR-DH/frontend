@@ -47,14 +47,15 @@ const ShareRedes = ({url}) => {
   
 
   return (
-    <Stack direction="row" spacing={2}>
-      <div>
+    <Stack direction="row" spacing={2} >
+      <div >
         <IconButton
           ref={anchorRef}
           aria-controls={open ? "composition-menu" : undefined}
           aria-expanded={open ? "true" : undefined}
           aria-haspopup="true"
           onClick={handleToggle}
+          id="bg__icon"
         >
           <ShareIcon />
         </IconButton>

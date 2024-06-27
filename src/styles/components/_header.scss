@@ -8,8 +8,8 @@ nav {
   padding: 0 20px;
   position: sticky;
   top: 0;
-  z-index: 1; // Para que el header esté por encima de todo. el numero puede ser mayor si se necesita
-
+  z-index: 1; 
+  
   a {
     align-items: center;
     color: $darkmode-text-color;
