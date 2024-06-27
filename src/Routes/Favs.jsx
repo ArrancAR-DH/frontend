@@ -23,9 +23,7 @@ const Favs = () => {
           <Card car={car} key={car.idVehicle} className="car__card" />
         ))}
       </div>
-      {state.likes.length === 0 && (
-        <p>Ud. no tiene favoritos agregados aún!</p>
-      )}
+      {state.likes.length === 0 && <p>Ud. no tiene favoritos agregados aún!</p>}
     </div>
   );
 };

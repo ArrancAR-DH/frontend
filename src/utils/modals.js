@@ -1,28 +1,30 @@
-import { toast } from "react-toastify";
+import {
+    toast
+} from "react-toastify";
 
 export const loginMessage = () =>
     toast.success("Login exitoso!!!", {
-      position: "top-center",
-      autoClose: 2500,
-      hideProgressBar: true,
-      closeOnClick: false,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      
+        position: "top-center",
+        autoClose: 2500,
+        hideProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+
     });
 
 
 export const errorMessage = () =>
-toast.error("Usuario no registrado", {
-    position: "top-right",
-    autoClose: 2500,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-});
+    toast.error("Usuario no registrado", {
+        position: "top-right",
+        autoClose: 2500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+    });
 
 export const registerMessage = () =>
     toast.success("Registro exitoso!!!", {
@@ -79,7 +81,7 @@ export const carUnLogged = () =>
         draggable: true,
         progress: undefined,
     });
-       
+
 export const notSelectedDates = () =>
     toast.error("Debe seleccionar dos fechas para reservar", {
         position: "top-center",
@@ -90,21 +92,33 @@ export const notSelectedDates = () =>
         draggable: true,
         progress: undefined,
     });
-    
 
-    export const errorBooking = (message) =>
-        toast.error(message, {
-            position: "top-center",
-            autoClose: 5550,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            style: {
-                width: "450px",
-              },
-        });
+
+export const errorBooking = (message) =>
+    toast.error(message, {
+        position: "top-center",
+        autoClose: 5550,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        style: {
+            width: "450px",
+        },
+    });
+
+
+export const bookingDeleted = () =>
+    toast.success("Registro eliminado", {
+        position: "top-right",
+        autoClose: 1800,
+        hideProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+    },
     
-    
-        
+    // window.location.reload()
+);
