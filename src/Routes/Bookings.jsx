@@ -7,20 +7,16 @@ import { routes } from "../utils/routes";
 const Bookings = () => {
   const { state, getToken } = useContextGlobal();
   const token = getToken();
-  const [cars, setCars] = useState(state.loggedUser.bookings);
-
   const [bookings, setBookings] = useState([]);
   const id = state.idUser;
 
   useEffect(() => {
-    axios.get(`${routes.url_getUserBookingsById}/${id}/bookings`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Basic " + token,
-          },
-        }
-      )
+    axios.get(`${routes.url_getUserBookingsById}/${id}/bookings`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Basic " + token,
+        },
+      })
       .then((response) => {
         setBookings(response.data);
       })
@@ -33,17 +29,14 @@ const Bookings = () => {
     if (confirm("¿Estás seguro que deseas eliminar este vehículo?") === false)
       return;
 
-    axios
-      .delete(`${routes.url_deleteBooking}/` + id, {
+    axios.delete(`${routes.url_deleteBooking}/` + id, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Basic " + token,
         },
       })
       .then((response) => {
-        console.log(response); // SETEAR NUEVOS VALORES
         setBookings(bookings.filter((book) => book.idBooking !== id));
-        console.log(response);
       })
       .catch((error) => console.log(error));
   }
