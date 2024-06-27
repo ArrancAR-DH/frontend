@@ -7,13 +7,11 @@ import { ToastContainer } from "react-toastify";
 import { bookingDeleted } from "../utils/modals";
 import BackButton from "../Components/BackButton/BackButton";
 
-
-
 const Bookings = () => {
   const { state, getToken } = useContextGlobal();
   const token = getToken();
   const [bookings, setBookings] = useState([]);
-  const [book, setBook] = useState(false);
+  const [loader, setLoader] = useState(true);
   const id = state.idUser;
 
   useEffect(() => {
@@ -25,13 +23,13 @@ const Bookings = () => {
       })
       .then((response) => {
         setBookings(response.data);
-        response.data.length >0 ? setBook(true) : setBook(false);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, [state]);
-   
+  }, [state]); 
+ 
+
   function handleClick(id) {
     if (confirm("¿Estás seguro que deseas eliminar este vehículo?") === false)
       return;
@@ -45,18 +43,23 @@ const Bookings = () => {
       .then((response) => {
         setBookings(bookings.filter((book) => book.idBooking !== id));
         bookingDeleted(); 
-        // window.location.reload(); 
       })
       .catch((error) => console.log(error));
-
   }
+
+  useEffect(() => {
+    setTimeout(() => {
+        setLoader(false);
+    }, 580);
+}, []);
 
   return (
     <>
+{loader ? <p className="loader">Loading....</p> :  
       <div className="list__bookings__container">
         <BackButton />
         <h2 className="title__admin">Detalle de reservas</h2>
-  {book && (
+  {bookings.length > 0  && (
     <div className="administracion__funciones">
           <div className="titulos__bookings">
             <h3>ID Reserva </h3>
@@ -79,15 +82,15 @@ const Bookings = () => {
           ))}
         </div> 
 )}
-     {!book && (
+     { bookings.length === 0 && (
       <p className="render__book">Ud. no tiene reservas agregadas aún!</p>
      )}
            <ToastContainer />
       </div>
+    }
     </>
   );
 };
-
 export default Bookings;
 
 
