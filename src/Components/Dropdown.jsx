@@ -93,8 +93,8 @@ const DropDown = ({ isAuth }) => {
                     <NavLink to="/favs" className="styles">
                       <MenuItem onClick={handleClose}>Favs</MenuItem>
                     </NavLink>                   
-                     <NavLink to="/booking" onClick={handleChange} className="styles">
-                      <MenuItem onClick={handleClose}>Favs2</MenuItem>
+                     <NavLink to="/booking" className="styles">
+                      <MenuItem onClick={handleClose}>Books</MenuItem>
                     </NavLink>
                     <NavLink to="/login" onClick={handleChange} className="styles">
                       <MenuItem onClick={handleClose}>Cerrar Sesion</MenuItem>

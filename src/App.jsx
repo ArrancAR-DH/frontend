@@ -20,8 +20,6 @@ import ProtectedRoute from "./Routes/ProtectedRoute";
 import './styles/styles.scss';
 import Bookings from "./Routes/Bookings";
 
-
-
 function App() {
   return (
     <div>
@@ -29,6 +27,7 @@ function App() {
       <ContextProvider>
            <Routes>
             <Route element={<Layout />}>
+            
               <Route path={routes.home} element={<Home />} />
               <Route path={routes.about} element={<About />} />
               <Route path={routes.legal} element={<Legal />} />
@@ -65,7 +64,7 @@ function App() {
               <Route path={routes.register} element={<Register />} />
               <Route path={routes.favs} element={<Favs />} />
               <Route path={routes.profile} element={<Profile/>} />
-              <Route path={routes.booking} element={<Booking />} />
+              <Route path={routes.books} element={<Bookings />} />
             </Route>
           </Routes>
           </ContextProvider>

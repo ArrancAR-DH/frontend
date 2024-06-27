@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import trashCan from "../assets/trash-solid.svg"
 import pencil from "../assets/pencil-solid.svg"
@@ -12,24 +11,8 @@ import BackButton from "../Components/BackButton/BackButton.jsx";
 const ListVehicles = () => {
     const { state, getToken } = useContextGlobal();
     const token = getToken();
-    // const {data} = state; 
     const [loader, setLoader] = useState(true);
     const [cars, setCars] = useState([state.data]);
-    let allBookings = []; 
-
-    cars.map((value)=>{
-        console.log(value);
-        value.bookings?.map((all)=>{
-            console.log(all);
-            allBookings.push(all); 
-        })
-    })
-
-    allBookings.map((value)=>{
-        console.log(value);
-    })
-
-
 
     function deleteVehiculo(id) {
         if (vehicleBeingEdited)
