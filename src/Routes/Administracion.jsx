@@ -8,7 +8,7 @@ import { routes } from "../utils/routes";
 import BackButton from "../Components/BackButton/BackButton";
 
 const Administracion = () => {
-    const { state, getToken } = useContextGlobal();
+    const { state, getToken, dispatch } = useContextGlobal();
     const token = getToken();
 
     const [brands, setBrands] = useState([]);
@@ -39,9 +39,17 @@ const Administracion = () => {
         setSelectedFeatures(aux);
     };
 
-    function inyectarFeatures(res, feat, form) {
-        feat.forEach(element => {
-            axios.post(`${routes.url_postCar}/${res.data.idVehicle}/features/${element.idFeature}`,
+    // async function someAsyncFunction(item){
+    //     return new Promise( resolve =>{
+    //         setTimeout( ()=>{
+    //             console.log( item );
+    //             resolve();
+    //         }, 1000 );
+    //     } );
+    // }
+
+    async function esperarAxios(idVehicule, idFeature){
+             return axios.post(`${routes.url_postCar}/${idVehicule}/features/${idFeature}`,
                 {
                     headers: {
                         "Content-Type": "application/json",
@@ -53,7 +61,16 @@ const Administracion = () => {
                     setError("Hubo un error al guardar el vehículo.");
                     setSuccess(false);
                 });
-        });
+    }
+
+    async function inyectarFeatures(res, feat, form) {
+        for( const element of feat ) {
+            console.log( "FEATURE" );
+            console.log( element.name );
+            setTimeout(()=>{ console.log( "ESPERAR" ) }, 1200);
+            // await someAsyncFunction( element.name );
+            await esperarAxios(res.data.idVehicle, element.idFeature);
+        }
         setSuccess(true);
     }
 
@@ -65,6 +82,7 @@ const Administracion = () => {
             },
         }).then((response) => {
             inyectarFeatures(response, features, form);
+            dispatch({ type: 'ADD_CAR', payload: response.data });
             setError("");
         }).catch((error) => {
             console.log(error);
@@ -126,7 +144,7 @@ const Administracion = () => {
             price === "" || price[0] === " " ||
             patente === "" || patente[0] === " " ||
             descripcion === "" || descripcion[0] === " "
-            // || featuresV.length === 0 //! comentado para que no sea obligatorio
+            || featuresV.length === 0 //! comentado para que no sea obligatorio
         ) {
             setError("Por favor completar todos los campos");
             return false;
@@ -142,7 +160,10 @@ const Administracion = () => {
         });
 
         const patente = e.target[5].value.toUpperCase();
+        console.log( patente );
         const patenteEnUso = cars.filter((car) => car.plate === patente);
+        console.log( cars );
+        console.log( patenteEnUso );
         if (patenteEnUso.length > 0) {
             setError("La patente ingresada ya está en uso.");
             return;
@@ -256,19 +277,19 @@ const Administracion = () => {
                                     </div>
                                     <div className="vehicle_form_row">
                                         <div className="first_column">Año:</div>
-                                        <input type="text" placeholder="Insertar año del vehículo" />
+                                        <input required type="text" placeholder="Insertar año del vehículo" />
                                     </div>
                                     <div className="vehicle_form_row">
                                         <div className="first_column">Precio:</div>
-                                        <input type="text" placeholder="Insertar precio de vehículo" />
+                                        <input required type="text" placeholder="Insertar precio de vehículo" />
                                     </div>
                                     <div className="vehicle_form_row">
                                         <div className="first_column">Patente:</div>
-                                        <input type="text" placeholder="Insertar patente del vehículo" />
+                                        <input required type="text" placeholder="Insertar patente del vehículo" />
                                     </div>
                                     <div className="vehicle_form_row">
                                         <div className="first_column">Descripción:</div>
-                                        <input type="text" placeholder="Insertar una breve Descripción del vehiculo" />
+                                        <input required type="text" placeholder="Insertar una breve Descripción del vehiculo" />
                                     </div>
                                     <div className="vehicle_form_row">
                                         <div className="first_column">Características:</div>
@@ -281,7 +302,7 @@ const Administracion = () => {
                                                             return ( // (El key es para eliminar un warning de REACT sobre la performance de la pag.)
                                                                 <React.Fragment key={feature.idFeature}>
                                                                     <div className="checkbox_and_feature_couple">
-                                                                        <input
+                                                                        <input 
                                                                             className="feature_input_checkbox"
                                                                             type="checkbox"
                                                                             id={`feature${feature.idFeature}`}
