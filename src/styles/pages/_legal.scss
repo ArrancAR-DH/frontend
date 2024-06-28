@@ -1,4 +1,7 @@
 .legal__container {
+    max-width: 1800px;
+    width: 80%;
+    margin: 0 auto;
 
     h3,
     h2 {
@@ -16,9 +19,7 @@
     // estilado sobre cada uno de los textos de los terminos y condiciones
     .linea__de__termino,
     .texto__copyright {
-        line-height: 40px;
-        margin: 15px auto;
+        line-height: 50px;
         text-align: justify;
-        width: calc(80% - 20px);
     }
 }

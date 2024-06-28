@@ -1,11 +1,13 @@
 import React from "react";
 import { useContextGlobal } from "../Context/GlobalContext";
+import BackButton from "../Components/BackButton/BackButton";
 
 const Profile = () => {
   const { state } = useContextGlobal();
   const datosUser = state.loggedUser;
   return (
     <>
+      <BackButton />
       <div className="profile-card-wrapper">
         <div className="profile-card">
           <h1>Información Personal</h1>

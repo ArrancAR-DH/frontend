@@ -5,11 +5,16 @@ import axios from "axios";
 import AdministracionPhoneError from "../Components/Phone Error/AdministracionPhoneError";
 import { useContextGlobal } from "../Context/GlobalContext";
 import { routes } from "../utils/routes";
+import BackButton from "../Components/BackButton/BackButton";
+import { carAdd, carError } from "../utils/modals";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
+
+
 
 const Administracion = () => {
-    const { state, getToken } = useContextGlobal();
+    const { state, getToken, dispatch } = useContextGlobal();
     const token = getToken();
-
     const [brands, setBrands] = useState([]);
     const [models, setModels] = useState([]);
     const [types, setTypes] = useState([]);
@@ -25,9 +30,8 @@ const Administracion = () => {
     }, [state]);
 
     function featuresCheckUncheck(e, feature, index) {
-        // e.preventDefault();
-        selectedFeatures[index] = e.target.checked; // Modificacion en la referenciad del array de selectedFeatures
-     }
+        selectedFeatures[index] = e.target.checked; 
+    }
 
     function populateSelectedFeaturesArray() {
         let aux = state.feature.map(
@@ -38,11 +42,9 @@ const Administracion = () => {
         setSelectedFeatures(aux);
     };
 
-    function inyectarFeatures(res, feat, form) {      
 
-
-        feat.forEach(element => {
-            axios.post(`${routes.url_postCar}/${res.data.idVehicle}/features/${element.idFeature}`,
+    async function esperarAxios(idVehicule, idFeature){
+             return axios.post(`${routes.url_postCar}/${idVehicule}/features/${idFeature}`,
                 {
                     headers: {
                         "Content-Type": "application/json",
@@ -51,14 +53,18 @@ const Administracion = () => {
                 }).then((response) => {
                     setError("");
                 }).catch((error) => {
-                    setError("Hubo un error al guardar el vehículo.");
-                    setSuccess(false);
+                    carError("Hubo un error al guardar el vehículo.")
                 });
-        });
-        setSuccess(true);
+    }
+
+    async function inyectarFeatures(res, feat, form) {
+        for( const element of feat ) {
+            await esperarAxios(res.data.idVehicle, element.idFeature);
+        }
     }
 
     function postVehiculo(postJson, features, form) {
+        setError("");
         axios.post(`${routes.url_postCar}`, postJson, {
             headers: {
                 "Content-Type": "application/json",
@@ -66,16 +72,17 @@ const Administracion = () => {
             },
         }).then((response) => {
             inyectarFeatures(response, features, form);
-            setError("");
+            dispatch({ type: 'ADD_CAR', payload: response.data });
+            carError(); 
+            carAdd();
+            form.reset();
+            setImages([])
         }).catch((error) => {
-            console.log(error);
-            setError("Hubo un error al guardar el vehículo.");
-            setSuccess(false);
+            carError("Hubo un error al guardar el vehículo.")
         });
     }
 
     const [error, setError] = useState("");
-    const [success, setSuccess] = useState(false);
     const [images, setImages] = useState([]);
 
     const changeUploadImage = async (e) => {
@@ -92,20 +99,10 @@ const Administracion = () => {
         setImages([...images, response.data.secure_url]);
     };
 
-    // function errorHandling(string) {
-    //     if (!string) {
-    //         setError("");
-    //         return;
-    //     }
-    //     let result = "Error al enviar al formulario: " + string;
-    //     setError(result);
-    //     setSuccess(false);
-    // }
-
     const [pressedButton, setPressedButton] = useState(false);
     function pressButton() {
         setPressedButton(!pressedButton);
-        setError(false);
+        // setError(false);
         setImages([])
     }
 
@@ -118,18 +115,19 @@ const Administracion = () => {
         patente,
         descripcion,
         featuresV
-    ){
-        if ( 
-            marca === "" |
-            modelo === "" |
-            tipo === "" |
-            year === "" | year[0] === " " |
-            price === "" | price[0] === " " |
-            patente === "" | patente[0] === " " |
-            descripcion === "" | descripcion[0] === " " 
-            // featuresV.length === 0
+    ) {
+        // console.log(marca, modelo, tipo, year, price, patente, descripcion, featuresV);
+        if (
+            marca === "" ||
+            modelo === "" ||
+            tipo === "" ||
+            year === "" || year[0] === " " ||
+            price === "" || price[0] === " " ||
+            patente === "" || patente[0] === " " ||
+            descripcion === "" || descripcion[0] === " "
+            || featuresV.length === 0 
         ) {
-            setError("Por favor completar todos los campos");
+            carError("Por favor completar todos los campos");
             return false;
         }
         return true;
@@ -145,7 +143,7 @@ const Administracion = () => {
         const patente = e.target[5].value.toUpperCase();
         const patenteEnUso = cars.filter((car) => car.plate === patente);
         if (patenteEnUso.length > 0) {
-            setError("La patente ingresada ya está en uso.");
+            carError("La patente ingresada ya está en uso.")
             return;
         }
 
@@ -156,7 +154,7 @@ const Administracion = () => {
         const price = e.target[4].value;
         const descripcion = e.target[6].value;
 
-        if ( !validateFields(
+        if (!validateFields(
             marcaLabel,
             modeloLabel,
             tipoLabel,
@@ -164,9 +162,8 @@ const Administracion = () => {
             price,
             patente,
             descripcion,
-            featuresV )
-        ){
-            e.target.reset();
+            featuresV)
+        ) {
             return;
         }
 
@@ -174,13 +171,10 @@ const Administracion = () => {
         const modeloId = models.find((model) => model.name === modeloLabel).idModel;
         const tipoId = types.find((type) => type.name === tipoLabel).idType;
 
-
-
         const postJson = {
             plate: patente,
             description: descripcion,
             price: parseFloat(price),
-            // reserved: true/false. // Creo que faltaria este campo para el sprint 4
             model: {
                 idModel: modeloId,
                 name: modeloLabel,
@@ -206,11 +200,11 @@ const Administracion = () => {
         setRender(false)
     }, 780);
 
-
     return (
         <>
             {render ? <p className="loader">Loading....</p> : (
                 <div className="administracion__container">
+                    <BackButton />
                     <h2 className="title__admin">Administración</h2>
                     <div className="administracion__funciones">
                         <div className="botones">
@@ -225,8 +219,7 @@ const Administracion = () => {
                                 <button>Ver lista de usuarios</button>
                             </Link>
                         </div>
-                        {error && <p className="administracion__error">{error}</p>}
-                        {success && <p className="administracion__success">Vehículo agregado con éxito.</p>}
+
                         {pressedButton && (
                             <>
                                 <form onSubmit={submitForm} className="administracion__form__agregar__veh">
@@ -260,46 +253,48 @@ const Administracion = () => {
                                     </div>
                                     <div className="vehicle_form_row">
                                         <div className="first_column">Año:</div>
-                                        <input type="text" placeholder="Insertar año del vehículo" />
+                                        <input required type="text" placeholder="Insertar año del vehículo" />
                                     </div>
                                     <div className="vehicle_form_row">
                                         <div className="first_column">Precio:</div>
-                                        <input type="text" placeholder="Insertar precio de vehículo" />
+                                        <input required type="text" placeholder="Insertar precio de vehículo" />
                                     </div>
                                     <div className="vehicle_form_row">
                                         <div className="first_column">Patente:</div>
-                                        <input type="text" placeholder="Insertar patente del vehículo" />
+                                        <input required type="text" placeholder="Insertar patente del vehículo" />
                                     </div>
                                     <div className="vehicle_form_row">
                                         <div className="first_column">Descripción:</div>
-                                        <input type="text" placeholder="Insertar una breve Descripción del vehiculo" />
+                                        <input required type="text" placeholder="Insertar una breve Descripción del vehiculo" />
                                     </div>
                                     <div className="vehicle_form_row">
                                         <div className="first_column">Características:</div>
                                         <div className="second_column feature_checkboxes_block">
                                             {
-                                                state.feature.map(
-                                                    (feature, index) => {
-                                                        return ( // (El key es para eliminar un warning de REACT sobre la performance de la pag.)
-                                                            <React.Fragment key={feature.idFeature}>
-                                                                <div className="checkbox_and_feature_couple">
-                                                                    <input
-                                                                        className="feature_input_checkbox"
-                                                                        type="checkbox"
-                                                                        id={`feature${feature.idFeature}`}
-                                                                        onInput={(e) => featuresCheckUncheck(e, feature, index)}
-                                                                    />
-                                                                    <label
-                                                                        className="feature_checkbox_title"
-                                                                        htmlFor={`feature${feature.idFeature}`}
-                                                                    >
-                                                                        {feature.name}
-                                                                    </label>
-                                                                </div>
-                                                            </React.Fragment>
-                                                        )
-                                                    }
-                                                )
+                                                state.feature.length < 1 ?
+                                                    <p>No hay características creadas</p> :
+                                                    state.feature.map(
+                                                        (feature, index) => {
+                                                            return ( 
+                                                                <React.Fragment key={feature.idFeature}>
+                                                                    <div className="checkbox_and_feature_couple">
+                                                                        <input 
+                                                                            className="feature_input_checkbox"
+                                                                            type="checkbox"
+                                                                            id={`feature${feature.idFeature}`}
+                                                                            onInput={(e) => featuresCheckUncheck(e, feature, index)}
+                                                                        />
+                                                                        <label
+                                                                            className="feature_checkbox_title"
+                                                                            htmlFor={`feature${feature.idFeature}`}
+                                                                        >
+                                                                            {feature.name}
+                                                                        </label>
+                                                                    </div>
+                                                                </React.Fragment>
+                                                            )
+                                                        }
+                                                    )
                                             }
                                         </div>
                                     </div>
@@ -327,7 +322,9 @@ const Administracion = () => {
                     </div>
                     <AdministracionPhoneError />
                 </div>
-            )}
+                    
+                )}
+                <ToastContainer/>
         </>
     );
 };

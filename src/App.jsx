@@ -18,6 +18,7 @@ import Profile from "./Routes/Profile";
 import ContextProvider from "./Context/GlobalContext";
 import ProtectedRoute from "./Routes/ProtectedRoute";
 import './styles/styles.scss';
+import Bookings from "./Routes/Bookings";
 
 function App() {
   return (
@@ -26,12 +27,14 @@ function App() {
       <ContextProvider>
            <Routes>
             <Route element={<Layout />}>
+            
               <Route path={routes.home} element={<Home />} />
               <Route path={routes.about} element={<About />} />
               <Route path={routes.legal} element={<Legal />} />
               <Route path={routes.detail} element={<Detail />} />
               <Route path={routes.gallery} element={<ImageGallery />} />
               <Route path={routes.search} element={<Search />} />
+
               <Route 
                   path={routes.admin} 
                   element={
@@ -61,6 +64,7 @@ function App() {
               <Route path={routes.register} element={<Register />} />
               <Route path={routes.favs} element={<Favs />} />
               <Route path={routes.profile} element={<Profile/>} />
+              <Route path={routes.books} element={<Bookings />} />
             </Route>
           </Routes>
           </ContextProvider>

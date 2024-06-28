@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import { useContextGlobal } from '../../Context/GlobalContext';
-import './styles.scss';
 import 'react-datepicker/dist/react-datepicker.css';
 
 const Search = () => {

@@ -1,11 +1,13 @@
 import React from 'react'
 import { terminosYCondicionesTitulo, terminosYCondicionesLineas, copyright } from '../Components/InformacionLegal'
+import BackButton from '../Components/BackButton/BackButton'
 
 const Legal = () => {
 
 
     return (
         <div className="legal__container">
+            <BackButton />
             <h2>Información Legal</h2>
             <div className="terminos">
                 <h3>Términos y condiciones</h3>

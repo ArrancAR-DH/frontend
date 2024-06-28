@@ -23,6 +23,7 @@ export const routes = {
     register: '/register',
     favs: '/favs', 
     profile: '/profile',
+    books: '/booking',
 
     url_base: `${homemade_dotenv.url_base}`,
     url_front: `${homemade_dotenv.url_front}`,
@@ -36,10 +37,12 @@ export const routes = {
     url_AllUsers: `${homemade_dotenv.url_base}/user/all`,
     url_postCar:  `${homemade_dotenv.url_base}/vehicle`,
     url_deleteCar:  `${homemade_dotenv.url_base}/vehicle/delete`,
+    url_deleteBooking:  `${homemade_dotenv.url_base}/booking`,
     url_notificate: `${homemade_dotenv.url_base}/notification/send`,
     url_userLike: `${homemade_dotenv.url_base}/user/like`,
     url_userDislike: `${homemade_dotenv.url_base}/user/dislike`,
     url_userUpdate: `${homemade_dotenv.url_base}/user/update`,
     booking: `${homemade_dotenv.url_base}/booking`,
+    url_getUserBookingsById: `${homemade_dotenv.url_base}/user`,
   
 } 
