@@ -115,9 +115,9 @@ const ListUsers = () => {
                                     <button onClick={() => handleApply(user, index)}>
                                         <img src={pencil} alt="edit-image" />
                                     </button>
-                                    <button>
+                                    {/* <button>
                                         <img src={trashCan} alt="delete-image" />
-                                    </button>
+                                    </button> */}
                                 </div>
                             </div>
                         ))}

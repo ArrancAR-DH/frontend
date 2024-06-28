@@ -35,12 +35,10 @@ const Detail = () => {
 
       const isLiked = state.likes.includes(car.idVehicle);
 
-    console.log( "FEATURES" );
-    console.log( car.features );
+
       return (
             <div className="detail__container">
                   <BackButton number={1} />
-                  <h2>Vehículo seleccionado:</h2>
                   <div className='selected__car__detail__container'>
                         <img src={car.imgUrls?.[0]?.url} />
                         <div className='detalles__container'>

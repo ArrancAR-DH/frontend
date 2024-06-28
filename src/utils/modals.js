@@ -3,13 +3,12 @@ import { toast } from "react-toastify";
 export const loginMessage = () =>
     toast.success("Login exitoso!!!", {
         position: "top-center",
-        autoClose: 2500,
+        autoClose: false,
         hideProgressBar: true,
         closeOnClick: false,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-
     });
 
 
@@ -70,7 +69,7 @@ export const carReserved = () =>
     });
 
 export const carAdd = () =>
-    toast.success("Auto agregado", {
+    toast.success("Vehiculo agregado", {
         position: "top-right",
         autoClose: 1800,
         hideProgressBar: true,
