@@ -91,19 +91,30 @@ export const notSelectedDates = () =>
         progress: undefined,
     });
 
-    export const errorBooking = (message) =>
-        toast.error(message, {
-            position: "top-center",
-            autoClose: 5550,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            style: {
-                width: "450px",
-              },
-        });
+export const bookingDeleted = () =>
+    toast.success("Registro eliminado", {
+        position: "top-right",
+        autoClose: 1800,
+        hideProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+    });
+
+export const errorBooking = (message) =>
+    toast.error(message, {
+        position: "top-center",
+        autoClose: 5550,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        style: {
+            width: "450px",
+        },
+    });
 
 
 // CATEGORIES
@@ -117,7 +128,7 @@ export const createCategorySuccess = () =>
         draggable: true,
         progress: undefined,
     });
-    
+
 export const createCategoryError = (str) =>
     toast.error("Error al crear una categoria:" + " " + str, {
         position: "top-center",
