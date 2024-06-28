@@ -69,6 +69,29 @@ export const carReserved = () =>
         progress: undefined,
     });
 
+export const carAdd = () =>
+    toast.success("Auto agregado", {
+        position: "top-right",
+        autoClose: 1800,
+        hideProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+    });    
+
+    export const carError = (message) =>
+        toast.error(message, {
+            position: "top-center",
+            autoClose: 1850,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+
+        }); 
+
 export const carUnLogged = () =>
     toast.error("Debe loguearse para reservar", {
         position: "top-center",
@@ -83,7 +106,7 @@ export const carUnLogged = () =>
 export const notSelectedDates = () =>
     toast.error("Debe seleccionar dos fechas para reservar", {
         position: "top-center",
-        autoClose: false,
+        autoClose: 1800,
         hideProgressBar: true,
         closeOnClick: false,
         pauseOnHover: true,

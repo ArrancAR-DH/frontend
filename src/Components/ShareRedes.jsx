@@ -91,13 +91,7 @@ const ShareRedes = ({url}) => {
                       <TelegramShareButton url={url}  >
                         <TelegramIcon size={32} round />
                       </TelegramShareButton>
-                    </MenuItem>
-                    <MenuItem>
-                      <LinkedinShareButton url={url}>
-                        <LinkedinIcon size={32} round />
-                      </LinkedinShareButton>
-                    </MenuItem>
-                    
+                    </MenuItem>        
                   </MenuList>
                 </ClickAwayListener>
               </Paper>

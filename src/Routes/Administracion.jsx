@@ -6,6 +6,11 @@ import AdministracionPhoneError from "../Components/Phone Error/AdministracionPh
 import { useContextGlobal } from "../Context/GlobalContext";
 import { routes } from "../utils/routes";
 import BackButton from "../Components/BackButton/BackButton";
+import { carAdd, carError } from "../utils/modals";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
+
+
 
 const Administracion = () => {
     const { state, getToken, dispatch } = useContextGlobal();
@@ -26,8 +31,7 @@ const Administracion = () => {
     }, [state]);
 
     function featuresCheckUncheck(e, feature, index) {
-        // e.preventDefault();
-        selectedFeatures[index] = e.target.checked; // Modificacion en la referenciad del array de selectedFeatures
+        selectedFeatures[index] = e.target.checked; 
     }
 
     function populateSelectedFeaturesArray() {
@@ -39,14 +43,6 @@ const Administracion = () => {
         setSelectedFeatures(aux);
     };
 
-    // async function someAsyncFunction(item){
-    //     return new Promise( resolve =>{
-    //         setTimeout( ()=>{
-    //             console.log( item );
-    //             resolve();
-    //         }, 1000 );
-    //     } );
-    // }
 
     async function esperarAxios(idVehicule, idFeature){
              return axios.post(`${routes.url_postCar}/${idVehicule}/features/${idFeature}`,
@@ -58,23 +54,18 @@ const Administracion = () => {
                 }).then((response) => {
                     setError("");
                 }).catch((error) => {
-                    setError("Hubo un error al guardar el vehículo.");
-                    setSuccess(false);
+                    carError("Hubo un error al guardar el vehículo.")
                 });
     }
 
     async function inyectarFeatures(res, feat, form) {
         for( const element of feat ) {
-            console.log( "FEATURE" );
-            console.log( element.name );
-            setTimeout(()=>{ console.log( "ESPERAR" ) }, 1200);
-            // await someAsyncFunction( element.name );
             await esperarAxios(res.data.idVehicle, element.idFeature);
         }
-        setSuccess(true);
     }
 
     function postVehiculo(postJson, features, form) {
+        setError("");
         axios.post(`${routes.url_postCar}`, postJson, {
             headers: {
                 "Content-Type": "application/json",
@@ -83,16 +74,16 @@ const Administracion = () => {
         }).then((response) => {
             inyectarFeatures(response, features, form);
             dispatch({ type: 'ADD_CAR', payload: response.data });
-            setError("");
+            carError(); 
+            carAdd();
+            form.reset();
+            setImages([])
         }).catch((error) => {
-            console.log(error);
-            setError("Hubo un error al guardar el vehículo.");
-            setSuccess(false);
+            carError("Hubo un error al guardar el vehículo.")
         });
     }
 
     const [error, setError] = useState("");
-    const [success, setSuccess] = useState(false);
     const [images, setImages] = useState([]);
 
     const changeUploadImage = async (e) => {
@@ -109,20 +100,10 @@ const Administracion = () => {
         setImages([...images, response.data.secure_url]);
     };
 
-    // function errorHandling(string) {
-    //     if (!string) {
-    //         setError("");
-    //         return;
-    //     }
-    //     let result = "Error al enviar al formulario: " + string;
-    //     setError(result);
-    //     setSuccess(false);
-    // }
-
     const [pressedButton, setPressedButton] = useState(false);
     function pressButton() {
         setPressedButton(!pressedButton);
-        setError(false);
+        // setError(false);
         setImages([])
     }
 
@@ -144,9 +125,9 @@ const Administracion = () => {
             price === "" || price[0] === " " ||
             patente === "" || patente[0] === " " ||
             descripcion === "" || descripcion[0] === " "
-            || featuresV.length === 0 //! comentado para que no sea obligatorio
+            || featuresV.length === 0 
         ) {
-            setError("Por favor completar todos los campos");
+            carError("Por favor completar todos los campos");
             return false;
         }
         return true;
@@ -160,12 +141,9 @@ const Administracion = () => {
         });
 
         const patente = e.target[5].value.toUpperCase();
-        console.log( patente );
         const patenteEnUso = cars.filter((car) => car.plate === patente);
-        console.log( cars );
-        console.log( patenteEnUso );
         if (patenteEnUso.length > 0) {
-            setError("La patente ingresada ya está en uso.");
+            carError("La patente ingresada ya está en uso.")
             return;
         }
 
@@ -197,7 +175,6 @@ const Administracion = () => {
             plate: patente,
             description: descripcion,
             price: parseFloat(price),
-            // reserved: true/false. // Creo que faltaria este campo para el sprint 4
             model: {
                 idModel: modeloId,
                 name: modeloLabel,
@@ -242,8 +219,7 @@ const Administracion = () => {
                                 <button>Ver lista de usuarios</button>
                             </Link>
                         </div>
-                        {error && <p className="administracion__error">{error}</p>}
-                        {success && <p className="administracion__success">Vehículo agregado con éxito.</p>}
+
                         {pressedButton && (
                             <>
                                 <form onSubmit={submitForm} className="administracion__form__agregar__veh">
@@ -299,7 +275,7 @@ const Administracion = () => {
                                                     <p>No hay características creadas</p> :
                                                     state.feature.map(
                                                         (feature, index) => {
-                                                            return ( // (El key es para eliminar un warning de REACT sobre la performance de la pag.)
+                                                            return ( 
                                                                 <React.Fragment key={feature.idFeature}>
                                                                     <div className="checkbox_and_feature_couple">
                                                                         <input 
@@ -346,7 +322,9 @@ const Administracion = () => {
                     </div>
                     <AdministracionPhoneError />
                 </div>
-            )}
+                    
+                )}
+                <ToastContainer/>
         </>
     );
 };
