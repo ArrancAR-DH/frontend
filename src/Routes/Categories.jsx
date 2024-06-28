@@ -5,6 +5,19 @@ import { Link } from 'react-router-dom'
 import { useContextGlobal } from "../Context/GlobalContext";
 import { routes } from "../utils/routes";
 import BackButton from '../Components/BackButton/BackButton';
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
+import { 
+    createCategoryError,
+    createCategorySuccess,
+    createFeatureSuccess,
+    createFeatureInUseError,
+    createCategoryInUseError,
+    deleteFeatureSuccess,
+    deleteCategorySuccess,
+    deleteCategoryInUseError,
+    deleteFeatureInUseError,
+} from "../utils/modals"
 
 const CreateCategories = () => {
     const { state, getToken, dispatch } = useContextGlobal();
@@ -30,25 +43,27 @@ const CreateCategories = () => {
     }
 
     function createCategory(e, category, value) {
-        e.preventDefault()
-        if (value === '') return alert("Campos vacios");
-        if (value[0] === " ") return alert("Campos vacios");
+        e.preventDefault();
+        if (value === '') 
+            return createCategoryError("Campo incorrecto o vacío");
+        if (value[0] === " ") 
+            return createCategoryError("Campo incorrecto o vacío");
         let exists;
         switch (category) {
             case 'brand':
                 exists = state.brand.filter(brand => brand.name === value);
                 setBrandInputValue("");
-                if (exists.length > 0) return alert('Ya existe esa categoría');
+                if (exists.length > 0) return createCategoryInUseError();
                 break;
             case 'type':
                 exists = state.type.filter(type => type.name === value);
                 setTypeInputValue("");
-                if (exists.length > 0) return alert('Ya existe esa categoría');
+                if (exists.length > 0) return createCategoryInUseError();
                 break;
             case 'model':
                 exists = state.model.filter(model => model.name === value);
                 setModelInputValue("");
-                if (exists.length > 0) return alert('Ya existe esa categoría');
+                if (exists.length > 0) return createCategoryInUseError();
                 break;
             default:
                 break;
@@ -61,7 +76,7 @@ const CreateCategories = () => {
                 'Authorization': "Basic " + token,
             },
         }).then(res => {
-            alert("Categoría creada con éxito")
+            createCategorySuccess();
             switch (category) {
                 case 'brand':
                     dispatch({ type: 'SET_LIST_BRAND', payload: [...state.brand, res.data] });
@@ -102,25 +117,28 @@ const CreateCategories = () => {
                 },
             }
         ).then(res => {
-            alert("Categoria eliminada")
+            deleteCategorySuccess();
             dispatch({
                 type: `SET_LIST_${string.toUpperCase()}`,
                 payload: (state[`${string}`].filter((element) => element[`${categoryIdField}`] !== categoryToDelete[`${categoryIdField}`]))
             });
             console.log(state[`${string}`]);
         }).catch(err => {
-            alert("Categoria en uso: No es posible, eliminar una categoría que esté siendo usada!");
+                deleteCategoryInUseError();
         })
     }
 
     function createFeature(e) {
         e.preventDefault()
-        if (featureInputValue === "") return alert("Campos vacios");
-        if (featureInputValue[0] === " ") return alert("Campos vacios");
+
+        if (featureInputValue === '') 
+            return createCategoryError("Campo incorrecto o vacío");
+        if (featureInputValue[0] === " ") 
+            return createCategoryError("Campo incorrecto o vacío");
         setFeatureInputValue("");
         if ((state.feature.find(feature => feature.name === featureInputValue))) {
             setFeatureInputValue("");
-            return alert('Ya existe esa categoría');
+            return createFeatureInUseError();
         }
         axios.post(`${routes.url_base}/feature`,
             {
@@ -133,7 +151,7 @@ const CreateCategories = () => {
                 },
             }
         ).then(res => {
-            alert("Característica creada con éxito");
+            createFeatureSuccess();
 
             setFeatureInputValue("");
             dispatch({ type: 'SET_LIST_FEATURES', payload: [...state.feature, res.data] });
@@ -157,10 +175,10 @@ const CreateCategories = () => {
                 },
             }
         ).then(res => {
-            alert("Característica eliminada")
+            deleteFeatureSuccess();
             dispatch({ type: 'SET_LIST_FEATURES', payload: (state.feature.filter((feature) => feature.idFeature !== featureToDelete.idFeature)) });
         }).catch(err => {
-            alert("Característica en uso: No es posible eliminar una característica que esté siendo usada!");
+            deleteFeatureInUseError();
         })
     }
 
@@ -185,7 +203,7 @@ const CreateCategories = () => {
                                         <button onClick={(e) => {
                                             const input = document.getElementById('brand-input');
                                             const brand = input.value;
-                                            if (state.brand.includes(brand)) return alert("Ya existe esa categoría")
+                                            if (state.brand.includes(brand)) return createCategoryInUseError();
                                             createCategory(e, 'brand', brand, input)
                                         }}>Crear</button>
                                     </div>
@@ -195,7 +213,7 @@ const CreateCategories = () => {
                                         <button onClick={(e) => {
                                             const input = document.getElementById('model-input');
                                             const model = input.value;
-                                            if (state.model.includes(model)) return alert("Ya existe esa categoría")
+                                            if (state.model.includes(model)) return createCategoryInUseError();
                                             createCategory(e, 'model', model, input)
                                         }}>Crear</button>
 
@@ -206,7 +224,7 @@ const CreateCategories = () => {
                                         <button onClick={(e) => {
                                             const input = document.getElementById('type-input');
                                             const type = input.value;
-                                            if (state.type.includes(type)) return alert('Ya existe esa categoría');
+                                            if (state.type.includes(type)) return createCategoryInUseError();
                                             createCategory(e, 'type', type, input)
                                         }}>Crear</button>
 
@@ -288,6 +306,7 @@ const CreateCategories = () => {
                         </div>
                     </div>
                     <AdministracionPhoneError />
+                    <ToastContainer />
                 </div>}
         </>
     )
