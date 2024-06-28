@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -13,9 +13,7 @@ import { useContextGlobal } from '../Context/GlobalContext';
 import axios from 'axios';
 import { ToastContainer } from "react-toastify";
 import { carReserved, errorBooking } from '../utils/modals';
-import { Typography } from '@mui/material';
-
-
+import { Typography, CircularProgress } from '@mui/material';
 
 function PaperComponent(props) {
   return (
@@ -28,21 +26,25 @@ function PaperComponent(props) {
 }
 
 const DraggableDialog = ({car, end, start, modal, setModal}) => {
-const formattedStartDate = start ? moment(start).format('DD-MM-YYYY') : '';
-const formattedEndDate = end ? moment(end).format('DD-MM-YYYY') : ''; 
-const desde = start ? moment(start).format('YYYY-MM-DD') : '';
-const hasta = end ? moment(end).format('YYYY-MM-DD') : ''; 
-const {getToken, state } = useContextGlobal();
-const {idUser, loggedUser} = state; 
-const token = getToken(); 
-console.log(loggedUser);
+  const [loading, setLoading] = useState(false);
+  const formattedStartDate = start ? moment(start).format('DD-MM-YYYY') : '';
+  const formattedEndDate = end ? moment(end).format('DD-MM-YYYY') : ''; 
+  const desde = start ? moment(start).format('YYYY-MM-DD') : '';
+  const hasta = end ? moment(end).format('YYYY-MM-DD') : ''; 
+  const { getToken, state } = useContextGlobal();
+  const { idUser, loggedUser } = state; 
+  const token = getToken(); 
+  console.log(loggedUser);
 
   const handleClose = () => {
-    setModal(false);
+    if (!loading) {
+      setModal(false);
+    }
   };
 
-
-const handleConfirm = () => {
+  const handleConfirm = () => {
+    setLoading(true); // Start loading
+    
     axios.post( `${routes.booking}`, {
         "startsOn": desde,
         "endsOn": hasta,
@@ -57,7 +59,6 @@ const handleConfirm = () => {
     .then((response) => {
         console.log('Response:', response);
         carReserved();
-
     })
     .catch((error) => {
         if (error.response) {
@@ -67,10 +68,13 @@ const handleConfirm = () => {
         } else {
             console.log('Error message:', error.message);
         }
-        errorBooking(error.response.data)
+        errorBooking(error.response.data);
+    })
+    .finally(() => {
+        setLoading(false); // Stop loading
+        handleClose();
     });
-    handleClose();
-};
+  };
 
   return (
     <>
@@ -78,33 +82,35 @@ const handleConfirm = () => {
         open={modal}
         onClose={handleClose}
         PaperComponent={PaperComponent}
-        aria-labelledby="draggable-dialog-title">
+        aria-labelledby="draggable-dialog-title"
+        disableBackdropClick={loading}
+        disableEscapeKeyDown={loading}>
         <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
           Reserva
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-          <Typography variant='h6'>
+            <Typography variant='h6'>
                 Nombre: {loggedUser?.firstName} Apellido: {loggedUser?.firstName}
             </Typography>
             <Typography variant='h6'>
-                Usted esta a punto de reservar un auto {car.brand?.name} {car.model?.name}.
+                Usted está a punto de reservar un auto {car.brand?.name} {car.model?.name}.
             </Typography>
             <Typography variant='h6'>
                 Las fechas seleccionadas son: {formattedStartDate} - {formattedEndDate}
-                
             </Typography>
             <Typography variant='h6'>
                 El precio a pagar por esta reserva es: ${car?.price}
             </Typography>
-
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleClose}>
+          <Button onClick={handleClose} disabled={loading}>
             Cancelar
           </Button>
-          <Button onClick={handleConfirm}>Confirmar</Button>
+          <Button onClick={handleConfirm} disabled={loading}>
+            {loading ? <CircularProgress size={24} /> : "Confirmar"}
+          </Button>
         </DialogActions>
       </Dialog>
       <ToastContainer />

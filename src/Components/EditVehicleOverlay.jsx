@@ -24,11 +24,11 @@ const EditVehicleOverlay = ({ vehicle, setVehicleBeingEdited, setCars }) => {
     function submitForm(e) {
         e.preventDefault();
         const plate = e.target[5].value.toUpperCase();
-        const patenteEnUso = carsList.filter(car => car.plate === plate);
+        const patenteEnUso = carsList.filter(car => car.plate === plate && car.plate !== vehicle.plate);
         if (patenteEnUso.length > 0) {
             setError("La patente ingresada ya está en uso.");
             return;
-        }
+                    }
         const brandLabel = e.target[0].value;
         const modelLabel = e.target[1].value;
         const typeLabel = e.target[2].value;

@@ -38,7 +38,7 @@ const Home = () => {
               Bienvenido a Arranc<span className="span__primary__color">AR</span>!
             </h1>
             <h3>Donde cada viaje empieza.</h3>
-            <Link to="/search/">
+            <Link to="/search/$">
               <button>Ver todos los autos 🔎</button>
             </Link>
           </div>
