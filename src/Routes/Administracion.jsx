@@ -15,7 +15,6 @@ import { ToastContainer } from "react-toastify";
 const Administracion = () => {
     const { state, getToken, dispatch } = useContextGlobal();
     const token = getToken();
-
     const [brands, setBrands] = useState([]);
     const [models, setModels] = useState([]);
     const [types, setTypes] = useState([]);
@@ -117,6 +116,7 @@ const Administracion = () => {
         descripcion,
         featuresV
     ) {
+        // console.log(marca, modelo, tipo, year, price, patente, descripcion, featuresV);
         if (
             marca === "" ||
             modelo === "" ||
